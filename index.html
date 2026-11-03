@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark h-full bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revista Aster — Editor Gráfico Audiovisual</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cormorant Garamond, Playfair Display, Inter, Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        aster: {
+                            black: '#000000',
+                            deep: '#0a0a0a',
+                            dark: '#121212',
+                            panel: '#181818',
+                            border: '#2a2a2a',
+                            graphite: '#414141',
+                            silver: '#c0c0c0',
+                            light: '#e5e5e5',
+                            white: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+                        sans: ['"Montserrat"', '"Inter"', 'sans-serif'],
+                        inter: ['"Inter"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for dark sleek look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #414141;
+        }
+
+        /* Transparent canvas checkerboard pattern */
+        .checkerboard {
+            background-color: #0f0f0f;
+            background-image: 
+                linear-gradient(45deg, #181818 25%, transparent 25%), 
+                linear-gradient(-45deg, #181818 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #181818 75%), 
+                linear-gradient(-45deg, transparent 75%, #181818 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        /* Mock Video Background */
+        .video-mockup {
+            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), 
+                        url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+    </style>
+</head>
+<body class="bg-black text-aster-light font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-aster-graphite selection:text-white">
+
+    <!-- TOP BAR NAVIGATION -->
+    <header class="border-b border-aster-border bg-aster-deep sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Aster 4-Point Star Logo -->
+                <svg width="28" height="28" viewBox="0 0 100 100" class="text-white fill-current">
+                    <path d="M50,0 C52,35 65,48 100,50 C65,52 52,65 50,100 C48,65 35,52 0,50 C35,48 48,35 50,0 Z"/>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase tracking-[0.3em] text-gray-400 font-semibold leading-none">REVISTA</span>
+                    <span class="font-serif text-xl tracking-wider text-white font-bold leading-none">ASTER</span>
+                </div>
+                <span class="hidden sm:inline-block border-l border-aster-border h-6 mx-2"></span>
+                <span class="hidden sm:inline-block text-xs uppercase tracking-widest text-gray-400">Editor Gráfico Audiovisual</span>
+            </div>
+
+            <!-- Model Switcher Tabs -->
+            <div class="flex bg-aster-black p-1 rounded-lg border border-aster-border">
+                <button id="tab-model-a" onclick="switchModel('A')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 bg-aster-graphite text-white shadow">
+                    <i class="fa-solid fa-id-card text-xs"></i>
+                    <span>MODELO A: IDENTIFICAÇÃO</span>
+                </button>
+                <button id="tab-model-b" onclick="switchModel('B')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-book-bible text-xs"></i>
+                    <span>MODELO B: CITAÇÃO BÍBLICA</span>
+                </button>
+                <button id="tab-model-c" onclick="switchModel('C')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-pen-nib text-xs"></i><span>MODELO C: LIVRE</span></button>
+                <button id="tab-model-d" onclick="switchModel('D')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-bullhorn text-xs"></i><span>MODELO D: SEGUIR</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP WORKSPACE -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- SIDEBAR: CONTROLS & INPUTS (4 Cols) -->
+        <aside class="lg:col-span-5 bg-aster-dark border border-aster-border rounded-xl p-5 sm:p-6 flex flex-col space-y-6 shadow-2xl">
+            
+            <div class="flex items-center justify-between border-b border-aster-border pb-4">
+                <h2 id="form-title" class="font-serif text-lg text-white tracking-wide flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-xs text-gray-400"></i> Parâmetros do Modelo A
+                </h2>
+                <div class="flex items-center space-x-2">
+                    <button onclick="resetDefaults()" title="Restaurar padrão" class="text-xs text-gray-400 hover:text-white px-2 py-1 rounded border border-aster-border bg-aster-black hover:bg-aster-graphite transition">
+                        <i class="fa-solid fa-rotate-left"></i> Restaurar
+                    </button>
+                    <button onclick="clearFields()" title="Limpar campos" class="text-xs text-gray-400 hover:text-red-400 px-2 py-1 rounded border border-aster-border bg-aster-black hover:bg-aster-graphite transition">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- FORM: MODELO A CONTROLS -->
+            <form id="form-model-a" onsubmit="event.preventDefault();" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Nome Completo</label>
+                    <input type="text" id="input-a-name" value="Taiuan Oliveira" oninput="updateGraphics()" 
+                           class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white font-serif text-base focus:border-white focus:outline-none transition">
+                </div>
+
+                <div class="space-y-2 rounded-lg border border-aster-border p-3">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Função rápida</label>
+                    <select id="a-group" onchange="roleChanged(true)" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"><option value="aster">Equipe Revista Aster</option><option value="guest">Convidado (de fora)</option></select>
+                    <div class="grid grid-cols-2 gap-2"><select id="a-r1" onchange="roleChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></select><select id="a-r2" onchange="roleChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></select></div>
+                    <input type="text" id="a-r1c" oninput="roleChanged()" placeholder="Digite a função" class="hidden w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none">
+                    <div id="a-instrow" class="space-y-2 hidden"><select id="a-inst" onchange="roleChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></select>
+                    <input type="text" id="a-instc" oninput="roleChanged()" placeholder="Digite a instituição" class="hidden w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Cargo / Função (gerado acima · pode editar)</label>
+                    <input type="text" id="input-a-role" value="EDITOR-CHEFE · REVISTA ASTER" oninput="updateGraphics()" 
+                           class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs uppercase tracking-widest focus:border-white focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Instagram (Nome de Usuário)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm">@</span>
+                        <input type="text" id="input-a-instagram" value="seuusuario" oninput="updateGraphics()" 
+                               class="w-full bg-aster-black border border-aster-border rounded-md pl-8 pr-3 py-2 text-white text-sm focus:border-white focus:outline-none transition">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-aster-border/60 space-y-3">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-gray-400">Elementos Opcionais</span>
+                    
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Exibir Linha do Instagram</span>
+                        <input type="checkbox" id="toggle-a-show-instagram" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Exibir Assinatura Revista Aster</span>
+                        <input type="checkbox" id="toggle-a-show-brand" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+                </div>
+            </form>
+
+            <!-- FORM: MODELO B CONTROLS (Hidden by default) -->
+            <form id="form-model-b" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Referência (ex.: 1 João 1:9)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="input-b-reference" value="GÊNESIS 1:1" oninput="onRefInput()" onkeydown="if(event.key==='Enter'){event.preventDefault();fetchVerse();}" placeholder="João 3:16 · Salmos 23:1-3" class="flex-1 w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs uppercase tracking-wider focus:border-white focus:outline-none transition">
+                        <button type="button" onclick="fetchVerse()" class="px-4 rounded-md bg-aster-graphite text-white text-xs font-semibold">Buscar</button>
+                    </div>
+                    <p id="verse-status" class="text-[11px] text-gray-400 mt-1 min-h-[1rem]">Digite a referência e o versículo entra sozinho.</p>
+                    <label class="flex items-center justify-between text-[11px] text-gray-300 mt-2">Importar Bíblia (.json): busca sem internet<input type="file" accept=".json,application/json,text/plain" onchange="importBible(this)" class="w-36 text-[11px]"></label>
+                    <p id="bible-status" class="text-[11px] text-gray-400"></p>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Texto do Versículo (automático, pode editar)</label>
+                    <textarea id="input-b-text" rows="3" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md p-3 text-white font-serif text-sm italic focus:border-white focus:outline-none transition resize-y">"No princípio criou Deus os céus e a terra."</textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Identificação Superior</label>
+                    <input type="text" id="input-b-header" value="REFERÊNCIA BÍBLICA" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs uppercase tracking-wider focus:border-white focus:outline-none transition">
+                </div>
+
+                <div class="pt-2 border-t border-aster-border/60 space-y-3">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-gray-400">Opções &amp; Detalhes</span>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Ícone de Livro Aberto</span>
+                        <input type="checkbox" id="toggle-b-show-icon" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Ajuste Automático de Fonte</span>
+                        <input type="checkbox" id="toggle-b-autofont" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Aba Superior Identificadora</span>
+                        <input type="checkbox" id="toggle-b-show-badge" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+                </div>
+            </form>
+
+            <form id="form-model-c" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="preset('frase')" class="py-2 rounded-md border border-aster-border text-white text-xs">Frase + autor</button>
+                    <button type="button" onclick="preset('titulo')" class="py-2 rounded-md border border-aster-border text-white text-xs">Título</button>
+                    <button type="button" onclick="preset('insta')" class="py-2 rounded-md border border-aster-border text-white text-xs">Chamada Insta</button>
+                </div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Texto principal</label><textarea id="input-c-text" rows="3" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition font-serif italic"></textarea></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Linha pequena (autor, subtítulo, @)</label><input type="text" id="input-c-ref" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Aba superior</label><input type="text" id="input-c-header" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <div class="space-y-2"><label class="flex items-center justify-between text-xs text-gray-300"><span>Aspas no texto</span><input type="checkbox" id="toggle-c-quotes" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label><label class="flex items-center justify-between text-xs text-gray-300"><span>Ícone de livro</span><input type="checkbox" id="toggle-c-icon" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label><label class="flex items-center justify-between text-xs text-gray-300"><span>Aba superior</span><input type="checkbox" id="toggle-c-badge" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label></div>
+            </form>
+
+            <form id="form-model-d" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Plataforma</label><select id="input-d-platform" onchange="onPlatform()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="instagram">Instagram (seguir)</option><option value="youtube">YouTube (inscrever-se)</option></select></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Chamada</label><input type="text" id="input-d-call" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Perfil / canal</label><input type="text" id="input-d-handle" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Texto do botão</label><input type="text" id="input-d-button" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+            </form>
+
+            <!-- FAVORITOS -->
+            <div class="space-y-2 border-t border-aster-border pt-4">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Favoritos do modelo atual</span>
+                <select id="fav-select" onchange="loadFav()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></select>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="saveFav()" class="py-2 rounded-md bg-aster-graphite text-white text-xs font-semibold">★ Salvar atual</button>
+                    <button type="button" onclick="delFav()" class="py-2 rounded-md border border-aster-border text-gray-300 text-xs">Apagar selecionado</button>
+                </div>
+            </div>
+
+            <!-- VISUAL -->
+            <div class="space-y-3 border-t border-aster-border pt-4">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Visual</span>
+                <select id="sel-theme" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="silver">Tema: Prata</option><option value="gold">Tema: Dourado</option><option value="rose">Tema: Vermelho</option><option value="blue">Tema: Azul</option></select>
+                <label class="flex items-center justify-between text-xs text-gray-300">Foto da pessoa (Modelo A)<input type="file" accept="image/*" onchange="pickAsset(this,'photo')" class="w-40 text-[11px]"></label>
+                <label class="flex items-center justify-between text-xs text-gray-300">Logo no lugar da estrela<input type="file" accept="image/*" onchange="pickAsset(this,'logo')" class="w-40 text-[11px]"></label>
+                <div class="grid grid-cols-2 gap-2"><button type="button" onclick="clearAsset('photo')" class="py-1.5 rounded-md border border-aster-border text-gray-300 text-xs">Remover foto</button><button type="button" onclick="clearAsset('logo')" class="py-1.5 rounded-md border border-aster-border text-gray-300 text-xs">Remover logo</button></div>
+            </div>
+
+            <!-- VIDEO ANIMADO -->
+            <div class="space-y-3 border-t border-aster-border pt-4">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Vídeo animado · formato vale também p/ PNG</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="anim-fmt" class="bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs"><option value="h">YouTube 16:9</option><option value="v">Instagram 9:16</option></select>
+                    <select id="anim-bg" class="bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs"><option value="green">Fundo verde (chroma)</option><option value="alpha">Transparente (WebM)</option></select>
+                </div>
+                <select id="anim-style" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="default">Animação: padrão do modelo</option><option value="slide">Deslizar da esquerda</option><option value="zoom">Zoom + fade</option><option value="fade">Só fade</option><option value="words">Palavra por palavra (B e C)</option></select>
+                <label class="flex items-center justify-between text-xs text-gray-300">Tempo na tela (segundos)
+                    <input type="number" id="anim-hold" value="5" min="1" max="30" class="w-20 bg-aster-black border border-aster-border rounded-md px-2 py-1 text-white text-xs"></label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="playAnim(false)" class="py-2 rounded-md border border-aster-border text-white text-xs font-semibold">▶ Prévia</button>
+                    <button type="button" onclick="playAnim(true)" class="py-2 rounded-md bg-aster-graphite text-white text-xs font-semibold">⬇ Baixar vídeo</button>
+                </div>
+                <p id="anim-status" class="text-[11px] text-gray-400 min-h-[1rem]"></p>
+                <canvas id="anim-canvas" class="hidden w-full max-h-72 object-contain rounded border border-aster-border"></canvas>
+            </div>
+
+            <!-- EXPORT ACTION BUTTONS -->
+            <div class="pt-4 border-t border-aster-border space-y-3">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Exportar Elemento</span>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="exportPNG('crop')" class="w-full bg-white hover:bg-aster-light text-black font-semibold py-2.5 px-3 rounded-md text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 shadow">
+                        <i class="fa-solid fa-file-image"></i>
+                        <span>PNG Recortado</span>
+                    </button>
+                    <button onclick="exportPNG('fullhd')" class="w-full bg-aster-graphite hover:bg-gray-600 text-white font-semibold py-2.5 px-3 rounded-md text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 border border-aster-border">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>PNG 1080p Overlay</span>
+                    </button>
+                </div>
+
+                <button onclick="exportSVG()" class="w-full bg-aster-black hover:bg-aster-panel text-gray-200 border border-aster-border hover:border-gray-500 font-medium py-2 px-3 rounded-md text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Exportar Arquivo SVG Vetorial</span>
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- MAIN VIEWPORT: PREVIEW CANVAS (7 Cols) -->
+        <section class="lg:col-span-7 flex flex-col space-y-4">
+            
+            <!-- PREVIEW HEADER & BACKGROUND TOGGLES -->
+            <div class="bg-aster-dark border border-aster-border rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="relative flex h-2.5 w-2.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                    </span>
+                    <h3 class="text-xs uppercase tracking-widest font-semibold text-gray-200">Pré-visualização em Tempo Real</h3>
+                </div>
+
+                <!-- Preview Background Switcher -->
+                <div class="flex items-center space-x-1 bg-aster-black p-1 rounded-lg border border-aster-border text-xs">
+                    <span class="text-gray-500 px-2 text-[10px] uppercase font-bold tracking-wider">Fundo:</span>
+                    <button id="bg-btn-grid" onclick="setPreviewBg('grid')" class="px-2.5 py-1 rounded text-white bg-aster-graphite transition">Transparente</button>
+                    <button id="bg-btn-dark" onclick="setPreviewBg('dark')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white transition">Escuro</button>
+                    <button id="bg-btn-video" onclick="setPreviewBg('video')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white transition">Simulação Vídeo</button>
+                </div>
+            </div>
+
+            <!-- PREVIEW VIEWPORT BOX -->
+            <div id="preview-viewport" class="relative w-full aspect-video rounded-xl border border-aster-border overflow-hidden flex items-end p-4 sm:p-8 checkerboard transition-all shadow-2xl">
+                
+                <!-- Guidelines overlay for broadcast safe area -->
+                <div class="absolute inset-4 sm:inset-8 border border-white/10 pointer-events-none flex justify-between items-start">
+                    <span class="text-[9px] text-white/30 tracking-widest uppercase font-mono p-1">16:9 Lower Third Safe Area</span>
+                    <span class="text-[9px] text-white/30 tracking-widest uppercase font-mono p-1">REVISTA ASTER</span>
+                </div>
+
+                <!-- LIVE SVG RENDER CONTAINER -->
+                <div id="svg-container" class="w-full z-10 filter drop-shadow-2xl">
+                    <!-- SVG will be dynamically generated by JS -->
+                </div>
+            </div>
+
+            <!-- TECHNICAL SPECS CARD -->
+            <div class="bg-aster-dark/60 border border-aster-border/60 rounded-xl p-4 text-xs text-gray-400 space-y-2">
+                <div class="flex items-center justify-between text-gray-300 font-medium">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-white"></i> Especificações de Vídeo</span>
+                    <span class="font-mono text-[11px] bg-aster-black px-2 py-0.5 rounded border border-aster-border">1920 × 1080 (Full HD)</span>
+                </div>
+                <p class="leading-relaxed">
+                    Os arquivos PNG exportados contêm canal alfa (transparência real) compatíveis diretamente na linha do tempo do <strong>Adobe Premiere, DaVinci Resolve, Final Cut Pro e CapCut</strong>.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-aster-border bg-aster-deep py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 font-mono">
+            REVISTA ASTER &copy; SISTEMA DE IDENTIDADE AUDIOVISUAL EDITORIAL
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // --- STATE MANAGEMENT ---
+        let currentModel = 'A'; // 'A' or 'B'
+        let currentBgMode = 'grid'; // 'grid', 'dark', 'video'
+
+        // Default Data
+        const defaultData = {
+            modelA: {
+                name: "Taiuan Oliveira",
+                role: "EDITOR-CHEFE · REVISTA ASTER",
+                instagram: "seuusuario",
+                showInstagram: true,
+                showBrand: true
+            },
+            modelB: {
+                text: '"No princípio criou Deus os céus e a terra."',
+                reference: "GÊNESIS 1:1",
+                header: "REFERÊNCIA BÍBLICA",
+                showIcon: true,
+                autofont: true,
+                showBadge: true
+            }
+        };
+
+        defaultData.modelA.photo = ''; Object.assign(defaultData.modelA, { roleGroup: 'aster', r1: 'Editor-chefe', r2: '', inst: '', instc: '', r1c: '' });
+        defaultData.modelC = { text: 'A fé é a certeza daquilo que esperamos.', reference: 'AUTOR · FONTE', header: 'FRASE', quotes: true, showIcon: false, showBadge: true, autofont: true };
+        defaultData.modelD = { platform: 'instagram', call: 'SIGA NO INSTAGRAM', handle: '@revistaaster', button: 'SEGUIR' };
+        defaultData.theme = 'silver'; defaultData.logo = '';
+        // Current Active Data
+        let appData = JSON.parse(JSON.stringify(defaultData));
+
+        // On Page Load Initialization
+        window.onload = function() {
+            loadFromLocalStorage();
+            updateFormInputs();
+            updateGraphics();
+            renderFavs();
+            loadBible();
+        };
+
+        // --- LOCAL STORAGE ---
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('aster_editor_data', JSON.stringify(appData));
+            } catch(e) {
+                console.warn('LocalStorage save failed', e);
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('aster_editor_data');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appData = JSON.parse(JSON.stringify({ ...defaultData, ...parsed }));
+                }
+            } catch(e) {
+                console.warn('LocalStorage load failed', e);
+            }
+        }
+
+        // --- MODEL SWITCHING ---
+        const MODELS = ['A', 'B', 'C', 'D'];
+        function switchModel(m) {
+            currentModel = m;
+            MODELS.forEach(k => {
+                document.getElementById('tab-model-' + k.toLowerCase()).className = 'px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 ' + (k === m ? 'bg-aster-graphite text-white shadow' : 'text-gray-400 hover:text-white');
+                document.getElementById('form-model-' + k.toLowerCase()).classList.toggle('hidden', k !== m);
+            });
+            document.getElementById('form-title').innerHTML = '<i class="fa-solid fa-sliders text-xs text-gray-400"></i> Parâmetros do Modelo ' + m;
+            renderFavs();
+            updateGraphics();
+        }
+
+        // --- PREVIEW BG TOGGLE ---
+        function setPreviewBg(mode) {
+            currentBgMode = mode;
+            const viewport = document.getElementById('preview-viewport');
+            const btnGrid = document.getElementById('bg-btn-grid');
+            const btnDark = document.getElementById('bg-btn-dark');
+            const btnVideo = document.getElementById('bg-btn-video');
+
+            viewport.classList.remove('checkerboard', 'bg-aster-black', 'video-mockup');
+            
+            btnGrid.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition";
+            btnDark.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition";
+            btnVideo.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition";
+
+            if (mode === 'grid') {
+                viewport.classList.add('checkerboard');
+                btnGrid.className = "px-2.5 py-1 rounded text-white bg-aster-graphite transition";
+            } else if (mode === 'dark') {
+                viewport.classList.add('bg-aster-black');
+                btnDark.className = "px-2.5 py-1 rounded text-white bg-aster-graphite transition";
+            } else if (mode === 'video') {
+                viewport.classList.add('video-mockup');
+                btnVideo.className = "px-2.5 py-1 rounded text-white bg-aster-graphite transition";
+            }
+        }
+
+        // --- FUNÇÕES E INSTITUIÇÕES ---
+        const $ = id => document.getElementById(id);
+        const TEAM_ROLES = ['Chefe de redação', 'Colunista', 'Diagramador', 'Editor', 'Editor-chefe', 'Redator', 'Repórter', 'Revisor'];
+        const GUEST_ROLES = ['Apóstolo', 'Bispo', 'Diácono', 'Evangelista', 'Missionário', 'Padre', 'Pastor', 'Pastora', 'Presbítero', 'Teólogo'];
+        const INSTS = [
+            ['Assembleia de Deus', 'AD'], ['Congregação Cristã no Brasil', 'CCB'], ['Deus é Amor', 'IPDA'],
+            ['Igreja Adventista do Sétimo Dia', 'IASD'], ['Igreja Anglicana', ''], ['Igreja Batista', ''], ['Igreja Bola de Neve', ''],
+            ['Igreja Católica', ''], ['Igreja do Evangelho Quadrangular', 'IEQ'], ['Igreja Internacional da Graça de Deus', 'IIGD'],
+            ['Igreja Luterana', 'IECLB'], ['Igreja Maranata', ''], ['Igreja Metodista', ''], ['Igreja Mundial do Poder de Deus', 'IMPD'],
+            ['Igreja Ortodoxa', ''], ['Igreja Presbiteriana do Brasil', 'IPB'], ['Igreja Renascer em Cristo', ''],
+            ['Igreja Sara Nossa Terra', ''], ['Igreja Universal do Reino de Deus', 'IURD'], ['O Brasil para Cristo', 'OBPC']
+        ].sort((a, b) => a[0].localeCompare(b[0], 'pt'));
+        function initInst() {
+            $('a-inst').innerHTML = '<option value="">Sem instituição</option>' + INSTS.map((x, i) => `<option value="${i}">${x[0]}${x[1] ? ' (' + x[1] + ')' : ''}</option>`).join('') + '<option value="__o">Outra (digitar)…</option>';
+        }
+        function fillRoles(g) {
+            const o = (g === 'guest' ? GUEST_ROLES : TEAM_ROLES).map(r => `<option>${r}</option>`).join('');
+            $('a-r1').innerHTML = '<option value="">Função…</option>' + o + '<option value="__o">Outra (digitar)…</option>';
+            $('a-r2').innerHTML = '<option value="">2ª função (opcional)</option>' + o;
+        }
+        function roleUI() {
+            $('a-r1c').classList.toggle('hidden', $('a-r1').value !== '__o');
+            $('a-instrow').classList.toggle('hidden', $('a-group').value !== 'guest');
+            $('a-instc').classList.toggle('hidden', $('a-inst').value !== '__o');
+        }
+        function roleChanged(groupChanged) {
+            if (groupChanged) fillRoles($('a-group').value);
+            roleUI();
+            const r1 = $('a-r1').value === '__o' ? $('a-r1c').value.trim() : $('a-r1').value;
+            const parts = [r1, $('a-r2').value].filter(Boolean);
+            if ($('a-group').value === 'aster') parts.push('Revista Aster');
+            else if ($('a-inst').value !== '') {
+                const iv = $('a-inst').value, full = iv === '__o' ? $('a-instc').value.trim() : INSTS[+iv][0], sig = iv === '__o' ? '' : INSTS[+iv][1];
+                if (full) parts.push((parts.join(' · ') + ' · ' + full).length > 58 && sig ? sig : full);
+            }
+            $('input-a-role').value = parts.join(' · ').toUpperCase();
+            updateGraphics();
+        }
+
+        // --- FORM DATA SYNC ---
+        const FIELDS = {
+            A: { name: 'input-a-name', role: 'input-a-role', instagram: 'input-a-instagram', showInstagram: 'toggle-a-show-instagram', showBrand: 'toggle-a-show-brand', roleGroup: 'a-group', r1: 'a-r1', r2: 'a-r2', inst: 'a-inst', instc: 'a-instc', r1c: 'a-r1c' },
+            B: { text: 'input-b-text', reference: 'input-b-reference', header: 'input-b-header', showIcon: 'toggle-b-show-icon', autofont: 'toggle-b-autofont', showBadge: 'toggle-b-show-badge' },
+            D: { platform: 'input-d-platform', call: 'input-d-call', handle: 'input-d-handle', button: 'input-d-button' },
+            C: { text: 'input-c-text', reference: 'input-c-ref', header: 'input-c-header', quotes: 'toggle-c-quotes', showIcon: 'toggle-c-icon', showBadge: 'toggle-c-badge' }
+        };
+        const mkey = m => 'model' + m;
+        function updateFormInputs() {
+            if (!$('a-inst').options.length) initInst();
+            fillRoles(appData.modelA.roleGroup || 'aster');
+            for (const m of MODELS) for (const [k, id] of Object.entries(FIELDS[m])) {
+                const el = document.getElementById(id), v = appData[mkey(m)][k];
+                if (el.type === 'checkbox') el.checked = !!v; else el.value = v ?? '';
+            }
+            document.getElementById('sel-theme').value = appData.theme || 'silver';
+            roleUI();
+        }
+        function readFormInputs() {
+            const m = currentModel;
+            for (const [k, id] of Object.entries(FIELDS[m])) {
+                const el = document.getElementById(id);
+                appData[mkey(m)][k] = el.type === 'checkbox' ? el.checked : el.value;
+            }
+            appData.theme = document.getElementById('sel-theme').value;
+            saveToLocalStorage();
+        }
+        function resetDefaults() { appData[mkey(currentModel)] = JSON.parse(JSON.stringify(defaultData[mkey(currentModel)])); updateFormInputs(); updateGraphics(); }
+        function clearFields() {
+            const d = appData[mkey(currentModel)];
+            for (const k of Object.keys(FIELDS[currentModel])) if (typeof d[k] === 'string') d[k] = '';
+            updateFormInputs(); updateGraphics();
+        }
+        const PRESETS = {
+            frase: { text: 'A fé é a certeza daquilo que esperamos.', reference: 'AUTOR · FONTE', header: 'FRASE', quotes: true },
+            titulo: { text: 'Título da matéria aqui', reference: 'SUBTÍTULO OU CHAMADA', header: 'DESTAQUE', quotes: false },
+            insta: { text: 'Siga a Revista Aster no Instagram', reference: '@REVISTAASTER', header: 'SIGA', quotes: false }
+        };
+        function onPlatform() {
+            const y = $('input-d-platform').value === 'youtube';
+            $('input-d-call').value = y ? 'INSCREVA-SE NO CANAL' : 'SIGA NO INSTAGRAM';
+            $('input-d-button').value = y ? 'INSCREVER-SE' : 'SEGUIR';
+            updateGraphics();
+        }
+        function preset(k) { Object.assign(appData.modelC, PRESETS[k]); updateFormInputs(); updateGraphics(); }
+
+        // --- FAVORITOS (A: pessoas · B: versículos · C: textos) ---
+        const getFavs = () => { try { return JSON.parse(localStorage.getItem('aster_favs') || '{}'); } catch (e) { return {}; } };
+        function renderFavs(sel) {
+            const l = getFavs()[currentModel] || [], s = document.getElementById('fav-select');
+            s.innerHTML = `<option value="">★ Favoritos (${l.length}) — toque para carregar</option>` + l.map((x, i) => `<option value="${i}">${escapeHtml(x.label)}</option>`).join('');
+            if (sel !== undefined) s.value = String(sel);
+        }
+        function saveFav() {
+            const d = JSON.parse(JSON.stringify(appData[mkey(currentModel)]));
+            const label = (currentModel === 'A' ? d.name : currentModel === 'B' ? d.reference : currentModel === 'D' ? d.platform + ' ' + d.handle : (d.header + ' · ' + d.text)).trim().slice(0, 45);
+            if (!label) return;
+            const all = getFavs(), l = all[currentModel] || [], i = l.findIndex(x => x.label === label);
+            if (i >= 0) l[i] = { label, d }; else l.push({ label, d });
+            all[currentModel] = l;
+            try { localStorage.setItem('aster_favs', JSON.stringify(all)); } catch (e) { alert('Sem espaço para salvar (foto muito grande?).'); }
+            renderFavs(i >= 0 ? i : l.length - 1);
+        }
+        function loadFav() {
+            const v = document.getElementById('fav-select').value; if (v === '') return;
+            const x = (getFavs()[currentModel] || [])[+v]; if (!x) return;
+            appData[mkey(currentModel)] = JSON.parse(JSON.stringify(x.d));
+            updateFormInputs(); updateGraphics();
+        }
+        function delFav() {
+            const v = document.getElementById('fav-select').value; if (v === '') return;
+            const all = getFavs(); (all[currentModel] || []).splice(+v, 1);
+            try { localStorage.setItem('aster_favs', JSON.stringify(all)); } catch (e) {}
+            renderFavs();
+        }
+
+        // --- FOTO / LOGO ---
+        function pickAsset(inp, kind) {
+            const file = inp.files[0]; if (!file) return;
+            const r = new FileReader();
+            r.onload = () => {
+                const im = new Image();
+                im.onload = () => {
+                    const s = Math.min(1, (kind === 'photo' ? 400 : 300) / Math.max(im.width, im.height));
+                    const c = document.createElement('canvas'); c.width = im.width * s; c.height = im.height * s;
+                    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+                    const d = c.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.88);
+                    if (kind === 'photo') appData.modelA.photo = d; else appData.logo = d;
+                    updateGraphics();
+                };
+                im.src = r.result;
+            };
+            r.readAsDataURL(file);
+        }
+        function clearAsset(kind) { if (kind === 'photo') appData.modelA.photo = ''; else appData.logo = ''; updateGraphics(); }
+
+        // --- TEMAS + SELEÇÃO DO GERADOR ---
+        const THEMES = { gold: ['#fff3c4', '#d4af37', '#9a7b1c'], rose: ['#ffd6d6', '#ff6b6b', '#b83232'], blue: ['#d6ecff', '#5aa9ff', '#2b5fa8'] };
+        function applyTheme(svg) {
+            const t = THEMES[appData.theme]; if (!t) return svg;
+            return svg.replace(/<linearGradient id="silverGradB?"[\s\S]*?<\/linearGradient>/, g => { let i = 0; return g.replace(/stop-color="#[0-9a-f]{6}"/g, () => `stop-color="${t[i++]}"`); });
+        }
+        function genCurrent(W = 1600, noText = false) {
+            const d = appData[mkey(currentModel)];
+            const s = currentModel === 'A' ? generateSVGModelA(d, W) : currentModel === 'D' ? generateSVGModelD(d, W) : generateSVGModelB(noText ? { ...d, __noText: true } : d, W);
+            return applyTheme(s);
+        }
+        function updateGraphics() {
+            readFormInputs();
+            document.getElementById('svg-container').innerHTML = genCurrent();
+        }
+
+        // --- SVG MODEL A GENERATOR (Lower Third) ---
+        function generateSVGModelA(data, W = 1600) {
+            const width = W, dx = W - 1600;
+            const height = 180;
+
+            // Auto text sizing calculation for name
+            let nameFontSize = 52;
+            if (data.name.length > 22) nameFontSize = 40;
+            if (data.name.length > 30) nameFontSize = 32;
+
+            const showInsta = data.showInstagram && data.instagram.trim() !== "";
+            const showBrand = data.showBrand;
+            const photo = data.photo || '', tx = photo ? 125 : 0;
+            const textMaxW = (showBrand ? 1050 : 1350) + dx - tx;
+            nameFontSize = Math.max(22, Math.min(52, Math.floor(textMaxW / (Math.max(1, data.name.length) * 0.5))));
+            const roleStr = (data.role || '').toUpperCase();
+            const roleFs = Math.max(10, Math.min(14, Math.floor(textMaxW / (Math.max(1, roleStr.length) * 0.95))));
+            const insta = (data.instagram || '').replace(/^@+/, '').replace(/\s+/g, '').toLowerCase();
+
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <!-- Silver/Metal Gradient -->
+                    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="50%" stop-color="#d0d0d0"/>
+                        <stop offset="100%" stop-color="#a0a0a0"/>
+                    </linearGradient>
+                    <!-- Dark Graphite Gradient -->
+                    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#070707"/>
+                        <stop offset="70%" stop-color="#141414"/>
+                        <stop offset="100%" stop-color="#0a0a0a"/>
+                    </linearGradient>
+                    <!-- Subtle Noise Texture Pattern -->
+                    <pattern id="noise" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <rect width="100" height="100" fill="#000000" fill-opacity="0"/>
+                        <circle cx="20" cy="20" r="1" fill="#ffffff" fill-opacity="0.03"/>
+                        <circle cx="70" cy="50" r="1" fill="#ffffff" fill-opacity="0.02"/>
+                        <circle cx="40" cy="80" r="1" fill="#ffffff" fill-opacity="0.03"/>
+                    </pattern>
+                </defs>
+
+                <style>
+                    .serif-title { font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif; font-weight: 700; fill: #ffffff; }
+                    .sans-subtitle { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 600; fill: #d1d1d1; letter-spacing: 0.22em; }
+                    .sans-insta { font-family: 'Inter', sans-serif; font-weight: 400; fill: #ffffff; letter-spacing: 0.05em; }
+                    .brand-rev { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; fill: #111111; letter-spacing: 0.45em; }
+                    .brand-aster { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 44px; fill: #000000; letter-spacing: 0.08em; }
+                </style>
+
+                <!-- MAIN HORIZONTAL BLACK BAR -->
+                <rect x="140" y="20" width="${showBrand ? 1160 + dx : 1420 + dx}" height="140" fill="url(#darkGrad)" rx="2"/>
+                <rect x="140" y="20" width="${showBrand ? 1160 + dx : 1420 + dx}" height="140" fill="url(#noise)"/>
+
+                <!-- Top & Bottom Accent Fine Silver Lines -->
+                <line x1="140" y1="20" x2="${showBrand ? 1300 + dx : 1560 + dx}" y2="20" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6"/>
+                <line x1="140" y1="160" x2="${showBrand ? 1300 + dx : 1560 + dx}" y2="160" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+
+                <!-- LEFT PANEL: SILVER SQUARE WITH 4-POINT ASTER STAR -->
+                <g id="left-star-panel">
+                    <rect x="0" y="20" width="140" height="140" fill="url(#silverGrad)"/>
+                    <!-- Diagonal Slash Effect on Panel -->
+                    <polygon points="120,20 140,20 140,160 100,160" fill="#ffffff" fill-opacity="0.2"/>
+                    <!-- Aster 4-Point Star -->
+                    ${appData.logo ? `<image href="${appData.logo}" x="20" y="40" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>` : `<path d="M70,45 C71.8,70 85,82.2 110,84 C85,85.8 71.8,98 70,123 C68.2,98 55,85.8 30,84 C55,82.2 68.2,70 70,45 Z" fill="#000000"/>`}
+                    <!-- Divider Line -->
+                    <line x1="140" y1="20" x2="140" y2="160" stroke="#414141" stroke-width="2"/>
+                </g>
+
+                ${photo ? `<defs><clipPath id="pc"><circle cx="228" cy="90" r="52"/></clipPath></defs><image href="${photo}" x="176" y="38" width="104" height="104" preserveAspectRatio="xMidYMid slice" clip-path="url(#pc)"/><circle cx="228" cy="90" r="52" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="2"/>` : ''}
+                <!-- CENTER AREA: TEXT CONTENT -->
+                <!-- Person Name -->
+                <text x="${175 + tx}" y="${showInsta ? 78 : 92}" class="serif-title" font-size="${nameFontSize}">${escapeHtml(data.name)}</text>
+                
+                <!-- Role / Subtitle -->
+                <text x="${178 + tx}" y="${showInsta ? 106 : 122}" class="sans-subtitle" font-size="${roleFs}">${escapeHtml(roleStr)}</text>
+
+                <!-- Instagram Handle Row (Conditional) -->
+                ${showInsta ? `
+                <g id="instagram-row" transform="translate(${178 + tx}, 126)">
+                    <!-- Instagram Icon SVG -->
+                    <rect x="0" y="0" width="16" height="16" rx="4" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="8" cy="8" r="4" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="12.5" cy="3.5" r="1" fill="#ffffff"/>
+                    <text x="24" y="13" class="sans-insta" font-size="14">@${escapeHtml(insta)}</text>
+                </g>
+                ` : ''}
+
+                <!-- RIGHT PANEL: BRANDING REVISTA ASTER (Conditional) -->
+                ${showBrand ? `
+                <g id="right-brand-panel">
+                    <!-- Diagonal Polygon Panel -->
+                    <polygon points="${1300+dx},20 ${1600+dx},20 ${1600+dx},160 ${1260+dx},160" fill="url(#silverGrad)"/>
+                    <!-- Diagonal Dark Divider Line -->
+                    <line x1="${1300+dx}" y1="20" x2="${1260+dx}" y2="160" stroke="#000000" stroke-width="3"/>
+                    
+                    <!-- Revista Aster Logo Text -->
+                    <text x="${1440+dx}" y="72" text-anchor="middle" class="brand-rev">REVISTA</text>
+                    <text x="${1440+dx}" y="118" text-anchor="middle" class="brand-aster">ASTER</text>
+                    
+                    <!-- Decorative Geometric Accent Line -->
+                    <line x1="${1380+dx}" y1="130" x2="${1500+dx}" y2="130" stroke="#111111" stroke-width="1"/>
+                </g>
+                ` : ''}
+            </svg>
+            `;
+        }
+
+        // --- SVG MODEL B GENERATOR (Citação Bíblica) — altura dinâmica, quebra de linha automática ---
+        function generateSVGModelB(data, W = 1600) {
+            const width = W, dx = W - 1600;
+            let verse = (data.text || '').trim().replace(/^["'“”‘’«]+|["'“”‘’»]+$/g, '').trim();
+            if (data.quotes !== false) verse = '“' + verse + '”';
+            const maxW = 1085 + dx;
+            const wrap = (txt, fs) => {
+                const maxChars = Math.floor(maxW / (fs * 0.46));
+                const out = []; let cur = '';
+                for (const w of txt.split(/\s+/)) {
+                    if (cur && (cur + ' ' + w).length > maxChars) { out.push(cur); cur = w; }
+                    else cur = cur ? cur + ' ' + w : w;
+                }
+                if (cur) out.push(cur);
+                return out;
+            };
+            let fs = 36, lines = wrap(verse, fs);
+            if (data.autofont) {
+                for (const s of [38, 34, 30, 28, 26, 24, 22]) { fs = s; lines = wrap(verse, fs); if (lines.length * fs * 1.25 <= 112) break; }
+            }
+            const lh = fs * 1.25, blockH = lines.length * lh;
+            let startYv;
+            const barTop = 45, barH = Math.max(145, Math.round(blockH + 86));
+            const bottom = barTop + barH, height = Math.round(bottom + 20), cy = barTop + barH / 2;
+            const regTop = barTop + 12, regH = (bottom - 46) - regTop;
+            const startY = regTop + (regH - blockH) / 2 + fs * 0.85;
+            window.lastB = { lines, fs, lh, startY };
+            const showBadge = data.showBadge && data.header.trim() !== "";
+            const showIcon = data.showIcon;
+            const ref = escapeHtml((data.reference || '').toUpperCase());
+
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="silverGradB" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="50%" stop-color="#e0e0e0"/>
+                        <stop offset="100%" stop-color="#a8a8a8"/>
+                    </linearGradient>
+                    <linearGradient id="darkGradB" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#080808"/>
+                        <stop offset="100%" stop-color="#161616"/>
+                    </linearGradient>
+                </defs>
+                <style>
+                    .verse-style { font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 600; fill: #ffffff; }
+                    .ref-style { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 700; fill: #e0e0e0; font-size: 15px; letter-spacing: 0.25em; }
+                    .header-badge-style { font-family: 'Montserrat', sans-serif; font-weight: 700; fill: #000000; font-size: 12px; letter-spacing: 0.3em; }
+                    .brand-rev-b { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; fill: #111111; letter-spacing: 0.45em; }
+                    .brand-aster-b { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 42px; fill: #000000; letter-spacing: 0.08em; }
+                </style>
+
+                ${showBadge ? `
+                <g id="top-header-badge">
+                    <polygon points="140,10 420,10 390,45 140,45" fill="url(#silverGradB)"/>
+                    <text x="270" y="32" text-anchor="middle" class="header-badge-style">${escapeHtml(data.header.toUpperCase())}</text>
+                </g>` : ''}
+
+                <rect x="140" y="${barTop}" width="${1160+dx}" height="${barH}" fill="url(#darkGradB)" rx="2"/>
+                <line x1="140" y1="${barTop}" x2="${1300+dx}" y2="${barTop}" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.5"/>
+                <line x1="140" y1="${bottom}" x2="${1300+dx}" y2="${bottom}" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+
+                <g id="left-panel-star">
+                    <rect x="0" y="${barTop}" width="140" height="${barH}" fill="#0c0c0c"/>
+                    <rect x="0" y="${barTop}" width="140" height="${barH}" fill="url(#silverGradB)" opacity="0.15"/>
+                    ${appData.logo ? `<image href="${appData.logo}" x="20" y="${barTop + (barH - 100) / 2}" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>` : `<path transform="translate(0 ${(barH - 145) / 2})" d="M70,65 C71.8,90 85,102 110,104 C85,106 71.8,118 70,143 C68.2,118 55,106 30,104 C55,102 68.2,90 70,65 Z" fill="#ffffff"/>`}
+                    <line x1="140" y1="${barTop}" x2="140" y2="${bottom}" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4"/>
+                </g>
+
+                ${data.__noText ? '' : lines.map((l, i) => `<text x="175" y="${(startY + i * lh).toFixed(1)}" class="verse-style" font-size="${fs}">${escapeHtml(l)}</text>`).join('')}
+
+                <line x1="175" y1="${bottom - 42}" x2="${1260+dx}" y2="${bottom - 42}" stroke="#ffffff" stroke-dasharray="2 2" stroke-opacity="0.25"/>
+
+                <g id="reference-row" transform="translate(175, ${bottom - 18})">
+                    ${showIcon ? `
+                    <path d="M0,2 C4,-1 10,-1 14,2 L14,13 C10,10 4,10 0,13 Z M16,2 C20,-1 26,-1 30,2 L30,13 C26,10 20,10 16,13 Z" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                    <line x1="15" y1="2" x2="15" y2="13" stroke="#ffffff" stroke-width="1.5"/>
+                    <text x="42" y="10" class="ref-style">${ref}</text>` : `
+                    <text x="0" y="10" class="ref-style">${ref}</text>`}
+                </g>
+
+                <g id="right-brand-panel-b">
+                    <polygon points="${1300+dx},${barTop} ${1600+dx},${barTop} ${1600+dx},${bottom} ${1260+dx},${bottom}" fill="url(#silverGradB)"/>
+                    <line x1="${1300+dx}" y1="${barTop}" x2="${1260+dx}" y2="${bottom}" stroke="#000000" stroke-width="3"/>
+                    <text x="${1440+dx}" y="${cy - 17}" text-anchor="middle" class="brand-rev-b">REVISTA</text>
+                    <text x="${1440+dx}" y="${cy + 27.5}" text-anchor="middle" class="brand-aster-b">ASTER</text>
+                    <line x1="${1380+dx}" y1="${cy + 40.5}" x2="${1500+dx}" y2="${cy + 40.5}" stroke="#111111" stroke-width="1"/>
+                </g>
+            </svg>
+            `;
+        }
+
+        // --- SVG MODEL D (CTA final: seguir / inscrever-se) ---
+        function generateSVGModelD(data, W = 1600) {
+            const dx = W - 1600, yt = data.platform === 'youtube';
+            const handle = (data.handle || '').trim(), call = (data.call || '').toUpperCase(), btn = (data.button || '').toUpperCase();
+            const hfs = Math.max(24, Math.min(54, Math.floor((900 + dx) / (Math.max(1, handle.length) * 0.5))));
+            const bfs = Math.max(14, Math.min(28, Math.floor(235 / (Math.max(1, btn.length) * 0.78))));
+            const ix = 1295 + dx, cy = 90;
+            const icon = yt
+                ? `<rect x="${ix - 30}" y="${cy - 21}" width="60" height="42" rx="12" fill="#111111"/><polygon points="${ix - 7},${cy - 11} ${ix - 7},${cy + 11} ${ix + 13},${cy}" fill="#ffffff"/>`
+                : `<rect x="${ix - 26}" y="${cy - 26}" width="52" height="52" rx="14" fill="none" stroke="#111111" stroke-width="4"/><circle cx="${ix}" cy="${cy}" r="12" fill="none" stroke="#111111" stroke-width="4"/><circle cx="${ix + 15}" cy="${cy - 15}" r="3.5" fill="#111111"/>`;
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 180" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="50%" stop-color="#d0d0d0"/><stop offset="100%" stop-color="#a0a0a0"/></linearGradient>
+                    <linearGradient id="darkGradD" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#080808"/><stop offset="100%" stop-color="#161616"/></linearGradient>
+                </defs>
+                <style>
+                    .cta-a { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.3em; fill: #d0d0d0; }
+                    .cta-h { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 700; fill: #ffffff; }
+                    .cta-b { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: 0.08em; fill: #111111; }
+                </style>
+                <rect x="140" y="20" width="${1120 + dx}" height="140" fill="url(#darkGradD)" rx="2"/>
+                <line x1="140" y1="20" x2="${1260 + dx}" y2="20" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.5"/>
+                <line x1="140" y1="160" x2="${1260 + dx}" y2="160" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+                <rect x="0" y="20" width="140" height="140" fill="#0c0c0c"/>
+                <rect x="0" y="20" width="140" height="140" fill="url(#silverGrad)" opacity="0.15"/>
+                ${appData.logo ? `<image href="${appData.logo}" x="20" y="40" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>` : `<path transform="translate(0 -14)" d="M70,65 C71.8,90 85,102 110,104 C85,106 71.8,118 70,143 C68.2,118 55,106 30,104 C55,102 68.2,90 70,65 Z" fill="#ffffff"/>`}
+                <line x1="140" y1="20" x2="140" y2="160" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4"/>
+                <text x="175" y="62" class="cta-a">${escapeHtml(call)}</text>
+                <text x="175" y="${(84 + hfs * 0.75).toFixed(1)}" class="cta-h" font-size="${hfs}">${escapeHtml(handle)}</text>
+                <polygon points="${1240 + dx},20 ${1600 + dx},20 ${1600 + dx},160 ${1200 + dx},160" fill="url(#silverGrad)"/>
+                <line x1="${1240 + dx}" y1="20" x2="${1200 + dx}" y2="160" stroke="#000000" stroke-width="3"/>
+                ${icon}
+                <text x="${ix + 44}" y="${cy + bfs * 0.36}" class="cta-b" font-size="${bfs}">${escapeHtml(btn)}</text>
+            </svg>
+            `;
+        }
+
+        // --- BÍBLIA IMPORTADA (offline) ---
+        // Aceita o JSON do projeto thiagobodruk/biblia: lista de 66 livros na ordem canônica, cada um com "chapters" (capítulos → versículos).
+        let BIBLE = null;
+        const idb = (mode, fn) => new Promise((res, rej) => {
+            const r = indexedDB.open('aster', 1);
+            r.onupgradeneeded = () => r.result.createObjectStore('kv');
+            r.onsuccess = () => { const tx = r.result.transaction('kv', mode), q = fn(tx.objectStore('kv')); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); };
+            r.onerror = () => rej(r.error);
+        });
+        const bibleStatus = (t, err) => { const el = $('bible-status'); el.textContent = t; el.className = 'text-[11px] ' + (err ? 'text-red-400' : 'text-gray-400'); };
+        async function loadBible() {
+            try { const d = await idb('readonly', s => s.get('bible')); if (d) { BIBLE = d; bibleStatus('✓ Bíblia importada: busca funciona sem internet.'); } } catch (e) {}
+        }
+        async function importBible(inp) {
+            const file = inp.files[0]; if (!file) return;
+            try {
+                const data = JSON.parse((await file.text()).replace(/^\uFEFF/, ''));
+                const books = (Array.isArray(data) ? data : []).map(b => (b && b.chapters) || b);
+                if (books.length < 66 || !Array.isArray(books[0]) || !Array.isArray(books[0][0])) throw new Error('formato');
+                BIBLE = books.slice(0, 66);
+                let saved = true;
+                try { await idb('readwrite', s => s.put(BIBLE, 'bible')); } catch (e) { saved = false; }
+                bibleStatus('✓ Bíblia importada (' + BIBLE.length + ' livros). ' + (saved ? 'Busca funciona sem internet.' : 'Vale só nesta sessão: o navegador não deixou guardar, importe de novo ao abrir.'));
+            } catch (e) { bibleStatus('Não reconheci esse arquivo. Use o JSON da Bíblia (acf.json ou aa.json).', true); }
+        }
+        function offlineVerse(p) {
+            const i = BOOKS.findIndex(b => b[0] === p.en), c = BIBLE[i] && BIBLE[i][+p.ch - 1];
+            if (!c) return null;
+            const out = [];
+            for (let v = +p.v1; v <= +(p.v2 || p.v1); v++) if (c[v - 1]) out.push(String(c[v - 1]).replace(/\s+/g, ' ').trim());
+            return out.join(' ') || null;
+        }
+
+        // --- BUSCA AUTOMÁTICA DE VERSÍCULO (Almeida, via bible-api.com) ---
+        const BOOKS = [
+['Genesis','Gênesis','gn'],['Exodus','Êxodo','ex'],['Leviticus','Levítico','lv'],['Numbers','Números','nm'],['Deuteronomy','Deuteronômio','dt'],['Joshua','Josué','js'],['Judges','Juízes','jz'],['Ruth','Rute','rt'],['1 Samuel','1 Samuel','1sm'],['2 Samuel','2 Samuel','2sm'],['1 Kings','1 Reis','1rs'],['2 Kings','2 Reis','2rs'],['1 Chronicles','1 Crônicas','1cr'],['2 Chronicles','2 Crônicas','2cr'],['Ezra','Esdras','ed'],['Nehemiah','Neemias','ne'],['Esther','Ester','et'],['Job','Jó',''],['Psalms','Salmos','sl,salmo'],['Proverbs','Provérbios','pv,prov'],['Ecclesiastes','Eclesiastes','ec'],['Song of Solomon','Cantares','ct,cantares de salomao,canticos'],['Isaiah','Isaías','is'],['Jeremiah','Jeremias','jr'],['Lamentations','Lamentações','lm'],['Ezekiel','Ezequiel','ez'],['Daniel','Daniel','dn'],['Hosea','Oseias','os'],['Joel','Joel','jl'],['Amos','Amós','am'],['Obadiah','Obadias','ob'],['Jonah','Jonas','jon'],['Micah','Miqueias','mq'],['Nahum','Naum','na'],['Habakkuk','Habacuque','hc'],['Zephaniah','Sofonias','sf'],['Haggai','Ageu','ag'],['Zechariah','Zacarias','zc'],['Malachi','Malaquias','ml'],['Matthew','Mateus','mt'],['Mark','Marcos','mc'],['Luke','Lucas','lc'],['John','João','jo,jn'],['Acts','Atos','at,atos dos apostolos'],['Romans','Romanos','rm'],['1 Corinthians','1 Coríntios','1co'],['2 Corinthians','2 Coríntios','2co'],['Galatians','Gálatas','gl'],['Ephesians','Efésios','ef'],['Philippians','Filipenses','fp'],['Colossians','Colossenses','cl'],['1 Thessalonians','1 Tessalonicenses','1ts'],['2 Thessalonians','2 Tessalonicenses','2ts'],['1 Timothy','1 Timóteo','1tm'],['2 Timothy','2 Timóteo','2tm'],['Titus','Tito','tt'],['Philemon','Filemom','fm'],['Hebrews','Hebreus','hb'],['James','Tiago','tg'],['1 Peter','1 Pedro','1pe'],['2 Peter','2 Pedro','2pe'],['1 John','1 João','1jo,1jn'],['2 John','2 João','2jo,2jn'],['3 John','3 João','3jo,3jn'],['Jude','Judas','jd'],['Revelation','Apocalipse','ap']
+        ];
+        const normKey = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const BOOKMAP = {};
+        BOOKS.forEach(b => [b[1], b[0], ...b[2].split(',')].filter(Boolean).forEach(k => BOOKMAP[normKey(k)] = b));
+
+        function parseRef(raw) {
+            const low = raw.toLowerCase().trim();
+            const s = low
+                .replace(/\b(primeira|primeiro)\b/g, '1').replace(/\b(segunda|segundo)\b/g, '2').replace(/\b(terceira|terceiro)\b/g, '3')
+                .replace(/cap[ií]tulos?\.?|cap\./g, ' ').replace(/vers[ií]culos?|vers\.|vs?\./g, ':').replace(/,/g, ' ');
+            const m = s.match(/^\s*(\d\s*)?([^\d]+?)\s*(\d+)\s*(?:[:.]|\s)\s*(\d+)?\s*(?:[-–]\s*(\d+))?\s*$/);
+            if (!m) return null;
+            let key = normKey((m[1] || '') + m[2]);
+            let book = BOOKMAP[key];
+            if (key === 'jo' && /^jó/.test(low)) book = BOOKMAP['job'];
+            if (!book) return null;
+            return { en: book[0], pt: book[1], ch: m[3], v1: m[4], v2: m[5] };
+        }
+
+        // Reserva para quando o navegador bloqueia fetch (ex.: arquivo aberto como content://): carrega via <script>.
+        function jsonpGet(url) {
+            return new Promise((res, rej) => {
+                const cb = '_asterCb' + Date.now(), s = document.createElement('script');
+                const done = () => { clearTimeout(t); delete window[cb]; s.remove(); };
+                const t = setTimeout(() => { done(); rej(new Error('timeout')); }, 8000);
+                window[cb] = d => { done(); res(d); };
+                s.onerror = () => { done(); rej(new Error('script')); };
+                s.src = url + '&callback=' + cb;
+                document.head.appendChild(s);
+            });
+        }
+        let refTimer = null, fetchSeq = 0;
+        function onRefInput() {
+            updateGraphics();
+            clearTimeout(refTimer);
+            refTimer = setTimeout(fetchVerse, 1300);
+        }
+
+        async function fetchVerse() {
+            clearTimeout(refTimer);
+            const st = document.getElementById('verse-status');
+            const setSt = (t, err) => { st.textContent = t; st.className = 'text-[11px] mt-1 min-h-[1rem] ' + (err ? 'text-red-400' : 'text-gray-400'); };
+            const raw = document.getElementById('input-b-reference').value;
+            if (!raw.trim()) return;
+            const p = parseRef(raw);
+            if (!p) return setSt('Não reconheci o livro. Ex.: 1 João 1:9 ou Salmos 23:1-3', true);
+            if (!p.v1) return setSt('Faltou o versículo. Ex.: ' + p.pt + ' ' + p.ch + ':1', true);
+            const rng = `${p.ch}:${p.v1}${p.v2 ? '-' + p.v2 : ''}`;
+            const q = `${p.pt} ${rng}`;
+            const label = q.toUpperCase();
+            const seq = ++fetchSeq;
+            if (BIBLE) {
+                const t = offlineVerse(p);
+                if (!t) return setSt('Não achei ' + label + ' na Bíblia importada. Confira capítulo e versículo.', true);
+                $('input-b-text').value = t; $('input-b-reference').value = label; updateGraphics();
+                return setSt('✓ ' + label + ' · Bíblia importada (offline)');
+            }
+            setSt('Buscando…');
+            let text = null;
+            try { text = (JSON.parse(localStorage.getItem('aster_verses2') || '{}'))[q] || null; } catch (e) {}
+            let status = 0, netFail = false, lastErr = '';
+            if (!text) {
+                // A API entende o nome do livro na língua da tradução (português); inglês fica de reserva.
+                for (const name of [p.pt, p.en]) {
+                    const url = 'https://bible-api.com/' + encodeURIComponent(`${name} ${rng}`) + '?translation=almeida';
+                    let j = null;
+                    try {
+                        const r = await fetch(url);
+                        status = r.status; netFail = false;
+                        if (!r.ok) { if (r.status === 429) break; continue; }
+                        j = await r.json();
+                    } catch (e) {
+                        lastErr = String((e && e.message) || e);
+                        try { j = await jsonpGet(url); netFail = false; } catch (e2) { netFail = true; }
+                    }
+                    if (j) { text = (j.verses || []).map(v => v.text.replace(/\s+/g, ' ').trim()).join(' ').trim(); if (text) break; }
+                }
+                if (text) { try { const c = JSON.parse(localStorage.getItem('aster_verses2') || '{}'); c[q] = text; localStorage.setItem('aster_verses2', JSON.stringify(c)); } catch (e) {} }
+            }
+            if (seq !== fetchSeq) return;
+            if (!text) {
+                if (netFail) {
+                    const inFrame = window.self !== window.top;
+                    return setSt('Sem conexão com o servidor de versículos. ' + (inFrame ? 'A página está aberta dentro de um visualizador (como o app do Claude), que bloqueia a internet: baixe o arquivo e abra no Chrome. ' : 'Confira a internet ou abra pelo Chrome. ') + 'Ou importe uma Bíblia (.json) logo abaixo. [' + location.protocol + ' · ' + lastErr + ']', true);
+                }
+                if (status === 429) return setSt('Muitas buscas seguidas. Espere uns 30 segundos e toque em Buscar.', true);
+                return setSt('Não achei ' + label + '. Confira o capítulo e o versículo.', true);
+            }
+            document.getElementById('input-b-text').value = text;
+            document.getElementById('input-b-reference').value = label;
+            updateGraphics();
+            setSt('✓ ' + label + ' · João Ferreira de Almeida');
+        }
+
+        // --- HELPER: ESCAPE HTML STRINGS ---
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // --- EXPORT & ANIMAÇÃO ---
+        let fontCssCache = null;
+        async function getFontCss() {
+            if (fontCssCache) return fontCssCache;
+            try {
+                const href = document.querySelector('link[href*="fonts.googleapis.com/css2"]').href;
+                const css = await (await fetch(href)).text();
+                let out = css.split(/(?=\/\*\s*[\w-]+\s*\*\/\s*@font-face)/)
+                    .filter(x => /^\/\*\s*latin\s*\*\//.test(x) && /Cormorant|Montserrat|Inter/.test(x)).join('\n');
+                const urls = [...new Set([...out.matchAll(/url\((https:[^)]+)\)/g)].map(m => m[1]))];
+                for (const u of urls) {
+                    const blob = await (await fetch(u)).blob();
+                    const d = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+                    out = out.split(u).join(d);
+                }
+                fontCssCache = out;
+            } catch (e) { console.warn('Fontes não embutidas', e); return ''; }
+            return fontCssCache;
+        }
+        const getFmt = () => document.getElementById('anim-fmt').value;
+        async function buildSvg(noText) {
+            const W = getFmt() === 'v' ? 1000 : 1600;
+            const raw = genCurrent(W, noText);
+            const fonts = await getFontCss();
+            if (!fonts && !window._fw) { window._fw = 1; alert('Não consegui carregar as fontes: esta página está aberta num modo que bloqueia a internet. O arquivo vai sair com fonte genérica. Abra o editor por um endereço file:// no Chrome.'); }
+            return raw.replace('<defs>', '<defs><style>' + fonts + '</style>').trim();
+        }
+        const dims = svg => { const m = svg.match(/viewBox="0 0 (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)"/); return { nw: +m[1], nh: +m[2] }; };
+        function loadImg(svg) {
+            return new Promise((res, rej) => {
+                const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
+                const img = new Image(); img.onload = () => res({ img, url }); img.onerror = rej; img.src = url;
+            });
+        }
+        function layoutFor(nw, nh) {
+            if (getFmt() === 'v') return { cw: 1080, ch: 1920, x: 40, y: 1920 - nh - 380, s: 1 };
+            const s = 1700 / 1600; return { cw: 1920, ch: 1080, x: 110, y: 1080 - nh * s - 90, s };
+        }
+        function fileSlug() {
+            const base = currentModel === 'A' ? appData.modelA.name : currentModel === 'D' ? appData.modelD.handle : appData[mkey(currentModel)].reference;
+            return (base || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'sem-nome';
+        }
+        function downloadBlob(blob, name) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a'); link.href = url; link.download = name;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+        async function exportSVG() {
+            downloadBlob(new Blob([await buildSvg()], { type: 'image/svg+xml;charset=utf-8' }), `ASTER_${currentModel}_${fileSlug()}.svg`);
+        }
+        async function exportPNG(mode) {
+            const svg = await buildSvg(), { img, url } = await loadImg(svg), { nw, nh } = dims(svg);
+            const c = document.createElement('canvas'), ctx = c.getContext('2d');
+            if (mode === 'crop') { c.width = nw; c.height = nh; ctx.drawImage(img, 0, 0, nw, nh); }
+            else { const L = layoutFor(nw, nh); c.width = L.cw; c.height = L.ch; ctx.drawImage(img, L.x, L.y, nw * L.s, nh * L.s); }
+            c.toBlob(b => { downloadBlob(b, `ASTER_${currentModel}_${fileSlug()}_${mode === 'crop' ? 'recorte' : (getFmt() === 'v' ? 'vertical' : '1080p')}.png`); URL.revokeObjectURL(url); }, 'image/png');
+        }
+
+        // Modelo A: estrela entra primeiro, depois a barra "varre" da esquerda p/ direita (sai em reverso).
+        // Modelo B: versículo sobe suave com fade (sai descendo).
+        const ease = t => 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 3);
+        function drawAnim(ctx, img, L, nw, nh, u, bg, anim, base) {
+            ctx.clearRect(0, 0, L.cw, L.ch);
+            if (bg === 'green') { ctx.fillStyle = '#00ff00'; ctx.fillRect(0, 0, L.cw, L.ch); }
+            const w = nw * L.s, h = nh * L.s, e = ease(u);
+            ctx.save();
+            if (anim === 'slide') ctx.drawImage(img, L.x - (1 - e) * (L.x + w), L.y, w, h);
+            else if (anim === 'zoom') { ctx.globalAlpha = e; const k = 0.8 + 0.2 * e; ctx.drawImage(img, L.x + w * (1 - k) / 2, L.y + h * (1 - k) / 2, w * k, h * k); }
+            else if (anim === 'fade') { ctx.globalAlpha = e; ctx.drawImage(img, L.x, L.y, w, h); }
+            else if (anim === 'words' && base && window.lastB) {
+                const B = window.lastB; let rem = Math.round(u * B.lines.join(' ').split(' ').length);
+                ctx.drawImage(base, L.x, L.y, w, h);
+                ctx.font = `italic 600 ${B.fs * L.s}px "Cormorant Garamond", Georgia, serif`;
+                ctx.beginPath();
+                B.lines.forEach((ln, i) => {
+                    const ws = ln.split(' '), c = Math.min(ws.length, rem); rem -= c; if (c <= 0) return;
+                    ctx.rect(L.x + 175 * L.s, L.y + (B.startY + i * B.lh - B.fs * 0.95) * L.s, ctx.measureText(ws.slice(0, c).join(' ')).width + 8 * L.s, B.lh * L.s);
+                });
+                ctx.clip(); ctx.drawImage(img, L.x, L.y, w, h);
+            } else if (currentModel === 'A' || currentModel === 'D') {
+                const rx = (u < 0.3 ? 140 * ease(u / 0.3) : 140 + (nw - 140) * ease((u - 0.3) / 0.7)) * L.s;
+                ctx.beginPath(); ctx.rect(L.x, L.y, rx, h); ctx.clip(); ctx.drawImage(img, L.x, L.y, w, h);
+            } else { ctx.globalAlpha = e; ctx.drawImage(img, L.x, L.y + (1 - e) * 70, w, h); }
+            ctx.restore();
+        }
+        let animBusy = false;
+        async function playAnim(record) {
+            if (animBusy) return; animBusy = true;
+            const st = document.getElementById('anim-status');
+            try {
+                const bg = document.getElementById('anim-bg').value;
+                const hold = Math.max(1, parseFloat(document.getElementById('anim-hold').value) || 5);
+                st.textContent = 'Preparando…';
+                const svg = await buildSvg(), { img, url } = await loadImg(svg), { nw, nh } = dims(svg), L = layoutFor(nw, nh);
+                const cv = document.getElementById('anim-canvas'); cv.width = L.cw; cv.height = L.ch; cv.classList.remove('hidden');
+                const ctx = cv.getContext('2d');
+                const anim = document.getElementById('anim-style').value;
+                let base = null;
+                if (anim === 'words' && currentModel !== 'A') base = (await loadImg(await buildSvg(true))).img;
+                const wc = window.lastB && currentModel !== 'A' ? window.lastB.lines.join(' ').split(' ').length : 5;
+                let rec, mime = '', chunks = [];
+                if (record) {
+                    const opts = bg === 'alpha' ? ['video/webm;codecs=vp9', 'video/webm;codecs=vp8'] : ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'];
+                    mime = window.MediaRecorder ? opts.find(m => MediaRecorder.isTypeSupported(m)) : '';
+                    if (!mime) throw new Error('este navegador não grava vídeo — use o Chrome');
+                    rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: 12e6 });
+                    rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+                }
+                const inT = anim === 'words' && base ? Math.max(0.9, wc * 0.18) : 0.9, outT = 0.6, total = inT + hold + outT + 0.2;
+                drawAnim(ctx, img, L, nw, nh, 0, bg, anim, base);
+                if (rec) rec.start();
+                const t0 = performance.now();
+                await new Promise(res => {
+                    const step = () => {
+                        const t = (performance.now() - t0) / 1000;
+                        const u = t < inT ? t / inT : t < inT + hold ? 1 : Math.max(0, 1 - (t - inT - hold) / outT);
+                        drawAnim(ctx, img, L, nw, nh, u, bg, anim, base);
+                        st.textContent = (record ? 'Gravando… ' : 'Prévia… ') + Math.min(t, total).toFixed(1) + 's / ' + total.toFixed(1) + 's';
+                        t < total ? requestAnimationFrame(step) : res();
+                    };
+                    step();
+                });
+                if (rec) {
+                    await new Promise(r => { rec.onstop = r; rec.stop(); });
+                    const ext = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
+                    downloadBlob(new Blob(chunks, { type: mime.split(';')[0] }), `ASTER_${currentModel}_${fileSlug()}_${getFmt() === 'v' ? 'vertical' : '16x9'}.${ext}`);
+                    st.textContent = '✓ Vídeo baixado (' + ext.toUpperCase() + ').';
+                } else st.textContent = 'Prévia concluída.';
+                URL.revokeObjectURL(url);
+            } catch (e) { st.textContent = 'Erro: ' + (e.message || e); }
+            animBusy = false;
+        }
+    </script>
+</body>
+</html>
