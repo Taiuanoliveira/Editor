@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark h-full bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revista Aster — Editor Gráfico Audiovisual</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cormorant Garamond, Playfair Display, Inter, Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        aster: {
+                            black: '#000000',
+                            deep: '#0a0a0a',
+                            dark: '#121212',
+                            panel: '#181818',
+                            border: '#2a2a2a',
+                            graphite: '#414141',
+                            silver: '#c0c0c0',
+                            light: '#e5e5e5',
+                            white: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+                        sans: ['"Montserrat"', '"Inter"', 'sans-serif'],
+                        inter: ['"Inter"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for dark sleek look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #414141;
+        }
+
+        /* Transparent canvas checkerboard pattern */
+        .checkerboard {
+            background-color: #0f0f0f;
+            background-image: 
+                linear-gradient(45deg, #181818 25%, transparent 25%), 
+                linear-gradient(-45deg, #181818 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #181818 75%), 
+                linear-gradient(-45deg, transparent 75%, #181818 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        /* Mock Video Background */
+        .video-mockup {
+            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), 
+                        url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+    </style>
+</head>
+<body class="bg-black text-aster-light font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-aster-graphite selection:text-white">
+
+    <!-- TOP BAR NAVIGATION -->
+    <header class="border-b border-aster-border bg-aster-deep sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Aster 4-Point Star Logo -->
+                <svg width="28" height="28" viewBox="0 0 100 100" class="text-white fill-current">
+                    <path d="M50,0 C52,35 65,48 100,50 C65,52 52,65 50,100 C48,65 35,52 0,50 C35,48 48,35 50,0 Z"/>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="text-xs uppercase tracking-[0.3em] text-gray-400 font-semibold leading-none" id="hdr-n1">REVISTA</span>
+                    <span class="font-serif text-xl tracking-wider text-white font-bold leading-none" id="hdr-n2">ASTER</span>
+                </div>
+                <span class="hidden sm:inline-block border-l border-aster-border h-6 mx-2"></span>
+                <span class="hidden sm:inline-block text-xs uppercase tracking-widest text-gray-400">Editor Gráfico Audiovisual</span>
+            </div>
+
+            <!-- Model Switcher Tabs -->
+            <div class="flex bg-aster-black p-1 rounded-lg border border-aster-border overflow-x-auto max-w-full">
+                <button id="tab-model-a" onclick="switchModel('A')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 bg-aster-graphite text-white shadow">
+                    <i class="fa-solid fa-id-card text-xs"></i>
+                    <span>MODELO A: IDENTIFICAÇÃO</span>
+                </button>
+                <button id="tab-model-b" onclick="switchModel('B')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-book-bible text-xs"></i>
+                    <span>MODELO B: CITAÇÃO BÍBLICA</span>
+                </button>
+                <button id="tab-model-c" onclick="switchModel('C')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-pen-nib text-xs"></i><span>MODELO C: LIVRE</span></button>
+                <button id="tab-model-d" onclick="switchModel('D')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-bullhorn text-xs"></i><span class="whitespace-nowrap">MODELO D: <span id="tab-d-label">SEGUIR</span></span></button>
+                <button id="tab-model-e" onclick="switchModel('E')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-table-cells-large text-xs"></i><span class="whitespace-nowrap">MODELO E: TÓPICO</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP WORKSPACE -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- SIDEBAR: CONTROLS & INPUTS (4 Cols) -->
+        <aside class="lg:col-span-5 bg-aster-dark border border-aster-border rounded-xl p-5 sm:p-6 flex flex-col space-y-6 shadow-2xl">
+            
+            <div class="flex items-center justify-between border-b border-aster-border pb-4">
+                <h2 id="form-title" class="font-serif text-lg text-white tracking-wide flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-xs text-gray-400"></i> Parâmetros do Modelo A
+                </h2>
+                <div class="flex items-center space-x-2">
+                    <button onclick="resetDefaults()" title="Restaurar padrão" class="text-xs text-gray-400 hover:text-white px-2 py-1 rounded border border-aster-border bg-aster-black hover:bg-aster-graphite transition">
+                        <i class="fa-solid fa-rotate-left"></i> Restaurar
+                    </button>
+                    <button onclick="clearFields()" title="Limpar campos" class="text-xs text-gray-400 hover:text-red-400 px-2 py-1 rounded border border-aster-border bg-aster-black hover:bg-aster-graphite transition">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- FORM: MODELO A CONTROLS -->
+            <div class="space-y-2 rounded-lg border border-aster-border p-3 mb-4">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Marca / projeto</label>
+                <select id="sel-brand" onchange="switchBrand(this.value)" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="aster">REVISTA ASTER</option><option value="canal">MEU CANAL</option></select>
+                <div class="grid grid-cols-2 gap-2"><input type="text" id="brand-n1" placeholder="Nome (linha 1)" oninput="brandChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"><input type="text" id="brand-n2" placeholder="Nome (linha 2)" oninput="brandChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <input type="text" id="brand-handle" placeholder="Perfil / canal (@...)" oninput="brandChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition">
+                <p class="text-[11px] text-gray-400">Cada marca tem seu nome, logo, tema de cor e favoritos.</p>
+            </div>
+
+            <form id="form-model-a" onsubmit="event.preventDefault();" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Nome Completo</label>
+                    <input type="text" id="input-a-name" value="Taiuan Oliveira" oninput="updateGraphics()" 
+                           class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white font-serif text-base focus:border-white focus:outline-none transition">
+                </div>
+
+                <div class="space-y-2 rounded-lg border border-aster-border p-3">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Função rápida</label>
+                    <select id="a-group" onchange="roleChanged(true)" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"><option value="aster">Equipe da marca</option><option value="guest">Convidado (de fora)</option></select>
+                    <div class="grid grid-cols-2 gap-2"><select id="a-r1" onchange="roleChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></select><select id="a-r2" onchange="roleChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></select></div>
+                    <input type="text" id="a-r1c" oninput="roleChanged()" placeholder="Digite a função" class="hidden w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none">
+                    <div id="a-instrow" class="space-y-2 hidden"><select id="a-inst" onchange="roleChanged()" class="w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></select>
+                    <input type="text" id="a-instc" oninput="roleChanged()" placeholder="Digite a instituição" class="hidden w-full bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs focus:border-white focus:outline-none"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Cargo / Função (gerado acima · pode editar)</label>
+                    <input type="text" id="input-a-role" value="EDITOR-CHEFE · REVISTA ASTER" oninput="updateGraphics()" 
+                           class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs uppercase tracking-widest focus:border-white focus:outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Instagram (Nome de Usuário)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm">@</span>
+                        <input type="text" id="input-a-instagram" value="seuusuario" oninput="updateGraphics()" 
+                               class="w-full bg-aster-black border border-aster-border rounded-md pl-8 pr-3 py-2 text-white text-sm focus:border-white focus:outline-none transition">
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-aster-border/60 space-y-3">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-gray-400">Elementos Opcionais</span>
+                    
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Exibir Linha do Instagram</span>
+                        <input type="checkbox" id="toggle-a-show-instagram" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Exibir Assinatura Revista Aster</span>
+                        <input type="checkbox" id="toggle-a-show-brand" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+                </div>
+            </form>
+
+            <!-- FORM: MODELO B CONTROLS (Hidden by default) -->
+            <form id="form-model-b" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Referência (ex.: 1 João 1:9)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="input-b-reference" value="GÊNESIS 1:1" oninput="onRefInput()" onkeydown="if(event.key==='Enter'){event.preventDefault();fetchVerse();}" placeholder="João 3:16 · Salmos 23:1-3" class="flex-1 w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs uppercase tracking-wider focus:border-white focus:outline-none transition">
+                        <button type="button" onclick="fetchVerse()" class="px-4 rounded-md bg-aster-graphite text-white text-xs font-semibold">Buscar</button>
+                    </div>
+                    <p id="verse-status" class="text-[11px] text-gray-400 mt-1 min-h-[1rem]">Digite a referência e o versículo entra sozinho.</p>
+                    <label class="flex items-center justify-between text-[11px] text-gray-300 mt-2">Importar Bíblia (.json): busca sem internet<input type="file" accept=".json,application/json,text/plain" onchange="importBible(this)" class="w-36 text-[11px]"></label>
+                    <p id="bible-status" class="text-[11px] text-gray-400"></p>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Texto do Versículo (automático, pode editar)</label>
+                    <textarea id="input-b-text" rows="3" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md p-3 text-white font-serif text-sm italic focus:border-white focus:outline-none transition resize-y">"No princípio criou Deus os céus e a terra."</textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Identificação Superior</label>
+                    <input type="text" id="input-b-header" value="REFERÊNCIA BÍBLICA" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs uppercase tracking-wider focus:border-white focus:outline-none transition">
+                </div>
+
+                <div class="pt-2 border-t border-aster-border/60 space-y-3">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-gray-400">Opções &amp; Detalhes</span>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Ícone de Livro Aberto</span>
+                        <input type="checkbox" id="toggle-b-show-icon" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Ajuste Automático de Fonte</span>
+                        <input type="checkbox" id="toggle-b-autofont" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer group">
+                        <span class="text-sm text-gray-300 group-hover:text-white transition">Aba Superior Identificadora</span>
+                        <input type="checkbox" id="toggle-b-show-badge" checked onchange="updateGraphics()" class="w-4 h-4 accent-white bg-aster-black border-aster-border rounded">
+                    </label>
+                </div>
+            </form>
+
+            <form id="form-model-c" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="preset('frase')" class="py-2 rounded-md border border-aster-border text-white text-xs">Frase + autor</button>
+                    <button type="button" onclick="preset('titulo')" class="py-2 rounded-md border border-aster-border text-white text-xs">Título</button>
+                    <button type="button" onclick="preset('insta')" class="py-2 rounded-md border border-aster-border text-white text-xs">Chamada Insta</button>
+                </div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Texto principal</label><textarea id="input-c-text" rows="3" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition font-serif italic"></textarea></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Linha pequena (autor, subtítulo, @)</label><input type="text" id="input-c-ref" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Aba superior</label><input type="text" id="input-c-header" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <div class="space-y-2"><label class="flex items-center justify-between text-xs text-gray-300"><span>Aspas no texto</span><input type="checkbox" id="toggle-c-quotes" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label><label class="flex items-center justify-between text-xs text-gray-300"><span>Ícone de livro</span><input type="checkbox" id="toggle-c-icon" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label><label class="flex items-center justify-between text-xs text-gray-300"><span>Aba superior</span><input type="checkbox" id="toggle-c-badge" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label></div>
+            </form>
+
+            <form id="form-model-d" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Plataforma</label><select id="input-d-platform" onchange="onPlatform()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="instagram">Instagram (seguir)</option><option value="youtube">YouTube (inscrever-se)</option></select></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Chamada</label><input type="text" id="input-d-call" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Perfil / canal</label><input type="text" id="input-d-handle" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Texto do botão</label><input type="text" id="input-d-button" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+            </form>
+
+            <form id="form-model-e" onsubmit="event.preventDefault();" class="space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Rótulo</label><input type="text" id="input-e-label" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition uppercase"></div>
+                    <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Número</label><input type="text" id="input-e-number" oninput="updateGraphics()" placeholder="01" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></div>
+                </div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Tópico (título grande)</label><textarea id="input-e-title" rows="2" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition text-sm"></textarea></div>
+                <div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Linha de apoio (opcional)</label><input type="text" id="input-e-subtitle" oninput="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></div>
+                <label class="flex items-center justify-between text-xs text-gray-300"><span>Mostrar nome da marca</span><input type="checkbox" id="toggle-e-brand" checked onchange="updateGraphics()" class="w-4 h-4 accent-white"></label>
+            </form>
+
+            <!-- FAVORITOS -->
+            <div class="space-y-2 border-t border-aster-border pt-4">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Favoritos do modelo atual</span>
+                <select id="fav-select" onchange="loadFav()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></select>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="saveFav()" class="py-2 rounded-md bg-aster-graphite text-white text-xs font-semibold">★ Salvar atual</button>
+                    <button type="button" onclick="delFav()" class="py-2 rounded-md border border-aster-border text-gray-300 text-xs">Apagar selecionado</button>
+                </div>
+            </div>
+
+            <!-- VISUAL -->
+            <div class="space-y-3 border-t border-aster-border pt-4">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Visual (da marca escolhida)</span>
+                <select id="sel-theme" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="silver">Tema: Prata</option><option value="gold">Tema: Dourado</option><option value="rose">Tema: Vermelho</option><option value="blue">Tema: Azul</option><option value="pensamento">Tema: Pensamento Livre (dourado + verde)</option></select>
+                <label class="flex items-center justify-between text-xs text-gray-300">Foto da pessoa (Modelo A)<input type="file" accept="image/*" onchange="pickAsset(this,'photo')" class="w-40 text-[11px]"></label>
+                <label class="flex items-center justify-between text-xs text-gray-300">Logo no lugar da estrela<input type="file" accept="image/*" onchange="pickAsset(this,'logo')" class="w-40 text-[11px]"></label>
+                <div class="grid grid-cols-2 gap-2"><button type="button" onclick="clearAsset('photo')" class="py-1.5 rounded-md border border-aster-border text-gray-300 text-xs">Remover foto</button><button type="button" onclick="clearAsset('logo')" class="py-1.5 rounded-md border border-aster-border text-gray-300 text-xs">Remover logo</button></div>
+            </div>
+
+            <!-- VIDEO ANIMADO -->
+            <div class="space-y-3 border-t border-aster-border pt-4">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Vídeo animado · formato vale também p/ PNG</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="anim-fmt" class="bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs"><option value="h">YouTube 16:9</option><option value="v">Instagram 9:16</option></select>
+                    <select id="anim-bg" class="bg-aster-black border border-aster-border rounded-md px-2 py-2 text-white text-xs"><option value="green">Fundo verde (chroma)</option><option value="alpha">Transparente (WebM)</option></select>
+                </div>
+                <select id="anim-style" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="default">Animação: padrão do modelo</option><option value="slide">Deslizar da esquerda</option><option value="zoom">Zoom + fade</option><option value="fade">Só fade</option><option value="words">Palavra por palavra (B e C)</option></select>
+                <label class="flex items-center justify-between text-xs text-gray-300">Tempo na tela (segundos)
+                    <input type="number" id="anim-hold" value="5" min="1" max="30" class="w-20 bg-aster-black border border-aster-border rounded-md px-2 py-1 text-white text-xs"></label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="playAnim(false)" class="py-2 rounded-md border border-aster-border text-white text-xs font-semibold">▶ Prévia</button>
+                    <button type="button" onclick="playAnim(true)" class="py-2 rounded-md bg-aster-graphite text-white text-xs font-semibold">⬇ Baixar vídeo</button>
+                </div>
+                <p id="anim-status" class="text-[11px] text-gray-400 min-h-[1rem]"></p>
+                <canvas id="anim-canvas" class="hidden w-full max-h-72 object-contain rounded border border-aster-border"></canvas>
+            </div>
+
+            <!-- EXPORT ACTION BUTTONS -->
+            <div class="pt-4 border-t border-aster-border space-y-3">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Exportar Elemento</span>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="exportPNG('crop')" class="w-full bg-white hover:bg-aster-light text-black font-semibold py-2.5 px-3 rounded-md text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 shadow">
+                        <i class="fa-solid fa-file-image"></i>
+                        <span>PNG Recortado</span>
+                    </button>
+                    <button onclick="exportPNG('fullhd')" class="w-full bg-aster-graphite hover:bg-gray-600 text-white font-semibold py-2.5 px-3 rounded-md text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2 border border-aster-border">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>PNG 1080p Overlay</span>
+                    </button>
+                </div>
+
+                <button onclick="exportSVG()" class="w-full bg-aster-black hover:bg-aster-panel text-gray-200 border border-aster-border hover:border-gray-500 font-medium py-2 px-3 rounded-md text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Exportar Arquivo SVG Vetorial</span>
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- MAIN VIEWPORT: PREVIEW CANVAS (7 Cols) -->
+        <section class="lg:col-span-7 flex flex-col space-y-4">
+            
+            <!-- PREVIEW HEADER & BACKGROUND TOGGLES -->
+            <div class="bg-aster-dark border border-aster-border rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="relative flex h-2.5 w-2.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                    </span>
+                    <h3 class="text-xs uppercase tracking-widest font-semibold text-gray-200">Pré-visualização em Tempo Real</h3>
+                </div>
+
+                <!-- Preview Background Switcher -->
+                <div class="flex items-center space-x-1 bg-aster-black p-1 rounded-lg border border-aster-border text-xs">
+                    <span class="text-gray-500 px-2 text-[10px] uppercase font-bold tracking-wider">Fundo:</span>
+                    <button id="bg-btn-grid" onclick="setPreviewBg('grid')" class="px-2.5 py-1 rounded text-white bg-aster-graphite transition">Transparente</button>
+                    <button id="bg-btn-dark" onclick="setPreviewBg('dark')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white transition">Escuro</button>
+                    <button id="bg-btn-video" onclick="setPreviewBg('video')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white transition">Simulação Vídeo</button>
+                </div>
+            </div>
+
+            <!-- PREVIEW VIEWPORT BOX -->
+            <div id="preview-viewport" class="relative w-full aspect-video rounded-xl border border-aster-border overflow-hidden flex items-end p-4 sm:p-8 checkerboard transition-all shadow-2xl">
+                
+                <!-- Guidelines overlay for broadcast safe area -->
+                <div class="absolute inset-4 sm:inset-8 border border-white/10 pointer-events-none flex justify-between items-start">
+                    <span class="text-[9px] text-white/30 tracking-widest uppercase font-mono p-1">16:9 Lower Third Safe Area</span>
+                    <span class="text-[9px] text-white/30 tracking-widest uppercase font-mono p-1">REVISTA ASTER</span>
+                </div>
+
+                <!-- LIVE SVG RENDER CONTAINER -->
+                <div id="svg-container" class="w-full z-10 filter drop-shadow-2xl">
+                    <!-- SVG will be dynamically generated by JS -->
+                </div>
+            </div>
+
+            <!-- TECHNICAL SPECS CARD -->
+            <div class="bg-aster-dark/60 border border-aster-border/60 rounded-xl p-4 text-xs text-gray-400 space-y-2">
+                <div class="flex items-center justify-between text-gray-300 font-medium">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-white"></i> Especificações de Vídeo</span>
+                    <span class="font-mono text-[11px] bg-aster-black px-2 py-0.5 rounded border border-aster-border">1920 × 1080 (Full HD)</span>
+                </div>
+                <p class="leading-relaxed">
+                    Os arquivos PNG exportados contêm canal alfa (transparência real) compatíveis diretamente na linha do tempo do <strong>Adobe Premiere, DaVinci Resolve, Final Cut Pro e CapCut</strong>.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-aster-border bg-aster-deep py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 font-mono">
+            REVISTA ASTER &copy; SISTEMA DE IDENTIDADE AUDIOVISUAL EDITORIAL
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // --- STATE MANAGEMENT ---
+        let currentModel = 'A'; // 'A' or 'B'
+        let currentBgMode = 'grid'; // 'grid', 'dark', 'video'
+
+        // Default Data
+        const defaultData = {
+            modelA: {
+                name: "Taiuan Oliveira",
+                role: "EDITOR-CHEFE · REVISTA ASTER",
+                instagram: "seuusuario",
+                showInstagram: true,
+                showBrand: true
+            },
+            modelB: {
+                text: '"No princípio criou Deus os céus e a terra."',
+                reference: "GÊNESIS 1:1",
+                header: "REFERÊNCIA BÍBLICA",
+                showIcon: true,
+                autofont: true,
+                showBadge: true
+            }
+        };
+
+        defaultData.modelA.photo = ''; Object.assign(defaultData.modelA, { roleGroup: 'aster', r1: 'Editor-chefe', r2: '', inst: '', instc: '', r1c: '' });
+        defaultData.modelC = { text: 'A fé é a certeza daquilo que esperamos.', reference: 'AUTOR · FONTE', header: 'FRASE', quotes: true, showIcon: false, showBadge: true, autofont: true };
+        defaultData.modelD = { platform: 'instagram', call: 'SIGA NO INSTAGRAM', handle: '@revistaaster', button: 'SEGUIR' };
+        defaultData.modelE = { label: 'TÓPICO', number: '01', title: 'Inflação', subtitle: 'O que é e como afeta o seu bolso', showBrand: true };
+        defaultData.theme = 'silver'; defaultData.logo = '';
+        defaultData.brand = 'aster';
+        defaultData.brands = {
+            aster: { n1: 'REVISTA', n2: 'ASTER', handle: '@revistaaster', logo: '', theme: 'silver' },
+            canal: { n1: 'PENSAMENTO', n2: 'LIVRE', handle: '@pensamentolivre', logo: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAFAAUADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD4mHTil/n0peOenrSEdR+VACjHTpSnkLjikIBJxgdqXt/KgBcZGen1pw4bnPFN4z607GFwD0x3oADndx1pe3Qg/TNGM5H4ClHHb8qAAY6U4f7o+vU9KQc8gn0z70vqOQKAF6c/pSj/AFnQ5PrSA/PnHfinA5oAd9fpRkkik78tnvThkr15oAOcbaOBxxigA7eRzilAGM/maAADmlHHTp/nvRxu5OCO9AA24wAaAFOAMjp7c0h6HP50bvTIxRjGTk/SgBScjj0zS9snGTSc4HrS8Y4yOwoABnHHNBH8uf50cA+h796MevIz0oAQ8HAYZ9BRlQ+MCl4z3/GkI7cZ6UAJ06Y5o5PHX3NIcY6UvGeDjtQAh5Geff1pPpj60vcAcc8Aj+lIcY46Dpjn8KV1ewWAevU0h5NLnBx19qaRxyOBTAQfTtSEHOTTuAcDFTfY7o2P2z7LP9kL+WJ/Kby9393fjGfbOaTkluNJvYrE4PH8qQtzk9KcydeMio2+X0BpiHAg9M/X1ppGTnPPatRtFnXSftZnXds8wxY7Yz19cVlhlL4x9KSdyIVIz+EQ59R0xSHrk08gHsRTeMetMshyCcUZJOQQab6gE5P604fdAoAOvfnvinjOc8U1R81OH6YxQADINOGOncfpSZAGen0pfoOc0AC/j+Jp+cAkE0wYByeaXkDDDnigBx44/nS85zzx+ZpmR6/nTh2GMAn86AF6g804dcnmkABPB6U4HsM+lAAeBz6U7BBxTRgHg/nTvb+dADhweTmjjbjPWmkkD6DBpd3PagBecYHQUY5PH4VJDa3E6loYJZB3ZVJH/wCumsjRuVkVlZeoIwRQLmWwDngcemKPw/DrSZ4JFLkdATQMB6Y/CgA9sZ7GlHGSP/1UY9sigAC9iPrSk4+te0fs5+EfCXirxNrMviOzt9RmsYI3tbCflHDMwaQp/FtwoweBuye1Zv7Qvhbwv4V+I9nb+GLeKx+02f2i6sYT8kD7yFIX+Dcozt6cZHWvJjm1N454HlfMle/Q6nhZew9vfQ8ozn7vfmk479BSY7jJzya1NHsI76aRp2by0xkKcFiff0r1W7anFOooR5pGYFz75pDwc4610mpaNapZNcWuY9gyykkgjNY95LZSQ28dtamN41xJITzI3vUqV9jOnXVRXien+FdQ1Xwj8A08V+CrSM6zc6xLZ6lqn2ZZ5bCFUUxIoZSEDkklsc9PSqvxbje/8NeDPFOt6fDp/iXVbOdtQiigEHnokoWG4aMAbWdc54GcZriPD3jDxP4Qu5Lrwvrt9pU0w2Sm2k2iQD+8DkHHOMjiqGqazrPiLXJNR1bUbvU9QuDhpriQySP6DJ/l0rzo4Kar+0bVrt36+noehKvH2XL/AMMUjjGenfr0pGPPTGav3+mtp9vBvfMkgLMB0XHYVnHIHP0Nemnc5ISUldCbSx4OCeM969/vPjj4Sm/Zn/4QRNFu01M6aunfZREv2ZHGB54fPqN4GN24/jXgKMDwpGM4znv6UpBOD6+lceLwNLFuDqfZd1r1OmlXnRvy9UDPu5PBPSt+z8F63f8AgPUvF6wwwaRYOkL3FxII/OkYgeXCD/rHGckDoPyrW8CeBbbW47rxN4ovX0nwjpZBvr/HzzP/AA28A/ilbjp90HPpUHjvx1P4wvba2tLNNL8P6cvk6XpEJ+S1j9Tj70jdWb8Pq5VZTn7Ol03fby9RKCUeafyObudUvJbX7LGI4otgTCZJIAx1J71nYwcE49RUhyBz/OmFeeK60c8YKPwibsDPTFIT83Wg8NnnpikPXBplEXX5qUdu/wDSlGCcE4pAPUfnQA4YzRk9utJkg8H9KTt+lAD8kc8HnHNKMEj+VNXI4zx6UuMDnt2oAcPc5FLwTkg0g69QcU45BIoAQZDU4DOPem9/6elOHBJz17UAOzjjB6UZ7Hv1xSD689QaUHkjPXnmgBwJyfT0rTt9C1u80afVrTSbyawgz5l1HEWjTH3sn2yM+nGcVlnOODg12GkeLdNsf7Dv7q31Br/RLd7eC3hKCC4BaRgXYncgPmkOoB3gDkZNZVZTivcRUEnuclg55q1p9ot3qMUMjYjyWbHUgDJqopJRVwOABVizuWsr5LkLuCnle5HetNbGc0+V2O98B/Dnxf8AEz+0bnRb+x0+0sWSMC4kdELsCVRQgJ6DJJ4Ga5W7jvBLqOkaxHt1DTXdGbIJBRtrqSOoyODW74W8WeLPCL3cvgjXvs0F6AJVGw9Pukq4OGXJww5rnbseQly8139pv7tiZn3bsZOSWPck5rhorEe2m5tcmlu/ncU3RdOKpp8/UzSFBx2peSwAGc9hREpkuI4em9gufqa7e3gt7eFYoYVAHUkZJ9ya7ZSsY4jEKj0uc/D4fuWi3zzpExHCbckfWqF7YXNjIBJhkbIDr0PtXalAe1RT28E0XlzRLImc4I7io53c4YY6aleWxxlndXlhfR3lhdz2lyn3JreQxuv0ZSDTLqa4u7qS5vLiW4uJG3PNNIXdz6lick1f1qyis5o3h+WOTIKHnBHPWs8HgDIFUoxb5ktT1adX2kLrYZnnGeDxk9K0dGuktJZXnmKowHyBCSSO4NbMF/od34EtPDVr4Ttf7aa8eWXWndmkaMjCxhR90LnJ69M45Nc5c27Wt3JCzBmjYpkHjiphJzumrCqxjJcjZq6lrUc9s1tao+0/fZ+OPTFYhb5gfatTSvDHifXbV7nRPDeq6nAjeW0lnavKqtwSuVGM8j860k+HPxCZv+RF8Sf+C6X/AOJqXXpQ0ckvmXSwzhG0Is5fBdwMhe2WOBW/pX9j2KBzexPORy+Dx7DjpRfeDfFel3Vrbal4Z1eymu3MdtFcWkiNO3HCAjLHkcD1FYdxBPbzSQTxyRSoxR0cYZWBwQR2IIqlOFT4XcitRc1yu6NrXrq2uY7c20yS7N2Quc9vX6VlWFtHdapa286yeXLMkbiIEsVLgHaOpOCce9QJ5sjhI0kkYkDCqWOe2APftXsthbWHwR8O2+va3bxXPxBv4fM03TJgGXR4zwJ5l/56nnC9un941hia3sockNZPZGmFoKKtfRH0/qHhbwnZ+B7jQrrRrG38NxW7LLA8IWKOIDliSOCBzuznPOc1+e7uguZBA7PFvYIzDBK5O0/XGDW1qHivxLq9vPbaj4i1a8gmczSwT3TtHI5OSSmdpOfbFUItI1GaNZobOV4zyrDoa8zJMoqZepurU5nJ3O3MMdCty2jy2NPxL411jxJouj6NPHbWelaTAIrWwsozHCGx88xGTmR+pY/hjmsGGJpScMFCjLSPwq/Wrg0e+Vv39u0EfVnfgAdyagu5kYC3tQVtUPA7uf7zf54r24QjTXLBaHnyqub0dyKadXCBIkTau04zz7moewB4z6Gm9FOByOtKccnH51oUlbQd1HamEc9OlLn+EY570ZyOCAc0AQnp2owCAeTj1FH8XNKBj880AGe+AKcF9B15xSY+YYI+hpR14oAcAPTpS4x3zSfd9KOhwPrQApyCCKM4Oc59qTkrgY96DQA/tzxQPUHj611vhb4aeK/FmkS6tp0Nja6dHL5P27U7xLOF5Mf6tGc/M3sM4rG8Q+H9Z8K+IZ9C16wksr+LDNG+CCpGVZWHDKRyGHFYxr05TdOMtUW6ckuZrQzuP/r/AOete7aB+zDr+p+FodS1bxHa6Te3EYlSxNs0xjBGQJGDDBx1ABxXhMZdJUkQAsjBl3dMg55/Kvuzw98V/AniDwjHrjeJNMsf3Ya6try5SKW2fHzKysQSM5wRkEYIr57iXHY3Cwg8HG93rpc9DLaNCq37VnxV4n8Par4R8V3nhzWYlivLZgGKNuSQEZV1PdSCCDWYAGPPBz09K7r4xeL9L8c/Fa81jR8tYRwxWlvMylTMqA5kweQCWOAecYrldF08XmpEy7WiiG9l7Mew/wA+le5hKtSdCE6ytJpXXmebiXGlKXLsiODSr64jEkFu2zrub5QfpmrFt4f1q81CKxs9Murq4mbZHHbR+azn0AWuszjqenrXoJ1STwL8IdLuNEkNtrniZZZpr9OJIbRG2LHGf4dx5JH+GMcVi50+WMFeUnZHFhsQ6knKekVqzz65+CfxSs9Pa9l8EajsVd7IhjeUD/cDFvwxXAuWSZomVkdSVKMCCpHYg8g/yrWu77VtI8UjVLDVtQt7okTR3KXDiQNnn5icnn1ruPiBPb+Lvhl4d+Jk1vHFrE9xLo+rtEgRbmaNdyTkD+Jk4P4elVGtWpSiq1mpdVpZnoxjTqR5qeh5gCwlVwTlSCD6V01v4gtDADdbo5BwQq5B+lc5tJ5H4UjKK7mrnJVoRqr3jsrbVbO6UmGdfl6h/lI/A1IL23ksHvEk3xKCTt68fWuGwARgZ7c1PbXEtuJUUsYZFKsnqcdfr0qPZnJPALdMt6re/b7hSiFYkztB5J9z+VaPhDwXrXjPWJLXThFbWlsnnX2p3TbLeyiHWSR/5L1P5mtPwN4Dl8SW1z4g1/UF0Lwpp7f6drMy5BP/ADxhX/lpMegUdO/pVjxt4/g1nRo/CPhPTjofg+1ffFYg5lu3H/Le6b/lo5646LXLUrylL2VHfq+3+b8j1aVGNOKctuxU8Wav4PtLu30vwHbXBt7WFoJ9buGKy6izHJcJ0jXjC4528VyQOcfyrR1rw1qWh2dndXvlBLtdyFG3EcA4Pvgg8ce9L4lsdA0/Vo4PDWsTapa+SrPPJHsKuc5XoO2D046ZOK1ockEoxbfmTL3nzWPTdK1O+0r9lfS5dP1bUtM83xdLFPPp8zJJ5f2ZC2NpG7HUDuQKsPqugRvgfFn4xkZ6nTW/+O1hw3Dwfsq6RKtw0DJ4zkYTKMmPFsp3AdyOoHqK6TUviXeR6Ndz6R+0T4v1K/jQmC1fS5IFmbP3S5YhO/JFeFKm5SlZXbk/z9GekpqKV30X9blbRNX0+6+PHw+XT/GHjHXgmrxl/wDhI7doTAS648vLtnPOenQV5h4zcP8AEfxCQcj+07r/ANHNXa+DPFHizxf8ePA8niTxDf6ubXVoRAbx93lhnBbHHfA/KuC8X5T4i+IATz/ad1/6Oeu7CUvZ4jle/L+vojmqzU6d13/Q0tIvdPt9JjYXK280bb25wS2chhj8KwdZ1S/13xDd6xqd5Nd3VzKXknnOXbsM/QADA4GBVQP8mM1atLC+1O6+z6fZ3N3N1MdvE0jY9dqgnFeo1GL52cFKi4t2d7lVXAbLZPatK+u2Ww00RO6Zt+drED71UrmxvLO8a2vLSe2nUZaKeNkYf8BIBFTLewNbwRXGnRz+SmxWMjDj6CmmpaoVWDunbYsae8k1rqO+R2xakjcxPeshgVOCfwrUGq2sNrNDbabHC0sZRnV2PH0NZpYE+tNaE0otNtqxI9ldrpiaibK5WzkkMSXJibymkAyUDY2kj0zmq3H8Jz3GK6uXx5r8vwti+HrS2/8AY0Vz9rRfJHmhtxbG/P3dzE9M84zjiuVHJyOmOfaopOo7+0VtfwOmSjpysNvJwPoMUhJzyO1BK4BwAMelNx+WOK1JIuSacOnHSmc+vWnEgcdBQA4rgjIwPWgnP+NHAX2PNGc8c460ALk/nQCeig03uP0p3VcYNACg4I4/KlJKngcUAfKOO9L1XPtQB6vBa6P8Rvg74W8Ox+LNF0HVPDrXMctlrUxgguklk3ieN8EFx91lPOP1z/ijeabfN4fsNFv31qz8PaXHpMutbCI7uUMWOwnkoudoNecmQY7VKtzO8AtHuZFgZwzryVB6bsd8f0rhhg+SfOpaJtpeu5vOu5Rsl2GhsE9h3xXpPw4+DWtfEvS7zVbXUbHTrO2l+zpNcozmSXaGKqF6AAjJ9+Aea4fXbDSLHV2g0TU31C0CKRO67fmP3h2z/wDXx2r2H9nLxtqul+KpPBUaQTabfpPeKsmd0U0cJOVIPRtigg+gIwawzWrXhhJVMNbmWuvbqXhI05VVGrseReJvDmo+EvFl74d1dEW7s5fLcxtuRuAwZT3BBBH1qx4Zu0jvp4HxudAVz7Hp+Rqp4l8Sal4t8VX3iHV3Rry+k82Xy12qvAAVR2UAAD6VnRtJDMskTFHQ5BXse1d9JTdKPtPitr6nJiYRnzRjseigbq9Bg07/AIT34X6bpWkssniLw6JY0sSwVry0dtwMeerK3BH+Irx218UqEVby3dX7tEMg/h2qw3itYCkumrPHdId0cxOwofUYOc/lXJicNKok4O0k7o83DU505OMo3i9GW7vwR4x1zxLHpem+FNYmukGwoLR1wSehZgAMepNbHxJFn4Y8E6B8L7G/gvL3TZpdR1i4t23Ri8kG3yVPfYvBPr75xg3vxT+I2oaYdNvfHGuy2xXaYmu2G4ehIwT+dczBa3V6xS0tp7hlGWWCJpCB6kKDj60RpVZSjLENJR6Lv5/5Hsw5KcOSkm7ntHwMvfhDB4b1pPiCmj/2gZRg6sm4G22DiH/a3bs4+b7uK8c1CWxfVro6YrrZGeT7OJfveVuOzd77cVTZWUsDlSDgg8EH396awwOR0GOOK0w+DVKtOspt83TovQdSrzQjBq1j0L4U+AIPHvit7e+kMdjbJ5kuzq3t+o/Ovbtc+CXgSHSxd2ulzA2pEssUc/lmeNTll3AfKSAecH8+a8q+FuvTeDJbXURCJRKrefEWxvR8cA9iAFIPqK9I8b/G3RIvCc0GlWtz9suIzGBOFXaDwcAE5+vAHueK8DNFmE8ZFUL8nl+NzTBV8K6clU+Jf0jwv4geOdT8YapFYvawaVoumloNO0Sy+W3s0Bxx/ec93PJ9hXIKSCB6+tSNHc3d4dqSSzTycKgyXZj0A9STgV7P41+DVvonwpsLrSUe58SaSyLr0MOXJ8/lCoH/ADzOE47HJr3ZYihg+Si9ObT/AIczUJ1rz7Hjst3cXCRxzzyusS7I1kckIvoM9B9Kixleeg7npXSf8IJq0EAm1u6sNDhPOdQnAkI9o1yx/Suo+G114D8PfECDUL43evw2UMs88stoq28AC480Ixy7A9AfX1rStiY04OUFzNdEZQSlJJuxk+DtU0+XQ00TxpqCReEtPu21c2VvH/pN9cFBGIY36gMMZPQAE5rP8YeNpfF3iH+0I9H0rR7WJBBa2Gn2yxrDGDkBiAC7erH8MCovH2vaJ4n+Iuq6z4f0s6ZptxIGgtdgTA2gFio4UsQWKjpmuZIJJwD0NKhQTarSVm+na+/zLqTdnTvdGvpPiTVNB1+y1rS5IY7yymW4gdow4V1OQcHg/Q1Qvr6fUtTuL+9cSXFzM80hVQNzuxY4A4GSelV92MZHT9K+rf2ffhv4Vf4cWnjLUdNttQ1S+lkMT3MYkW2jRyoCKeAxKklsZ5AGMVy5rmFHLaX1mau9jXCYaWIl7OL0KPhr9lrRT4XifxZrGpf2tNEHeOwdEjtiR9z5lJkI6EnAznA717L4L8HaN4D8LwaJoMHkoijzrkACW6fvJIw6k+nQDgV0HIOTTt2etfk2OzrF4y8as3yt3sfW0cHRo/DHU5H4k+CNL8feBrzTb62R9Qjhd7C8KgyQTAZXDddrEYK9CD6gGvhnxB4d8Q+GNRSz8R6HeaVcON8aXUZXcO5U9GH0Jr9E8V578atG03Vfgb4h/tCKMmytWvbeRhzFMnKkHtn7p9Q2K9rhvP6mFmsNNc0ZNfI4sxy+NaLqLRo+GtncnGa9j+K/wU0f4f8Ahz+39M8XrPbsI1SxvIwZ5JGIBCsny4CktkgdD9a8aYnOSMHsB6/jVnUdU1LWLoXGqahc3kijahmfOwegHRR7ACv0mtRrTqwlTnaK3Xc+bpzgoSUo3b28imGz3/Ol9TRjPOeR0pPwNdhiH8WQKaVwOaXnGKXH1oAh465pQcNnHPpTc/8A1qXuR+tAD/UZ6+1J1OTTeAR05pw4JzjmgBR604cnpimg4GDRkg9f/r0AdV4M8JL401a50a11qystXMG/T7W7BUX8oPMCydEcrkjd1PFc7d2tzZajPY3trNbXcEjRSwTKUeNgeVYHoRUCsysHRmRlIIZGwQRyCCOhHrXoviTxnoPjjwKl34lguI/Hdj5cKapBGCmrW+cf6T/dlQdH/iHB9uacqkKie8X+H/ANIqMo9mc/4D8O23iz4l6J4bvLs2dvf3SwSTLjcq4JIXPG44wM9yK95+Jf7Omlw+HoL34cabeyalHIEl057vzTcx4OWTzCPnXAOB1BPHFfM4mMUoeJyrKQVZTggjoR6HNaur+MfFWvy2suteI9Vv3tf+Pd7i6Zmi91OeD79feuLGYTFVcRCrRq8sY7rub0a1KNOUZxu31K2raZqug6i1jrem3enXKnBhu4Wib8AwGfwr1T4EeEPEI8b6f49uIYLHw5bGaJ76+nWBZS0bJtiDHL4JGccDnniue0r4y+ObewXStdvLTxRpI+VrHxBALtQvfDn51475r1T4uJ5Pje20q2iSLR7LT7ddNtoh+5SJkzlB05ORn2FZYutXlbCySTknrvp6dzOU6dCDrq7tbQ8Z8Y/DHxb4Bjt73WrW3n025crb6nYTi4tpD127x91vYgZ5xmuV3F3JxwfSvobwq4u/hf4+0XUiG0UaLJeOr/AHIZ0OYnXsGJH/jor56huVgvIp3jDBHDFPoc4rrwOInU5qdTeLtf5GLkp041YK3N0Ltzp8tnaxPdbVaQFgmfmUe496juIY00q1uonZvNZlYH+Fh6fhSwXDy+I98Jk1BJjhxIuGZW6gjtj16VIbays9Te3upnkhjyV8tsk+gPofX6V23Zzc70uM0bTJtb8TadosMnlyX11HahyM7d7Bc/hnNffPhbQdG8IaBFovh60SztYPlJQYeZu7yN1Zj1JP8AKvgG2vriw1qHUNOcxS20yzQM3JRlYMpP5CvsfwX8ZfBfi6ythdapFo+szFUk065JUNKTjET4w6knjnPOCK+O4uoYmrCDpJuC3sfQ5PUpJyU9/Myv2h/BGjap8O7nxnBbRQatpxRpZ0XBuYS4RlfH3iCwIJ5GCOhr5RtbcXV/DbA/6xwp+nf9M19AftAfFGyuNJuvh5orySzi4CalOVKpH5bbvJXP3iWClj0AGBnPHz1bXMtrJ5sTFZMEBu4zxke9elwzSxEMElX+V+xy5rKEqr9mdhrGsQ6bEILcK8+MLGD8qDtn/CuMkmnmne4nkaSRurMf84FOy75JLMSeT3JpuDk5Un6dq9+MEjyqNFU15nrnwP0K3gur34k65bq+naIwSyjfpcXrD5APUJkN9SPSvRPD/iNbbxPLf6q5uLS/Dw6gM8yRyfeP1Gcj6V4rofxi8f8Ahnw7baBoOrW1pp9tny4fsML8kliSWUliSScnmr4+P/xZC4XxLCP+4db/APxFfPYvLsVXqTm0rPRavRfcenGpTSjZtW8jB+IXhO68DfEO+0O5na5jBE9pdscm4t35jkz3OOD7g1DcmLSfAcVmMi91cieY91t1PyL/AMCOW+groIfEeo/FfxfZQfEXW4ZY7S3lFu6xRWrSE4PlF1UcdW59DjrXN+M3spPG2ovY3QurZJBFDIuNoRVACrjqo5Ge+M969TDym1GjV+JLW2xz1oxcm4bGFBbzzzpDAhkdjgD/AD2rdj8NkQ/vb1RJjoqZFVvDbbda7bjGyrn1yCf0r2jTtV+HkfwevdO1PTN/iN/M8uXySXLk/u3WToqqOq/Xg5q8XipUbcsW7u2n5nDKUpTcFJRsr6nhF7aPaXRt5hjHII6MPUV6v8JfjhP8OtHk0DVNLfVNIMpmhEMgSa3dvvBd3DKTzg4wckHkivO/FCxme12sAwVicdcZH/16zbLTdU1OWWPTdMvL54YzLItrC0pjQdWIUHA96MXhaOLo+zxCvE6cFiakbVIaM+ox+1R4RbJHhbxDgcE7oMD6/NxSn9qbwcBz4Y8QD2Lwf/FVzPwz+LPwz8PfAU+H9egAvI0mW7sPspkOpMxYhg2NpypVfmI27eO1fO25WUHG3HYnP696+YwnDuCrVKkJ0HFReju9T2quY14Ri1NO/wCB9Vf8NV+EN2P+EX8Qf9/IOP8Ax6vN/il8fbzx7op8OaPpT6VpEjq1wZ5Q81ztOVVtvyqmQDgZJIGTjivHcAjngetS3VjNaSIkyBC6CRQDng9Pxr18Lw5gMNUVWnD3ltd3OKtmdeouSUtySzsptRvBBEVB+8zHooq1qehTafbi4WZZo84YgbSp7fhVPTb5tNv/ADyvmRlSrqODjrxV/VtejvbL7JbRyKrYLO+B07CvafNfQ8ipKqqq5fhMU5DHk/nSHuB+ANKMHHTHr60nGMk81Z1B+HHGD60jMpHABx2NGcHOO1JkA8g8+9AEI5GT6U4Ed+vemDqc9etOX1x1oAUgZ6ZpR90j3pOMZ/Kjt149KAFBGOhqW3aOO6jkkXzI1YF19QDyKjGT0PSgDjr0oE1dWNjWb2wvZons4vLwCGYoFJ9OPasoglgqgtk4AUc59B60W8VxdX0VpZwyz3EziOOGJS7yMeAoA5JJ9K+q/gF8HdX8K61deJvG+iwwX6RommRSSpK0BOTJIQpIVwNqjuMt3rzcyzKll1F1Kj16LqzfBYOVVqnHbufM194b8S6XYLfar4e1aztWxie5s5Io+enzMoA/Gs9VwoJBNfpXNBFdW0ttdxpcQSqUlimUOkinqrA8EH0NeWav+zr8Lr7Qbiy0/SJtLu3DGK+ju5XaJjnGVYlWQH+HHToc818zg+NqFT3cRBxflqj1a2Szir03c+KQwAP5YNeq6D8Z7RfCVl4b8d+Ff+EjttOTyrK8gujb3UMfaMt0dRwBnnp1615xr2ga14a1mXSte0+5sLlCQFniZBIoONyZHzKccEVFYw6ZLpl295dPFdIB5CDoxx9PWvra1GjioJy1XRr/ADPH55Um1b5WPaLH4reBvEtlefDzUvDH/CKeFdUVUbUbe6aW4hnDApLMx4ZAQMjkDHPGceX+N/Aeu+AvE76NrKxuGXzbW9h5hvIj92SM9x0yOoPHoTl6Rouq63rdto+j2E9/f3DbIba3Xc8hwTgD6AmvSPBnjXR9S8Mj4Y/Ex2fQS5/s/VBzPos3QFSesWeCvQD26ckaKwcr0NY9Vu/Vef5m6l7Vcs9O3+R55FcwQWUdnYl7cyAfaLph8/uBjoBUN1bafAE+xXck4Od+9NuPpW5438Ea14D8Tvo2sxowZfNtbuHmG7hPSSNu4ORkdQevYnG0rS73WtSTT9OtnuLhudi9h/eJPAHueK9CFSEo+0T0ON0XCVnuVARu471esbPWRE2taXZXcsNgVuHuIkJSPYwYEt06gV2Muh+DfBKB/E0413WV5Gl2p/dRnt5h7/j/AN81h698SPEusWT2CzxabpZXZ9isl2IV/us3Uj24HtWTqyq6U1p3Zqkou7PRfiF4e8M6r8fdQvPEPimHw5pWp6bba3FcvD5plMqKGRADy2QT0Pfis55P2ctHG0zeMvE0o/ijAtY2P/jhxWd41SXxN8IPhfrFtGJbswzeHX+YDdJFMPKBJ4Hyv1NQ3Xwhi0C7e38b/EPwv4fuU/1lmHe7uF+qKBivNpxj7OMalRq2ll5adFc7JN8zcYp9bvzNQfED4KWoxafBme6xxvvNUYk/Xk0D4j/BuQ4n+BcAU9TFqbA/0rKTw98E7Zf9L+I3iS9cf8+OihV/Av2rqr74afB7SfB+ma/q/jTxTpkeqJ5tnbT2MLXMsWSBL5S8iPjhiRmpnHDRtzKd3/iHH2r25fwM1df/AGdNTOLzwF4q0N2/5aWF95qr74L/ANKsRfD34OeI2C+Efi8dOuH4S08SWnlZPp5g2j+dUE+Hnws1UbdB+Ndlbyn7sWvaZLag+xcHAqjq/wADPiBp1idQ0uysfEen4yLvQLtLxSP9wYb8MGmnTTtCtKL/AL3/ANsg956ygn6f8As+JfgZ8RfDdk1+ujx6zp2NwvdHk+1RkepUDcB+Brzd/lyp4ZTgjpg+hHatjQPG3jbwHqbpoWt6jo08bfvLUkhc+jwvx+a112v+P7b4n6EkOs+DtLtPEUEiy3PiO0zEPs653b0HVjwOSR1IxXbSniackqlpRfVafh/kzmqex5W1o+zOJ0vZbxPq90h8mJsRL0Mj9gPanHxLfuhDQ2wJ5DAHj9a1/FPhLxNp3hXSfFE+ksnhq8hV7O5hcSKobp5uPuM3v9M5yK4/OOn0rrhKFX3k7nE8Pd81Raksksk9wZZ5TI5OdxPH/wBYe1dx8Ofilrnw0udRm0W1sLg38SI63asdjISUcbSDxuPB4Nc6kEVtb6eg0lbwXShpJSCTknBVcdMVlXiR2+qT28b7kjkKq3qKVWlTrxdOorouhXal7mlgmLTTPM/zSSMztjAyScnge/arNzoWtWXhqz8QXGm3EOmX0rxWt0wASZkGWC85IGeuMdeeK7bwN4R0UeH38f8Aj9pbfwrauY4beM7ZtYnHSCH/AGf779AMjPUjA8beM9T8d+If7S1BYre3hQQWOn242wWMA+7FGvoMcnuefQDONdyqezprRbv9EdLp2jzS3Zi2um3lzbJPD5Wxhhd8oB646Vq6hY31/PHLsgj2RrHgzA9O9c40QYHCAk1Z1KWK5vIni+YLCkbFhjkDmuh3ucM4Tc00yO6iaC4eCQgshwdpz+tQfNnuPbNB+5xxxjFDYPU/4mrN1dIO3r9aCep780Hg/L1xzTencfgc0DFyAQT0pMZ4wfyoJ6EHOPUZoLAn1HpigCEY5BAxRk44OaM8/pQOMCgB/UYpAeKXgLk03tnH4ZoAcHAXPU+g716B418IeD/D3w78La1oXjSHWtS1WHzLyxj2f6MdoY9DuUBiUIfkkZFefAEnGMUqjHOAO9Y1KcpSi1KyXTuXGSSaa3PXP2bRpi/H+xOoGMSvaTrZeZ/z8FRjH+0V3ge9fayoFA6fhX5pxXEtvcJPbyPFNGwdJI2KsjDkEEcg9816Xb/tE/Fy2tUg/wCEkhuNgA8y5sYZJG/3m28n3PNfKcQ8OVsxrRrUppaWsz1cuzGGHg4TR9wlvSkzniviT/ho/wCLf/Qb0/8AHTYf8K7D4e/Eb9oL4lapd2XhzV9DRbOMSXFxeWUUcabiQoyFJLEg4AHYmvmavB+KowdSpUikut3/AJHpwzelN8sYu56h+0jp+l3XwGurrUBF9otruBrF2+8JGfayqfdN+R6LntXy18NvEVv4S+Kei65dQRzWUVx5V5FKoZZLeQGOUEH/AGWJ/CrnxL8TfEHV/Fk+jfEDUnmvdKmaA2qBVhhfjJRUAU5GPm6kY57VxIwTh+h4avucly2WFwPsKk+a99vPt+Z4eMxKq1+dK1j3U+Gz8IJ/H3iRiEuLW4fw/wCH5WOdxuF3tOvqEt2HPq1eH8JwgIHQCu31X4ueJdYuPCUupx2FyPDIT7NFLEWS4ZduHnBJ3khFBxjp61ia5rGqfET4i3Oo/Y7OHUNUn3mG1QpFH8oBOOTgAZJPJ5PU12YOFWm3KstXu/TRf5/MxrzhJWhsdf4P8a6dq/g4/D34hiZ/DiuBYa0ELSaHM2Qp3f8APIngqegz26ZfiObxR8MopvBbWVrZXUjGYazaEt9vgP3JI2PbnGQeOmAeTR8Vata6Lox8D+HnBhT/AJCNzjJnk4JX9Bn0wFHQ1v8Ag7VY9a+H0XhL4iwXA8LfaDb6X4gKZfSLgjO0Hq0J7joOfwlwVP8AeJe63qv1Xn5dfUUZe092T16M43wr4U1jxVdSSQNHb2MJLXOpXbbYYu5JY/ePsPxIrqm13wH4MdV8H6UniTVkPOsasmYEb1hi789zj6mq3jPQ/Huk3tv4H1aFpLSziVrVNNgP2e8iH3ZwV+/n1PQ9s8nnpU0q08Ovp9xpd9Drq3O5riSQqixbfuGMjO7POf8A9Va6VbO912X6kWcNLanqfhjwB4t8dfsyahZ22mAT/wBvjVNNErLClyrIUnEZY4AB6ZwCRgHiuVHiYJKfC/xW8OT6t9hJtftRb7Pq1ht42rMeJAOyShh6ECvoj4b/ABL8F3Pwq0mObX9M0ybTrKO2ubS7uFhaNkXaSA33lOMgjPX1rwP43x3Gp/EmfxnYQxz+HtWWNbHU7aQSxXLRRKj5I+7ICOUbDAYOK8TLcVWrYqrQrU+WKbae34+e56OJpwhSjOErvqVW+HlpF4m8N3elaj/b3hTWdRitI76OIpJGfMXzLeePkxyhSTjJBX5lOOmf8VtUvNW+M/iW5vQVMV/LZwxD7sMMLGOONR2UKowPf3rb8C+IvEPgz4M+LNc0fU3sZLq9s7O3k2hj5mHMhQMCAwjbG4ciup+Hln4a+O+v3EPjSyuYfEVhbiWa/wBMmW3OqxZCAzJtP71DtzIgG4YzXoTryw8pV6usIK11v9xzKCqJU4aN6nA+Evh5beKfh5r3ieXxno+jHSpFQ218TmRdoYsSDuA6hQqsWIIqB/FOmeDtGk0r4fajfvqVyym/8RFDaswU7lhto85RMgFnb5mxjAFb/jP4Gatpfj2+0vwjd6brVtCVZYZdSto7y33Lu2SxuynIz94DkYPFUNI+DXit9Zhj8R2kOnWIy0pS/tpJmA/hVEdmyeOcYAya0jXo1Y+0nO8Xql/WrJlGcPdUbNdQuvirr3jHw9J4a8WeHNI8VahMnk2GqTw+Te20h4DeZHjeB1wce+Rmsybw3rVxpN74b8K6Zdar9gjF1rVzZRGTBBxjjnYp7DqQfQ13ur+E9E8J+HdT1rw/aC1v4LRhHNJI0m3kZIDH7xHf6VyXhI6v4c8A3nxE8La9f2GsaVq0FlcJGwMckEyMUZgfvfOjBg2QcjGCM0qVWCpuVBW126XMpRdSa9o72K/w6+Jut+BHfTpVTV/Dd3lb3RLsh4pVb7xTOQjH8j3HcdB4/wDhtop8Lr8SPhnM994SnOLi2YkzaVJxlJByQgJAyeVyMkghq0NW0jQ/jF4Yu/FfhLTYNM8a2MZn1jQrUYjv4+9zbL/e7svrx1wW474afEi7+Hnihrh4/tuh3y+RqmmuNyXEJyCdp43gE49eVPBqPek3WoK018Ue/wDXRnRokoVNYvZ9jlItQv7aJoILuWONuqqcf/qrtfBXgXS7zRLjx344uJbHwjYvsIj4m1SfqLa39/7zfwj3yRB8V/BUHhHxPb6h4fm+1eF9ai+2aTdKSw8s4JiJPdcjrztI7g1zGqeKNd1rTdL0/VdSlubXS7cWtjCQFSCP0AUAZPdjyeMmu1yeIpxdJ2T37/8AD/kcyhGjN8y1L3jbxlqXjTXkvLuGKxsLVPs+n6ZbcQWMA6RoOnplupP4CsrR9PfUZZMkpGi43erHoP6mvbfgN8NdN1rSdR8Y+LbSN9LaGW0tVnHykFSs0/PZVyqn+9uPYVwNppltp0LWtpK08IdiszrtMgzwxHYkY4rLDYylKpPD0vsWuYZg50aaqS3kcMwaOVoXBDoSrA+tdn8Mfh+PiT46Xw4NattJH2eS4NxOu8kLj5VXI3N82evABPasrxHp6xul+inDfLJjsex/p+ArnDJzxj612VFOcGoSs+4sNWjNKbVy3q1h/Zmu32mLcwXItZ5IPPt23Ry7WK71PcHGRVInoTn8ulBPHP5UdwAeT6VpFNJJmjab0Ak7TnHsO9IPr+XSjjHHHH60cc9PzqhCEc+vue1HWjPpSEYHWgCLqc0uQG46YxTVzxjP1p3U0AJnmpQMDJ4xUfAzWhoN/YaX4n0/UtU0z+1LO2nSaWxMvlC4CnOwtg4BIGeOmR3qZtpNpXGld6nueh/Crw9P8J4fCWoFY/iPr9odf0uFxgxRRA+XbMezSoZGx3IH92vApMpIyOrKykgqwwQc4II9e2K9m1H45eENU8er40vPhSz66kscyXqa/MhjZAAm1QuABjoBjr615l431+x8W+PtR8Safow0eO/k8+SzWbzVWU/fZTtGAx+bGOCTXmZesQpP20Wk9dbaPsrPY68R7JxXI9jJsraS/wBQjtUyAxyzY+6o6mku4JLLUJLWQHKng4xuHY1rQ2/9j+HTcP8ALeXo2xg9UT1/r+IqWaFNX8OJeD5ryzGybuXT1/r+delzHle2fNf7Jz4BPWuu8C/ETxR8PNRub3wxexQm7jEc8VxCsscgBJUlT3GTgjHUiuSZlBxx+dPaOZIg7wSKp6FlIBpVaUKsXCorpnXGbg+aLsz0nw/beD/G2meMfE3xC8by2HiDDXNqp2j7TIVLFtpHz/MFTYuCAc9BXmQclQSuD3HpTgAQSBx3qSe1ubVk+1Ws8HmLvTzo2TevqMjkdORWdKkqUn72j2Xb0KnLnWxEzH1/Cu00dj4U8Ay+IwoGp6lm3sc9Y07v+mfwX1rltM02TV9atdPjzm4lWMsOw7n8Bk1u+OtRjufE506AKtppyC1iUHgY+9+uB/wGnUfNJQMyj4S8PS+IvESWck3k2ygz3dyx/wBVEOWYk9z0Huc9q39d8Sw+ItSTRdOjFrodpH5Gm2/QA54kb/aY8c9A3rnL1tZ9K+EUsVkpe91J45r1U5eO1ORGCBztLDk/7Vc3YpLoPiW0u9Z0EXMcbrM1jfK8Szr74wcZ/lg9xWWk5OXbZDTPW/CeuXd58N9KsptQnmjtPNhEcj/6k7z+79gBtwOw9q434jzzXWoWscio7Qh1SYj5wnGEJ7qCSRnp9Kq63qM2j6nD4i8KT3GkWWtxG7+yRvvWCQOySRcjBCsMqSM7XAq8NfFp4C0/xTq6fb9cmnuLawa6UOu1SpM7qeGKElVB4zjriuaFLkkqkVv+ZpLVu7MLV/CeoaL4O0zxDez2ojvm2x23zCaPgkEgj0HbpketMsPESwfDzWdBur4rHcXNtcW1mVJVplLBpM9AQnHqcgCug8F/DvVfHguPEmsaoNJ0JJD9q1q9y7SuTykS9ZZP0Hf0r0/SY/C/hSaO3+HnhlHvSQi6xqkQu72Vv+maYKx+wUZpV8ZGHuP3pLXTRL1ZUYW1bscIfCXxG+IPhzRdN8P+BL3TdB0yDEb3TC3immfmW4eWXbuZj6A4XAFWLP4EeK9NvEvJviB4Q0S7To0OrO0seeoDRLx+Br0DxKsWkyrdfFvx8NMncB00xmN7ekdv3CnbH+OK55viZ8HLJfLtdB8aamBx5zXFvahvcKM1wLFYma5aMdPJX/F7nRyRWsvxdvyMKT9n/Wbyd54fiB4L1S6kJZjNfOjux6ktIvJ9yaxNU+G/xL+G9xF4gm8Pzww253JqdgUuoB2+Z48jaRnIbAINd7Z+OfhDrk620ep6/wCGZ34V9XgS6ts/7UkRyo9yK6Bn8U+BNWj+yag1uJkEsM9rKJba7jPRl/hdT9KI4vEwfLUXyat+K0JlCFua3zTueRSfGHWJjEZ9F0S6tcFbq1mhaWK7jIwUbJO0HrlSCDgg8V6/D8IdOl+BXiK98N6pcQQeILW11m0sbtQ/2RYVacQtIDlyQzLvwONvB5rlPiL4N8P+KvBGo+PdB0230nXdLAm1ewtF2wXULHBuI1/gYH7wHBGe/J57w9458ST/ALMvjHw3Hq9xFDpbWZt3VhuFtPK0Utvu6hCcEDtyAcHFFeMq9OEsI+RqS5l80aUXGDaqapp2PPfD2va94d1m18VaA9xbz2EqOl0qMURm6I5HGGGQVPUZruPitpel65pOl/FjwtapbaZrrtFqNlH0sdQUZkT2V+WH4nvXO+E4viJrPhDWvCfhC21C/wBJumiuNRsbOJZNxQ/I2Pvfw/w+nNeofDrwNr6/CPx14Q8UadNprajZf2jpdnfgx3DXFsCzSpE3zBB8ilsDJOBnBx34qqqUlVurp29U+/pv/wAOY0Yua5Oj/MyPhizfET4T678JL8q2oWsbav4edzysicyQj2O48ejt6V4+0RUsrhlI4IIwR7fUVu+CvFE/g/x/o3im2JU2NykzjP3ozw6/ihYV0vxz0G28OfGnUxY/8eGpBdUtCv3Skw3HH/A9/wCYrSl+5xLp9J6r16/fo/vFP36Sn1Wny6Fux+Kfiu+8Mt4evNbtLPQ47dbVLC3t4oFEYxhQQN2OOeeSTnPNZjatp5J/0+3/AO/grgCwAz2qW4sru0ggnurC5giuV8yCSaFkWVfVCRhh7jNdMMPSpN8iSv8AiebiMPLES5pybt+B2Vzd6Xd2z2817bmOQbSPMH+feuKli8i4aPejhWxuU5B9xTVAAOMUEjGTW8VYKFBUtmIRgijuTnrSEknGeO9GB1wao6ALc96QnHUfiaM9xn8aQ9R+HNAAfxoJ/XikOPb60pIx696AIv4jzxQORn2pMj1x9RRk56/jQA4YDKOgozkfhSfX/wDXS87cYzQAoXFX9GtobnVEW4kSOBPnfewXIHYfX/GqIB+lIVBHK7j60mTNXTSOo1SzfUtSaf8AtSwVANsaGX7qipNJsX0/UFmOqae0ZBWRBLyymuQCjPKjFLsA7Cp5Tn9hLl5VLQ6HUJYtN1AxwQW88PDKVYHjP3TjPTpV+78S2MlgQkDTs/DQuMADvk1ygOB7Uqgkfzo5EaxpJRszqvCniHw5pXjvRdT1fw5G9jbXsU06qxkJQNk/IeGx1weuK9t/aC+JfgHxX8N7HTNF1i01vUmvI7iKSDcxtowrBySQNpbIXb19RxXz9B4c1K4thKFjRW+YK7YYj6VmzWk9tcNDOCrrwVavOr5bSr4iniHJ3h56fM6sPi1Tpyox1udb8P1jj1651SQfu7G1eXnpk8Z/INXN2trLretwWzufMu5hvP8AvHLH+dbWgubXwD4kuQfmdEhH0P8A+1VLwvMsevvd/wDPrbSzD6hcD+ddi3lI5nK12aWsapcaH8XE1Ywu0du0ZijR8b4Am0AH8/bIra1zxPoXj2W10z7XcaVcRMfstzfIphkdsApIwJMYJAw3IyecVymly22t+HpLHV5zbfYIxLBf7S/lKzhTG6jkpuYHjkc1XvfDOp2dn9qaJLqwPAvbNvNiP1I5U+zAVDpQbTejRcJaWZc1M3sWgW2g30Dw3ml3tyksbdU3+WcfmrH8a2PEelm5ufBGhpMIYH0q1QP2Vp5mLv8Amf0rLuZte1iWXX5tNe4iMUcUskcJ2OI0ChiepOFGWFbMBTxz4OstN01gviPRkaKC1LhWv7UsXAjbjMkZJ47g8UpJxs/X8TSLu2eq+NnNp4ibw/bxm20vRB9hs7VOFjVQAWx3ZupPU5rZguZfB8MWkWVwLLxLdW63OpansEj6Lav9yKFTx9pkAOCfujJ7DPlI+Oniu3kRdW8LeH7nxDaKIhquoWri5QrwGePcFZx6kfhWp4b1VrjwZb61repNPfaxqt01xd3DcyzqEwGPQfIflHTsK8mWFqKKVRaffd9zfnjGUpxd3+R6PoNr4atzNLovgvSJJC2Zb/WYzqF3cMeS0kkh6n2AFP1nwJ4N8eQnSrnw7p3h3X5srY6tpcfkxNN/Ck8Q4KseMjke3fL0nUZtLd9sfmK/3kbIzjuDUt343sNJ1Wz1PVo2jtbSZLhreFgZpdpzhQ2PTvge9edOjXVTmpN36am1PEwcbTPmm4sbu31qXSZ7WUX0U7WzW6KWfzVYqVAHJOR2619IWljqXhf4DeGPDPieE2+trd3F3BYyHM1rav8AdRh1XLche34Vy3g7xCum6VefEVTDY+IfFviltKg1BlVzpVuxEk8ke4ECQ+YFDY4AzT/iR8VvG/hr4k6x4c0CK38PrZTtCtwbdZr64UcLK88oZmLD5gRxzXp4t1cVOFKKWmuvdb/ixQhCnCTb3Ol1nb4N+DviTW9cP2OfWtPfSdMsp/lkuDIRvkKnkIijOT/UV49dwnwj8FxpVySNV8UXEF+8HRoLCHcYS47GWRi4H91Af4hViPwr8YfEWtWni2bwrr3iaaZRNDd31sb2GRSMqTuO0gZB2njI5HarN54R+y6nca18YPFqWNzOxkl060mS+1W6JGMbVJjhHAG6RgFHReMVth6UaN1KSbbu7eWysQ22kkrJHPv4E8a6f4Kt/G83h+9t9Gfa0d+MLtDHCvgHeqk4wxAByOeRXa/AbUJ5Pi9d6lf3c9wsGh38s8s8jO2wRdCWJOM4rX8YftDReJfhNd+DtO8JHTWubdbJriS8EyR264AwNoy5VQCTwOSO1YNhp83w3+AWqazqQEGveMoRYadbMMSRWAIaWcjqA/AH/AahzrVqEoYiCjKTsrdu5oowhNOnK6SuzyXcJYVAHBUce2K9j+I1u/iL9nL4beMs757aOXRLqTqd0edmf+/Z/OvHANvbFez+Frka3+xl420hxuk0TU7fU4v9lW2hsfk/511468HSqLpJfc9P1MKHvKce6/4J4y6nj/8AXXqnxS+M8vxJ8H6LoR8PRaYbBxNNIJvMDOI9mIhgbEwSccnoO1eWDkEc8UcZx39a6quGp1ZwqTWsdjGNWUYuKejEUEehz7Uc8g0vzeo/CkI5wa6CBp6nntinA9qYT6cn0penXrQA7v8Ahim45yeG/kaUDB5oOcYoAQA8Hn60mMjJPP50uQG6ZpDQBEOOnFHP+NJ170uB3zj0oAO3tS8YyeecUhzjAGaUYx05oAXp/nrT0wT8x4JwT6VGrAOpcblBGVzjI9K2L298MLKsthpd35LKCwmmIMbd1z3HHWk3YicmtEivqUGnwXgTTrhriLYCWPr3/pVvw14U8QeMPEUWh+HNPkvb2UFgi4Coo6s7HhVHGSao3F5p08K/YrFon3cuZt+R6V9O/slxWX/CK+J7lAn9oG7hikJ+8IfLLKPoX3/iBXmZtj3gcJLERV2jqwFD29RU5aHmOtfs4/EzRdEfUkt9N1Py0LyWthcmSYAcnCso3/RST6A1yfgb4f8AjDxzen/hHdAuLq2hYGe7kxDbxAHndK2FBxngZPtX6AEkDnIxzn0r4u+PHjjXNR+J2t+E7fX7g+HrC48iLTrdhFArBVMmVTG87y3LZr5/Ic/xeZSlSlFXWt/+B/wT08fl9HDpSTdn0NPSdS0WDTZYr7yUlVmDh1DFxnHB7+nFeZeKJ4JNXQRYyE+b1AJJAP4ViwX17bweTBdSog6Kp4H09KS5stStba2vby0uoob1Wkt5po2VbhQ21mRj94A8Eivq6dH2crt7nzsKLTT7G/ZAt8NtcC5/1sRP5rWd4cRmfVVAJJsJMfpV/wAPSfaPC2v2TfeMAlUHvjP+Aqn4cvIbbxDEJWAinVoGJ9GGB+uKtLcp3tJEvhq40i2murXXJZks7m28t2hXLAhlZf1WodFuNYi1X/in7i4iumBOYW25X1ftt9c8UzT7C2bxOdP1R/LjjLowLbNxHQE9getSazcRWzy6Po5SGyGDK0bEmZu+5+4HQDpTaTfqPm1sj0yLxLpi2Qkl1OwXyVCyhJl2qwHIAHvnGBXmwtvDmoawzwanqGmeZMXSSW2DRxZbIOUbcoGeuOKt6D4Nlv44brULiPT7SVtsTy4Dy/7gOMD/AGjxXoFp4G0C3uPsc2lyGYqNhvHJ80+xU4H+RxXLOcKPUqELbHKW3jdpQNK8bWMHinT0JjW4k+S8iUcboZxhj6gPkHviuh8U6RaeG/grFFbagmo6bqGtLe6ZcH5XeA2xBLL2YEbWHTIqr4i+HltJYS3GihobiOPzRBklZB0IGeVYEEdazdYjupP2dfBkDqTK+ragIA3Up8gA+m5j+dYuUJuMqb0vqjqi3ZproafhS2jsfBEnjPxb4j1TTvD6ym2tLO0lIn1CUdUj3Haqjux4HPpVZfGHw71G6+z6n8NLtLNzzdWmvTNdAf3vnGxj3wQBXrEF2ul2Om6Jp2n6RJZaRbLZxzX1mlyZGGPMZQ/ChnBOepxXH/FTw3oV14AXxvouk2mlXtteJZalbWS7IJhICUmVP4GyMEDg59q5qeIjKraomruyae3bYvljy/u+m5evfh9bX3wkl8P+GtU/te1lkbxLoEzqI5bmMJ5V3bOnaZMKeOD7Vxel/F3Uhptvo3jLSNO8Y6NEoiWLUoh9qhj6ARXIw6kdsk03wp8UYPDfg2z06Xw+95qulXc93pF+LoxpA06bXEqYO9RjIUEAnr78fcaKlv4XsNY/tnT5pLqaaNrFJM3EAjx+8kXGFVsnHPY100sO7yjW1V9H/wAN/Vx1Kq0dPsejX/wovr+SPUvB+u6XF4Z1GNbmwl1bVFtHKt96NlPDMhypP0qiPgsLbL6t8TPh9pkXVmGqCdv++Y15P41U8dxPpvwW+H/hy+X/AE3bdao0bjmKKZ/3YI7ZAJrz1Dt+6APoMVVCnWnG8Z2WvTzFUlCLs4/iep2t38IPh/ILyzmuviJrkZ3Q+bbm00yFx0Yq3zy4PODx9OtcN4o8Xa7408TXGu+Irz7TezYHA2pGg+6iL0VR2H4nJJNY5BMbykHauNzY4XPTJ7ZqPqeK6qWHjGXO3eXd/wBaGU6rkrJWQ/g9K9d+HsEmkfs0fFDXroFba+it9Jtw3SSZien08wGvIUGG5r2vxCk0v7EHhRtJG60g1m4bVdn8MxLhC/tyo/FfWufMXdU4dJSX4a/oa4VWcpdkzxNMrzketGQR7UjPkHBzTMknJGRXonKOJpe4A5pB05HvijPPX/69ABnk56UdGJHXjvSccfrQT156UAKMDsTSZ45GaQnjqfWm5zjJIHYelADs8e9Jnk+meKOA2PTvSDr1xntQAwH060e9JkDHOBmlwANvvQAuc9BijHp3pBj1FA6+uDQAvGBjk1c0jUZdI1y01SCG3mktpkmEVzEJYpNrBgsiHhlOOQapj6UoI+tJpNWY07O6N/xl4tvvG3jW68S6jZafaT3IQNDYQ+VEgVQowvOTxyTyateBPiD4i+Hfif8Atnw/PGC6eVcW867orhM52uMjvyCCCD0rlxgnmkKntWUsPTnT9lJXja1ilUkpc6ep9A61+1V4ov8ARGtNH8PabpN467TeiZ52j/2kVgAD6E7sV4JJ5k0zyyu7yOxdmc5ZmJySSepOc/jW/wCBPA+reO/Eb2VpJFY6faJ9o1LVbr5YLCAfekc+uAcL1J/E166U8Ha54WguJYZtF+EHhqdvKmZAt/4mviMNsJ5y2MHsi+h+75tKlhsvbhhoWvvb8Pn2R1SlVxGtWXocD4G8G6Wmgy/ED4gNLbeErWQxw26HbNrNwP8Al3h/2f779AMj1IwfGvjXU/Hfib+1tSSG3hijEFlYW42wWUI+7FGvYAdT3PJ9BY8eeOtQ8e68l3cwQafptrGLbTdKtvlgsIB92NB64wWbqT7YrotE+AHxI1zwXH4msrGzSGaLzra0luNlxcRnoypjAyPuhiCfxFbSq06DVbFSUW9Fd7eXr3IUZTXs6SvY4/wi6r4kFu/+ruongb8s/wBDWFLbS288lvICHicofYg4/pVmCaTT9QjnwRNBIG2MMEFTyCPXjFa3ixIf7YTUrbm3v4xMrf7WBkfyP413J+96nE9Ja9RBd6Vq1uh1eZ7S+RQn2tE3rKB03j1/z7VqafYeHNMFve3N8t48wL2wliZYeDjc4GSRn1rjCT2rqLFprzwfA8CwGTT2Mcyyxq2ImOVfnoAcg1NSNtmRKPLtsdPB9v1Ft1wul64p/wCWlrdLFOgJ6LnHH+yQRXY6RpOqR2wt/IuL3TXPzWVziG4gP96M5K5HoDg+grgNLultwrzXunQkdre1R5D9CBgfmK7fTPFN3GQsTyIifN++YebIe2eyrxn6AnNeXio1HpE6qTitz0qHwjf3FmLi4eG3iiRjLe3LCNETGS7fTGT7g8814r4q1zSdd+JXhzQPDWW0DRx5FrIV2mc7zLLNjtuYcewHrXbWXxIv7OSO8gvpmIfKgsWEigheVPBVjv49BXI6rpum2H7RWspp0KQWcQ8+OFeBF5qI2wDsAXbA7VxYGlOFSXte10dNecHT9z5nWi4YjPFP8UWi3XwSbTH1DT7O51vVENub6YQo6W6lmwx/2mAqTT9NhvIbm+v79NO0iyXzb2/k+7CnoPVz0C+9eL/ETxsfGXixbi3t2stGsohZ6bZuf9XCD1b/AG3PzN+A7VvSpOtUSjtF3b/JGFP3IuT6mn/wqzxQE3rPoXl/89f7Vh2/nmi1svB3g+YX2v6ra+JtRiO6HSNNYtbhuxnmIwRn+EfrXAp5LE7VjJHX5RxTiBxXr+ym1actPLQzUktkauv+IdV8UeIrnWtYnEl1ORkKMIigYVFHZQOAKyyOMCkHFOreMVFKK2Jbu7s63wJ8Q9d8BXF7Hp8Fhf6bqCql/pmoQiWC6Vc4z3BGTgj16Gut/tT9n/xJ8+oeH/Evgq8b77aTIt7a59RG3zAewAryWiuerhITlzptPyNoVnFcr1Rq+J7XQdP8T3Np4Y1uXWdLUKYb2W2Nuz5XLAofQ8Z74rs/hB40sNH1a88G+LMTeEvESi1vY3OFgkI2pMD27Ant8rfw15vgZpw29wCPQ96qrh1Vpeym/n1v3JhVcJcyN/x54I1TwD48vPDmo7n8o+ZbXOMC4hbOyQfgCD6EEVzgxjjmvdNOkX42fBI+HnPmeOfCkJksWZvn1Gz4Bjz3YYA+oQ/xGvCULEEEEN0IIx+BFZ4OvKacKnxR0f8An8y69NRfNHZ7CtjPPU/nScZ6GnEdMdqb7HtXYYB25OD9KMjHIpD93j0pPf2oADR35GKOCf8A61LkdaAEPX8KQ4oJBPekI4I/CgBgOacOTmmfwn1p/TnOaAF46Gj6kUh+tBPv+dAB0IpRyab245ozg0APDfNx2q9ollbar4msNMvdVtdJtbmdIpb+7z5VspPMj45wBVAEZ54FX9DOir4lsH8RpeSaSs6m8jsmCzNF/EEJ4BNTP4WOO6PfBH4W1nwRLZWU91oHwc0KcG9viNl74qvR/COmckcL0RcE8/doeJLiwk8N2vj/AOJejRRaa1s1t4M8AxSGJFgxgXE23BWMcHdwXOO2K5cfE7w/q/jBdV8VaG76FoNtjw34RtBizEgOFWds9P43bBLkY4HXhPE/izXfGfii68ReIr1rq+uTlnxhUUcKiL0VFHAUdK8ijhajl72i/r8X1fyR21K0eXQxEztKt0I2mvqPw5+1HoGm/Days9U0HUpNcsbVLcR24T7POUUKr7y2UBAGRtJHOM181WWn3eoStFaRb2C7sZA44Gefwq03hvW1/wCXLj/rov8AjXRj8tw+OUYV1dRdzlo42WHk+R2bKN9dXGpand6hclfPup3nk2jA3OxY4Hpk1t6TF/bXhufRXYfabbM9qfUd1/z6j0rFu7W6sZlhuotjsu4DcDx07fSmW99cWN9Fd2zYkjbcvofUH2PSu7lVtDCXvq6DBHBBBHBzVvTtUutKv1urRhuAKsrDKup6qw7g1e1u3huoo9dsVIt7n/WL/wA85O4P1/n9axdo701qtRxfMtTpYrjSL6QSafqCaVOfvWtyuVGf+ecnYexrQFhqjQNELqwitzy8rXqEyfU+nHT+dcbDBNcSeVbwSSsBnbGhY4/CmvG0blXiKMvVWXBH1BrN076XElbRM7m2ubf+3tO0rT7wX19c3MNsJogRFbqWCnbn7zYJ56DJNarNfeIvjvrNrpI33F9qRtoc9AqnbuPsAuT9K5n4c7G+J+kyyY2W8jXTZ9I0Zv5gV0XhC8Ok+D/GHjlWK3nkCxs37rPcsdzD3CZNcddcjdt7W+9m1ON0kyL4o+NoNSvY/B3h6U/8I7o7lA4P/H9cjh7h/XnIX0HPcY9E/Zx8JaFeaFqHiy8tYbrUo7s2kHnIGFuqorEqDwGYv97qAvHU185iPYu0DOK98+BWqw+C/hv4k8XeIbxrPRpbqKG3BBJmmRW3bF6s3zBePQ+hrlzahKGBdOg/e09WdeDlF11Ka0O7+O/hDRtS+F2pa+9lBFqelos8N2iBXZd6q0bEfeUhuM9CBivkoHIr1z4sfGg+OdPTw9olpNZ6OHEk8k5AluWX7oIBIVAecZJJwT0xXkeB2q8jw1fD4ZRxD1/IWPq06lW9PYWiiivZOIdmim0ZNADqM03Jo5xn0oA2PC/iDUfCfjCw8R6RIEu7OQOAxwsi9GRv9lhkH6+1eh/Gzw/osk2jfEzwxH5ejeKYmnaD/nhdL/rV/E5J/wBpW9aoaD8CfiDq2nR6rqVtZeG9LZRIbvWpxBtXrnZ97pzg4qX4p+J/DA8HeG/hp4P1H+1dN0HzZrjVNuEurmQ/MU/2RluRxyACcZPlTqQqYmEqDu1dSttbz+ex2Ri40ZKp8vU8rJBY8UgHYcj1NKAMnFHTjHOa9U4xOxNGSBx09KOgFNPOKAHZ/wD1ikHBpM5PBpckdeDQAUmaOrdKQ8ewoAYOtGcUA8ijOV/HNAC5yOaXPPofem/qKOgFADs8EfrRwTSdgPXvS96AD1PpSik4GeMmlHb9aAAktyR+lGB1xk0Z/H60HpigDZ8PSMj6iT/z5yf0rLWRnABdjx0zVnSr+PT55mlhMySxGIqG28E1ML7Qh00SbP8A18mpZg01Nu1yXXkXbph5ybJDn8TWQUA55/Gr2p6hHfvAYYDCkUYiVWbccA+tUCefoKaLpJqNma2gXyR3Mml3YzaXg8sgn7r9j7dv0NULuCayv5bSY/NG2M+o7H8RUG3nIOD1z6V0Gshb7RrDWRjzGUwTf7w/yfzqdmHwy9TW8LSeVoStbgB/MYzH+8e2fwximeMfKuLW0uzGEm3NGxzyy9Rn6H+dctb3lzZzCS2maNs87TwfqO9T6lfSz6jM0rEq4UqM8JwOlTyPmuQqbU7mn4QZ7e/1e+XgwaTcsp9yAo/nV+8uWs/gPpFquf8ATtXnnf3EUYRf5mp/h34e1fxTda1o+hWZubyfTzGBkKiAuMs7HhV46n9a77WrX4e/D3wH4fg1eK28c6xbSXLW8NtKRpqSFwXMjdZQpwMDgkHgVx4ivGNVRWrvt8jtp02029EcH4P+H91reiS+K9enOi+E7T5rjVJhgzc/6u3U8ySE8DHAPr0qp488aL4surSw0yy/svw7pUf2fTNNVs+UneRz/FI3Vj749SaHi/xx4n8a30c+v6iZIYBi2soF8u2tl6bY4xwOOM8n3rBaOWLZ5kbJvUOu4Y3KehHtW8KUnLnq79F0X/BFKaS5YCYxS0UV1GQooJwaSkIyaAHZFLTMYpQTigB1bngq90/T/iV4fvtWRHsYNRgknD9NgkGSfYcH8Kp6JoWteI9VGm6DpV5qd4VL/Z7SIyPtHViB0AyOfevQdN/Z2+KWqSItzoK6VA5w899OiiMHqSqkscemK5MVXowi41JpX8zalTnJpxVyH9oCXXpfjlrdrrt5cXECyCWxR3JiEDKCmxenrk9yDmvLsYORn2r0743+I9I1vxlpWnaLf/2pDoumx6bLqYHF1Ip5IPcD16ZJxnrXmOcClgIuOHgmraDxLvVYobBozk5oBHXPtSd/pXYYB1H3qTOeooycA0vGOKAE7f54o4C9MZo6ijgigA59fxpM5ORwaD0xQeBx9aAI+hGaUnFNyO9OyO3egAz7YpRyaQ9OlKMdqAFJ4x1oPP4U0dKOpyaAHDpQOmaSlHSgBaX1/rTe/Wl68d6ADgnOOKXjnnPtik7YNA7kfpQAufpmlB+UU3pzRnvQA4k4rb01/tHhPU7QjJiZbhQf1/lWFnvW14e+ZtQixkPaNx9P/wBdTLYzq/DcywQxArb0fwxqfirxfp+jaWE869wBJJwkSqPndj2VQCT/APXrBjzwfavQvDOpnw98Kte1k5F1fuNHtJE4aNGG+Yj6qAKyrylGN47msbNq5pat4usbTwvrfgTwNm28PWdoRPegYn1abOGmkbrs4wqdMflXHatdq/w98LwZH7tbkED3kqfRtNnl0fWZrBDdxfZNrCIZZOTgFevasC6uWnsLK2bAW3Vgo+rZNZ06UYuyBzbbuVwQa0r0fafD9heLyYN1rJ9Qcj/PvWWCB0qbTtRht76awv222V4AGb/nm46N/L9K6WupnJdUREijcKnvbC4sLnyplyDykg+649QarYqk7lJ3Vx3ajtSc4ozQMdSE80ZpKALenatqmj3bXWk6ld2E7IYzNazNE5U9V3KQcHA49q9L+Dn/AAmuv/E+z1mDXb5bLSZVudRvby8cwxxDJKsWbBLAEY9Mk4ArygjIr03S5p7j9kvXrDSpGimtdXS41FE4aW3YLjPqBgcf7BrixsU4WS1lpftc2oNqV+2pyvju+0bUviXr194fC/2ZPeyPbbV2qVJ6qOwJyR7Gub6//WqNWBXGc+1PyNuQOvOK6qcOSKiuhlJ3dw75o7cdKCcnOM9M0dQR196sQdTjtRnmg5z9R+NJkDvQAue36UnfIo6nmk+v1oAN2eB+FJ6+9B6g570mfxoAYOOQaX60nTk/nRkGgB9FNzgUZP4elADscfypPxoByefSlxQAgp3am88gCnc4oAXsOOaOppARjntQWHWgBw6/hR29KaDnpS5xQAE0dvej3H0o49aAAda2vDp2yahJ/dtGrG7YFa2lkReHNVufVViH1P8A+ulLYzq/CZqngY9K6TUZmHwv0G1B4a9upWA9eAK52GCW5uo7a3XdJIwRRnua3ryG2n0OLTbS/WebTt7soUgPk/NtPfFRNXsNzUdGQ+Hrm5spbi4s7iWCUAAPG2D0P51rxXWkeNJhpusCDS9fb5LfUkASG6bskyj7pPZh/wDWrC0c5huCOh2/1qjeQAXbqw61LgpSfRlxeoX2n3ul6pPpuoW7wXUDlJI36qf6juD3FULu382DcPvLz9RXoV+y+K/hquszHfq+iFLa5lJy1xbN/q3b1Kn5c1xOdrcVVKpzLXdDasLpPiGSztBY30C3tkf+WUnVPdT2/wA9K0xY6XqeG0TUF8w/8ut2djj6HvXMXcJjl3L91j+RqAetVy9jNx1ujfurG9sW23drLEOm4j5T+PSq/aks/Ees2KbIrtpYv+eU3zr+taEGr6XqMqxXegus7dG09juJ/wB3vRdoLtbmfmlrrbfwNdahH5timoRA9Eu7UqfzH+FRT/D7xVEfk0x5x6xMM/kcGo9tDZspNM5cda9J+GWF8K+PWuP+PM6IyyZ6bzu2/j96ufs/hx4vvJsPpn2KMH5prxwioPU4JP6Vf8Qa9pXh7wS/gbwzdi+a4lEuqako+WVl6Rp6gYHTgAdyTWGIkqsfZwd9vka03yvmZwe3Cgeg5oA5+lG/Iz/Oj1x9K7DMNx6Cik7entRmgA6D8KMnFGfpSZ46flQAowD70DPTmkOQen50nXPPfFAC59aaRS57UmeMdqAIwcdaWm9+aXOQKAHDrS/Smr3+lL2FACgnNKDzg0meMCjPfvQAueaBTc/nTvxoAXPbijNJS579aAAdPwpcE8n9KTninZ4oATPzcdKMnFJj9KM0AOFbU6/ZvBlpF/FdSmYj2HT+lYsaGaZIU+87BR9ScVt6/Kv9oR2kZ/d2sSxDHr1P9Kl7mUtZJGfa3MllfQ3cWN8TBgD0PtV57/TYvPnsLSaO5nUqd7DagPXGKy6UU7FOCbuzW0NFEU+TxlR9ODUOrKFuVOO1V7W6e1clVDKw5BplxO9xMZHGOwFQovmuVY6XwRPuvdX01uYb3S543U+qjcp/A1yaksik+grofBj7PFJYnj7JOP8AxyudT/Vr9BSirTkO4rIrqUYcGs2SJ4ZCGBx2PrWnTZYhJHjv2PpWoFK3t5bq6jtoULySuERc4yScCu6utRg8HQnRtBjhN+EH2vUHXc24j7q59PyHuaxfBFup8aRSTD5baOScg+wwP51nTztd3ct1IctK5kJ+pzWclzSs9ieti+fEviF3LNrd/wBe0xH6DAqVfFniWMYXXdQH/bdjWKTzS5Pam6cXuijQvta1bUk8vUNTvLpf7kszMv5ZxWeQMcflSKccCgk//qqlFLRAFJmg4x1NJ+FMB3fNIDkZpP07YpcjHBwKAFzxSZx9aQnP+FHfOaAHE46daM5yKaT68/jR2xQAdKTPFHegnnk0ARil70nal469P60AL0XP4Uvam5J7Uc0ALnjrzRnJPNN70vegBQSeOPal6j0po5NOzQAvfml+nPtSUdqAF5PQjH1pTTe9L1NAASaDSEH60vNADoZXgnSeM4dCGB9DTzPJLKzzMWZiSzHqTUX40dsUAWAQ3Q06quTzhsGpBKQef0oAm7Ug5pocN0pQD1xQBs+GG2a8zelvKP8Ax2sRBhF+gq5ZXRs7kyjqUZPzFVQMACpS1uJbhS9BSd6U/dPGcVQzc0w/2f4V1PVjxLMv2SE9znrj/PaucA2rweMVveIz9lstN0hDgQwiWQDu7f5P51gZyM96iK6kQ11DPSim9uKM1ZY4+pPNIc9AaO2TR3NACcil6Unajd15oAUHNGB1pAaMkk0AB9qPfFGaTPFABmlPfmk696OvegAzwKMUd6SgBgOAadyfem5ozxQAv0ozjpSZ5pfU0AKOlA69vxpKO9ACjjrSjp+lNPODSg0AOoB6CkzRQAvel70n+eKOe5oAdnNFNOB3pM560AO7Ue36UmeOlKDx2P1oAMAikwQcEilpPc0AL0HHWnB2UjGT7U3jFGeaAJ1mH8Qp29W5DVVyBzS5/MdKALQ5p8Y3TIvqwH61UDsOn6U9Lho3VyAdpB6+lAnsaviqTPimcHsqAfl/9esbrzVvVb8alq0t6IzGHx8pbOMDFU+9KOiFBWikw5zijjNGT3pPemUO5/Kkz6UZ5wOTSdvyoAXPrRnHQmgnp/Wm+9ACnr1xR6Y5ozSA0AB60c7aDnmg8fSgA5HQ/hRnjNIDxwaPegBSe9JkHmkzR3oAbgE9aM8cjFLjmjGaAE6ds0vagjgUHgcUAAPNLTc0ooAX3zzQR6UYo6CgBRx0pecUg5pT60AHXijt0oyPWjGTjNACN04oNKevUH3pOooAUH8aAMZOaAOadjg0AHek6HBo+XufzpCQMYx9aADPPNL2zScE5yD9KXbxQA3tSjk5z0/WjApcjFAC5pCfWkp23igBO1GKQ0uQaAD3BzSc0dutIDQA4nJxSfSj3FH0oAPpR7UdRQR8tABnBwee1IPzpcd6TvQAZozSZHrQSPWgBeaT2NA5oxQAlL/FS7eKOlAH/9k=', theme: 'pensamento', sans: true }
+        };
+        // Current Active Data
+        let appData = JSON.parse(JSON.stringify(defaultData));
+
+        // On Page Load Initialization
+        window.onload = function() {
+            loadFromLocalStorage();
+            updateFormInputs();
+            updateGraphics();
+            renderFavs();
+            loadBible();
+        };
+
+        // --- LOCAL STORAGE ---
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('aster_editor_data', JSON.stringify(appData));
+            } catch(e) {
+                console.warn('LocalStorage save failed', e);
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('aster_editor_data');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appData = JSON.parse(JSON.stringify({ ...defaultData, ...parsed }));
+                if (appData.brands.canal.n1 === 'MEU' && appData.brands.canal.n2 === 'CANAL') {
+                    appData.brands.canal = JSON.parse(JSON.stringify(defaultData.brands.canal));
+                    if (appData.brand === 'canal') { appData.logo = appData.brands.canal.logo; appData.theme = 'pensamento'; }
+                }
+                }
+            } catch(e) {
+                console.warn('LocalStorage load failed', e);
+            }
+        }
+
+        // --- MODEL SWITCHING ---
+        const MODELS = ['A', 'B', 'C', 'D', 'E'];
+        function switchModel(m) {
+            currentModel = m;
+            MODELS.forEach(k => {
+                document.getElementById('tab-model-' + k.toLowerCase()).className = 'shrink-0 px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 ' + (k === m ? 'bg-aster-graphite text-white shadow' : 'text-gray-400 hover:text-white');
+                document.getElementById('form-model-' + k.toLowerCase()).classList.toggle('hidden', k !== m);
+            });
+            document.getElementById('form-title').innerHTML = '<i class="fa-solid fa-sliders text-xs text-gray-400"></i> Parâmetros do Modelo ' + m;
+            renderFavs();
+            updateGraphics();
+        }
+
+        // --- PREVIEW BG TOGGLE ---
+        function setPreviewBg(mode) {
+            currentBgMode = mode;
+            const viewport = document.getElementById('preview-viewport');
+            const btnGrid = document.getElementById('bg-btn-grid');
+            const btnDark = document.getElementById('bg-btn-dark');
+            const btnVideo = document.getElementById('bg-btn-video');
+
+            viewport.classList.remove('checkerboard', 'bg-aster-black', 'video-mockup');
+            
+            btnGrid.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition";
+            btnDark.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition";
+            btnVideo.className = "px-2.5 py-1 rounded text-gray-400 hover:text-white transition";
+
+            if (mode === 'grid') {
+                viewport.classList.add('checkerboard');
+                btnGrid.className = "px-2.5 py-1 rounded text-white bg-aster-graphite transition";
+            } else if (mode === 'dark') {
+                viewport.classList.add('bg-aster-black');
+                btnDark.className = "px-2.5 py-1 rounded text-white bg-aster-graphite transition";
+            } else if (mode === 'video') {
+                viewport.classList.add('video-mockup');
+                btnVideo.className = "px-2.5 py-1 rounded text-white bg-aster-graphite transition";
+            }
+        }
+
+        // --- MARCAS (Aster / outro canal) ---
+        const curBrand = () => appData.brands[appData.brand];
+        const brandName = () => (curBrand().n1 + ' ' + curBrand().n2).trim();
+        const brandSlug = () => brandName().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '') || 'MARCA';
+        const brandFs = (b, c1, c2) => ({ f1: Math.max(8, Math.min(c1, Math.floor(250 / (Math.max(1, b.n1.length) * 1.15)))), f2: Math.max(16, Math.min(c2, Math.floor(250 / (Math.max(1, b.n2.length) * (b.sans ? 0.88 : 0.72))))) });
+        function brandLabels() {
+            $('hdr-n1').textContent = curBrand().n1; $('hdr-n2').textContent = curBrand().n2;
+            [...$('sel-brand').options].forEach(o => { const x = appData.brands[o.value]; o.textContent = (x.n1 + ' ' + x.n2).trim(); });
+        }
+        function brandUI() {
+            const b = curBrand();
+            $('brand-n1').value = b.n1; $('brand-n2').value = b.n2; $('brand-handle').value = b.handle;
+            brandLabels(); $('sel-brand').value = appData.brand;
+        }
+        function brandChanged() {
+            const b = curBrand();
+            b.n1 = $('brand-n1').value.toUpperCase(); b.n2 = $('brand-n2').value.toUpperCase(); b.handle = $('brand-handle').value;
+            appData.modelD.handle = b.handle;
+            brandLabels(); updateFormInputs(); updateGraphics();
+        }
+        function switchBrand(k) {
+            const prev = curBrand(); prev.logo = appData.logo || ''; prev.theme = appData.theme || 'silver';
+            appData.brand = k;
+            const b = curBrand(); appData.logo = b.logo || ''; appData.theme = b.theme || 'silver'; appData.modelD.handle = b.handle;
+            updateFormInputs(); renderFavs(); roleChanged();
+        }
+
+        // --- FUNÇÕES E INSTITUIÇÕES ---
+        const $ = id => document.getElementById(id);
+        const TEAM_ROLES = ['Chefe de redação', 'Colunista', 'Diagramador', 'Editor', 'Editor-chefe', 'Redator', 'Repórter', 'Revisor'];
+        const GUEST_ROLES = ['Apóstolo', 'Bispo', 'Diácono', 'Evangelista', 'Missionário', 'Padre', 'Pastor', 'Pastora', 'Presbítero', 'Teólogo'];
+        const INSTS = [
+            ['Assembleia de Deus', 'AD'], ['Congregação Cristã no Brasil', 'CCB'], ['Deus é Amor', 'IPDA'],
+            ['Igreja Adventista do Sétimo Dia', 'IASD'], ['Igreja Anglicana', ''], ['Igreja Batista', ''], ['Igreja Bola de Neve', ''],
+            ['Igreja Católica', ''], ['Igreja do Evangelho Quadrangular', 'IEQ'], ['Igreja Internacional da Graça de Deus', 'IIGD'],
+            ['Igreja Luterana', 'IECLB'], ['Igreja Maranata', ''], ['Igreja Metodista', ''], ['Igreja Mundial do Poder de Deus', 'IMPD'],
+            ['Igreja Ortodoxa', ''], ['Igreja Presbiteriana do Brasil', 'IPB'], ['Igreja Renascer em Cristo', ''],
+            ['Igreja Sara Nossa Terra', ''], ['Igreja Universal do Reino de Deus', 'IURD'], ['O Brasil para Cristo', 'OBPC']
+        ].sort((a, b) => a[0].localeCompare(b[0], 'pt'));
+        function initInst() {
+            $('a-inst').innerHTML = '<option value="">Sem instituição</option>' + INSTS.map((x, i) => `<option value="${i}">${x[0]}${x[1] ? ' (' + x[1] + ')' : ''}</option>`).join('') + '<option value="__o">Outra (digitar)…</option>';
+        }
+        function fillRoles(g) {
+            const o = (g === 'guest' ? GUEST_ROLES : TEAM_ROLES).map(r => `<option>${r}</option>`).join('');
+            $('a-r1').innerHTML = '<option value="">Função…</option>' + o + '<option value="__o">Outra (digitar)…</option>';
+            $('a-r2').innerHTML = '<option value="">2ª função (opcional)</option>' + o;
+        }
+        function roleUI() {
+            $('a-r1c').classList.toggle('hidden', $('a-r1').value !== '__o');
+            $('a-instrow').classList.toggle('hidden', $('a-group').value !== 'guest');
+            $('a-instc').classList.toggle('hidden', $('a-inst').value !== '__o');
+        }
+        function roleChanged(groupChanged) {
+            if (groupChanged) fillRoles($('a-group').value);
+            roleUI();
+            const r1 = $('a-r1').value === '__o' ? $('a-r1c').value.trim() : $('a-r1').value;
+            const parts = [r1, $('a-r2').value].filter(Boolean);
+            if ($('a-group').value === 'aster') parts.push(brandName());
+            else if ($('a-inst').value !== '') {
+                const iv = $('a-inst').value, full = iv === '__o' ? $('a-instc').value.trim() : INSTS[+iv][0], sig = iv === '__o' ? '' : INSTS[+iv][1];
+                if (full) parts.push((parts.join(' · ') + ' · ' + full).length > 58 && sig ? sig : full);
+            }
+            $('input-a-role').value = parts.join(' · ').toUpperCase();
+            updateGraphics();
+        }
+
+        // --- FORM DATA SYNC ---
+        const FIELDS = {
+            A: { name: 'input-a-name', role: 'input-a-role', instagram: 'input-a-instagram', showInstagram: 'toggle-a-show-instagram', showBrand: 'toggle-a-show-brand', roleGroup: 'a-group', r1: 'a-r1', r2: 'a-r2', inst: 'a-inst', instc: 'a-instc', r1c: 'a-r1c' },
+            B: { text: 'input-b-text', reference: 'input-b-reference', header: 'input-b-header', showIcon: 'toggle-b-show-icon', autofont: 'toggle-b-autofont', showBadge: 'toggle-b-show-badge' },
+            D: { platform: 'input-d-platform', call: 'input-d-call', handle: 'input-d-handle', button: 'input-d-button' },
+            E: { label: 'input-e-label', number: 'input-e-number', title: 'input-e-title', subtitle: 'input-e-subtitle', showBrand: 'toggle-e-brand' },
+            C: { text: 'input-c-text', reference: 'input-c-ref', header: 'input-c-header', quotes: 'toggle-c-quotes', showIcon: 'toggle-c-icon', showBadge: 'toggle-c-badge' }
+        };
+        const mkey = m => 'model' + m;
+        function updateFormInputs() {
+            if (!$('a-inst').options.length) initInst();
+            fillRoles(appData.modelA.roleGroup || 'aster');
+            for (const m of MODELS) for (const [k, id] of Object.entries(FIELDS[m])) {
+                const el = document.getElementById(id), v = appData[mkey(m)][k];
+                if (el.type === 'checkbox') el.checked = !!v; else el.value = v ?? '';
+            }
+            document.getElementById('sel-theme').value = appData.theme || 'silver';
+            roleUI();
+            brandUI();
+        }
+        function readFormInputs() {
+            const m = currentModel;
+            for (const [k, id] of Object.entries(FIELDS[m])) {
+                const el = document.getElementById(id);
+                appData[mkey(m)][k] = el.type === 'checkbox' ? el.checked : el.value;
+            }
+            appData.theme = document.getElementById('sel-theme').value;
+            saveToLocalStorage();
+        }
+        function resetDefaults() { appData[mkey(currentModel)] = JSON.parse(JSON.stringify(defaultData[mkey(currentModel)])); updateFormInputs(); updateGraphics(); }
+        function clearFields() {
+            const d = appData[mkey(currentModel)];
+            for (const k of Object.keys(FIELDS[currentModel])) if (typeof d[k] === 'string') d[k] = '';
+            updateFormInputs(); updateGraphics();
+        }
+        const PRESETS = {
+            frase: { text: 'A fé é a certeza daquilo que esperamos.', reference: 'AUTOR · FONTE', header: 'FRASE', quotes: true },
+            titulo: { text: 'Título da matéria aqui', reference: 'SUBTÍTULO OU CHAMADA', header: 'DESTAQUE', quotes: false },
+            insta: { text: 'Siga a Revista Aster no Instagram', reference: '@REVISTAASTER', header: 'SIGA', quotes: false }
+        };
+        function onPlatform() {
+            const y = $('input-d-platform').value === 'youtube';
+            $('input-d-call').value = y ? 'INSCREVA-SE NO CANAL' : 'SIGA NO INSTAGRAM';
+            $('input-d-button').value = y ? 'INSCREVER-SE' : 'SEGUIR';
+            updateGraphics();
+        }
+        function preset(k) { Object.assign(appData.modelC, PRESETS[k]); if (k === 'insta') { appData.modelC.text = 'Siga ' + brandName() + ' no Instagram'; appData.modelC.reference = curBrand().handle.toUpperCase(); } updateFormInputs(); updateGraphics(); }
+
+        // --- FAVORITOS (A: pessoas · B: versículos · C: textos) ---
+        const favKey = () => appData.brand === 'aster' ? currentModel : appData.brand + ':' + currentModel;
+        const getFavs = () => { try { return JSON.parse(localStorage.getItem('aster_favs') || '{}'); } catch (e) { return {}; } };
+        function renderFavs(sel) {
+            const l = getFavs()[favKey()] || [], s = document.getElementById('fav-select');
+            s.innerHTML = `<option value="">★ Favoritos (${l.length}) — toque para carregar</option>` + l.map((x, i) => `<option value="${i}">${escapeHtml(x.label)}</option>`).join('');
+            if (sel !== undefined) s.value = String(sel);
+        }
+        function saveFav() {
+            const d = JSON.parse(JSON.stringify(appData[mkey(currentModel)]));
+            const label = (currentModel === 'A' ? d.name : currentModel === 'B' ? d.reference : currentModel === 'D' ? d.platform + ' ' + d.handle : currentModel === 'E' ? d.number + ' ' + d.title : (d.header + ' · ' + d.text)).trim().slice(0, 45);
+            if (!label) return;
+            const all = getFavs(), l = all[favKey()] || [], i = l.findIndex(x => x.label === label);
+            if (i >= 0) l[i] = { label, d }; else l.push({ label, d });
+            all[favKey()] = l;
+            try { localStorage.setItem('aster_favs', JSON.stringify(all)); } catch (e) { alert('Sem espaço para salvar (foto muito grande?).'); }
+            renderFavs(i >= 0 ? i : l.length - 1);
+        }
+        function loadFav() {
+            const v = document.getElementById('fav-select').value; if (v === '') return;
+            const x = (getFavs()[favKey()] || [])[+v]; if (!x) return;
+            appData[mkey(currentModel)] = JSON.parse(JSON.stringify(x.d));
+            updateFormInputs(); updateGraphics();
+        }
+        function delFav() {
+            const v = document.getElementById('fav-select').value; if (v === '') return;
+            const all = getFavs(); (all[favKey()] || []).splice(+v, 1);
+            try { localStorage.setItem('aster_favs', JSON.stringify(all)); } catch (e) {}
+            renderFavs();
+        }
+
+        // --- FOTO / LOGO ---
+        function pickAsset(inp, kind) {
+            const file = inp.files[0]; if (!file) return;
+            const r = new FileReader();
+            r.onload = () => {
+                const im = new Image();
+                im.onload = () => {
+                    const s = Math.min(1, (kind === 'photo' ? 400 : 300) / Math.max(im.width, im.height));
+                    const c = document.createElement('canvas'); c.width = im.width * s; c.height = im.height * s;
+                    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+                    const d = c.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.88);
+                    if (kind === 'photo') appData.modelA.photo = d; else appData.logo = d;
+                    updateGraphics();
+                };
+                im.src = r.result;
+            };
+            r.readAsDataURL(file);
+        }
+        function clearAsset(kind) { if (kind === 'photo') appData.modelA.photo = ''; else appData.logo = ''; updateGraphics(); }
+
+        // --- TEMAS + SELEÇÃO DO GERADOR ---
+        const THEMES = { gold: ['#fff3c4', '#d4af37', '#9a7b1c'], rose: ['#ffd6d6', '#ff6b6b', '#b83232'], blue: ['#d6ecff', '#5aa9ff', '#2b5fa8'], pensamento: ['#f1d675', '#d4af37', '#9a7b1c'] };
+        const DARKS = { pensamento: ['#050a07', '#0e2a1b'] };
+        function applyTheme(svg) {
+            const t = THEMES[appData.theme]; if (!t) return svg;
+            const recolor = (s, re, cols) => s.replace(re, g => { let k = 0; return g.replace(/stop-color="#[0-9a-f]{6}"/g, () => `stop-color="${cols[k++]}"`); });
+            svg = recolor(svg, /<linearGradient id="silverGradB?"[\s\S]*?<\/linearGradient>/, t);
+            const d = DARKS[appData.theme];
+            return d ? recolor(svg, /<linearGradient id="darkGrad[BD]?"[\s\S]*?<\/linearGradient>/, d) : svg;
+        }
+        function genCurrent(W = 1600, noText = false) {
+            const d = appData[mkey(currentModel)];
+            const s = currentModel === 'A' ? generateSVGModelA(d, W) : currentModel === 'D' ? generateSVGModelD(d, W) : currentModel === 'E' ? generateSVGModelE(d, W) : generateSVGModelB(noText ? { ...d, __noText: true } : d, W);
+            return applyTheme(s);
+        }
+        function updateGraphics() {
+            readFormInputs();
+            $('tab-d-label').textContent = appData.modelD.platform === 'youtube' ? 'INSCREVER-SE' : 'SEGUIR';
+            document.getElementById('svg-container').innerHTML = genCurrent();
+        }
+
+        // --- SVG MODEL A GENERATOR (Lower Third) ---
+        function generateSVGModelA(data, W = 1600) {
+            const width = W, dx = W - 1600;
+            const height = 180;
+
+            // Auto text sizing calculation for name
+            let nameFontSize = 52;
+            if (data.name.length > 22) nameFontSize = 40;
+            if (data.name.length > 30) nameFontSize = 32;
+
+            const showInsta = data.showInstagram && data.instagram.trim() !== "";
+            const showBrand = data.showBrand;
+            const photo = data.photo || '', tx = photo ? 125 : 0;
+            const bn = curBrand(), bf = brandFs(bn, 13, 44);
+            const textMaxW = (showBrand ? 1050 : 1350) + dx - tx;
+            nameFontSize = Math.max(22, Math.min(52, Math.floor(textMaxW / (Math.max(1, data.name.length) * 0.5))));
+            const roleStr = (data.role || '').toUpperCase();
+            const roleFs = Math.max(10, Math.min(14, Math.floor(textMaxW / (Math.max(1, roleStr.length) * 0.95))));
+            const insta = (data.instagram || '').replace(/^@+/, '').replace(/\s+/g, '').toLowerCase();
+
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <!-- Silver/Metal Gradient -->
+                    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="50%" stop-color="#d0d0d0"/>
+                        <stop offset="100%" stop-color="#a0a0a0"/>
+                    </linearGradient>
+                    <!-- Dark Graphite Gradient -->
+                    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#070707"/>
+                        <stop offset="70%" stop-color="#141414"/>
+                        <stop offset="100%" stop-color="#0a0a0a"/>
+                    </linearGradient>
+                    <!-- Subtle Noise Texture Pattern -->
+                    <pattern id="noise" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <rect width="100" height="100" fill="#000000" fill-opacity="0"/>
+                        <circle cx="20" cy="20" r="1" fill="#ffffff" fill-opacity="0.03"/>
+                        <circle cx="70" cy="50" r="1" fill="#ffffff" fill-opacity="0.02"/>
+                        <circle cx="40" cy="80" r="1" fill="#ffffff" fill-opacity="0.03"/>
+                    </pattern>
+                </defs>
+
+                <style>
+                    .serif-title { font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif; font-weight: 700; fill: #ffffff; }
+                    .sans-subtitle { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 600; fill: #d1d1d1; letter-spacing: 0.22em; }
+                    .sans-insta { font-family: 'Inter', sans-serif; font-weight: 400; fill: #ffffff; letter-spacing: 0.05em; }
+                    .brand-rev { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; fill: #111111; letter-spacing: 0.45em; }
+                    .brand-aster { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 44px; fill: #000000; letter-spacing: 0.08em; }
+                </style>
+
+                <!-- MAIN HORIZONTAL BLACK BAR -->
+                <rect x="140" y="20" width="${showBrand ? 1160 + dx : 1420 + dx}" height="140" fill="url(#darkGrad)" rx="2"/>
+                <rect x="140" y="20" width="${showBrand ? 1160 + dx : 1420 + dx}" height="140" fill="url(#noise)"/>
+
+                <!-- Top & Bottom Accent Fine Silver Lines -->
+                <line x1="140" y1="20" x2="${showBrand ? 1300 + dx : 1560 + dx}" y2="20" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6"/>
+                <line x1="140" y1="160" x2="${showBrand ? 1300 + dx : 1560 + dx}" y2="160" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+
+                <!-- LEFT PANEL: SILVER SQUARE WITH 4-POINT ASTER STAR -->
+                <g id="left-star-panel">
+                    <rect x="0" y="20" width="140" height="140" fill="url(#silverGrad)"/>
+                    <!-- Diagonal Slash Effect on Panel -->
+                    <polygon points="120,20 140,20 140,160 100,160" fill="#ffffff" fill-opacity="0.2"/>
+                    <!-- Aster 4-Point Star -->
+                    ${appData.logo ? `<image href="${appData.logo}" x="20" y="40" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>` : `<path d="M70,45 C71.8,70 85,82.2 110,84 C85,85.8 71.8,98 70,123 C68.2,98 55,85.8 30,84 C55,82.2 68.2,70 70,45 Z" fill="#000000"/>`}
+                    <!-- Divider Line -->
+                    <line x1="140" y1="20" x2="140" y2="160" stroke="#414141" stroke-width="2"/>
+                </g>
+
+                ${photo ? `<defs><clipPath id="pc"><circle cx="228" cy="90" r="52"/></clipPath></defs><image href="${photo}" x="176" y="38" width="104" height="104" preserveAspectRatio="xMidYMid slice" clip-path="url(#pc)"/><circle cx="228" cy="90" r="52" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="2"/>` : ''}
+                <!-- CENTER AREA: TEXT CONTENT -->
+                <!-- Person Name -->
+                <text x="${175 + tx}" y="${showInsta ? 78 : 92}" class="serif-title" font-size="${nameFontSize}">${escapeHtml(data.name)}</text>
+                
+                <!-- Role / Subtitle -->
+                <text x="${178 + tx}" y="${showInsta ? 106 : 122}" class="sans-subtitle" font-size="${roleFs}">${escapeHtml(roleStr)}</text>
+
+                <!-- Instagram Handle Row (Conditional) -->
+                ${showInsta ? `
+                <g id="instagram-row" transform="translate(${178 + tx}, 126)">
+                    <!-- Instagram Icon SVG -->
+                    <rect x="0" y="0" width="16" height="16" rx="4" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="8" cy="8" r="4" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                    <circle cx="12.5" cy="3.5" r="1" fill="#ffffff"/>
+                    <text x="24" y="13" class="sans-insta" font-size="14">@${escapeHtml(insta)}</text>
+                </g>
+                ` : ''}
+
+                <!-- RIGHT PANEL: BRANDING REVISTA ASTER (Conditional) -->
+                ${showBrand ? `
+                <g id="right-brand-panel">
+                    <!-- Diagonal Polygon Panel -->
+                    <polygon points="${1300+dx},20 ${1600+dx},20 ${1600+dx},160 ${1260+dx},160" fill="url(#silverGrad)"/>
+                    <!-- Diagonal Dark Divider Line -->
+                    <line x1="${1300+dx}" y1="20" x2="${1260+dx}" y2="160" stroke="#000000" stroke-width="3"/>
+                    
+                    <!-- Revista Aster Logo Text -->
+                    <text x="${1440+dx}" y="72" text-anchor="middle" class="brand-rev" style="font-size:${bf.f1}px">${escapeHtml(bn.n1)}</text>
+                    <text x="${1440+dx}" y="118" text-anchor="middle" class="brand-aster" style="font-size:${bf.f2}px${bn.sans ? ';font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:0.04em' : ''}">${escapeHtml(bn.n2)}</text>
+                    
+                    <!-- Decorative Geometric Accent Line -->
+                    <line x1="${1380+dx}" y1="130" x2="${1500+dx}" y2="130" stroke="#111111" stroke-width="1"/>
+                </g>
+                ` : ''}
+            </svg>
+            `;
+        }
+
+        // --- SVG MODEL B GENERATOR (Citação Bíblica) — altura dinâmica, quebra de linha automática ---
+        function generateSVGModelB(data, W = 1600) {
+            const width = W, dx = W - 1600;
+            let verse = (data.text || '').trim().replace(/^["'“”‘’«]+|["'“”‘’»]+$/g, '').trim();
+            if (data.quotes !== false) verse = '“' + verse + '”';
+            const maxW = 1085 + dx;
+            const wrap = (txt, fs) => {
+                const maxChars = Math.floor(maxW / (fs * 0.46));
+                const out = []; let cur = '';
+                for (const w of txt.split(/\s+/)) {
+                    if (cur && (cur + ' ' + w).length > maxChars) { out.push(cur); cur = w; }
+                    else cur = cur ? cur + ' ' + w : w;
+                }
+                if (cur) out.push(cur);
+                return out;
+            };
+            let fs = 36, lines = wrap(verse, fs);
+            if (data.autofont) {
+                for (const s of [38, 34, 30, 28, 26, 24, 22]) { fs = s; lines = wrap(verse, fs); if (lines.length * fs * 1.25 <= 112) break; }
+            }
+            const lh = fs * 1.25, blockH = lines.length * lh;
+            let startYv;
+            const barTop = 45, barH = Math.max(145, Math.round(blockH + 86));
+            const bottom = barTop + barH, height = Math.round(bottom + 20), cy = barTop + barH / 2;
+            const regTop = barTop + 12, regH = (bottom - 46) - regTop;
+            const startY = regTop + (regH - blockH) / 2 + fs * 0.85;
+            window.lastB = { lines, fs, lh, startY };
+            const showBadge = data.showBadge && data.header.trim() !== "";
+            const showIcon = data.showIcon;
+            const ref = escapeHtml((data.reference || '').toUpperCase());
+            const bn = curBrand(), bf = brandFs(bn, 12, 42);
+
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="silverGradB" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="50%" stop-color="#e0e0e0"/>
+                        <stop offset="100%" stop-color="#a8a8a8"/>
+                    </linearGradient>
+                    <linearGradient id="darkGradB" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#080808"/>
+                        <stop offset="100%" stop-color="#161616"/>
+                    </linearGradient>
+                </defs>
+                <style>
+                    .verse-style { font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 600; fill: #ffffff; }
+                    .ref-style { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 700; fill: #e0e0e0; font-size: 15px; letter-spacing: 0.25em; }
+                    .header-badge-style { font-family: 'Montserrat', sans-serif; font-weight: 700; fill: #000000; font-size: 12px; letter-spacing: 0.3em; }
+                    .brand-rev-b { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; fill: #111111; letter-spacing: 0.45em; }
+                    .brand-aster-b { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 42px; fill: #000000; letter-spacing: 0.08em; }
+                </style>
+
+                ${showBadge ? `
+                <g id="top-header-badge">
+                    <polygon points="140,10 420,10 390,45 140,45" fill="url(#silverGradB)"/>
+                    <text x="270" y="32" text-anchor="middle" class="header-badge-style">${escapeHtml(data.header.toUpperCase())}</text>
+                </g>` : ''}
+
+                <rect x="140" y="${barTop}" width="${1160+dx}" height="${barH}" fill="url(#darkGradB)" rx="2"/>
+                <line x1="140" y1="${barTop}" x2="${1300+dx}" y2="${barTop}" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.5"/>
+                <line x1="140" y1="${bottom}" x2="${1300+dx}" y2="${bottom}" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+
+                <g id="left-panel-star">
+                    <rect x="0" y="${barTop}" width="140" height="${barH}" fill="#0c0c0c"/>
+                    <rect x="0" y="${barTop}" width="140" height="${barH}" fill="url(#silverGradB)" opacity="0.15"/>
+                    ${appData.logo ? `<image href="${appData.logo}" x="20" y="${barTop + (barH - 100) / 2}" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>` : `<path transform="translate(0 ${(barH - 145) / 2})" d="M70,65 C71.8,90 85,102 110,104 C85,106 71.8,118 70,143 C68.2,118 55,106 30,104 C55,102 68.2,90 70,65 Z" fill="#ffffff"/>`}
+                    <line x1="140" y1="${barTop}" x2="140" y2="${bottom}" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4"/>
+                </g>
+
+                ${data.__noText ? '' : lines.map((l, i) => `<text x="175" y="${(startY + i * lh).toFixed(1)}" class="verse-style" font-size="${fs}">${escapeHtml(l)}</text>`).join('')}
+
+                <line x1="175" y1="${bottom - 42}" x2="${1260+dx}" y2="${bottom - 42}" stroke="#ffffff" stroke-dasharray="2 2" stroke-opacity="0.25"/>
+
+                <g id="reference-row" transform="translate(175, ${bottom - 18})">
+                    ${showIcon ? `
+                    <path d="M0,2 C4,-1 10,-1 14,2 L14,13 C10,10 4,10 0,13 Z M16,2 C20,-1 26,-1 30,2 L30,13 C26,10 20,10 16,13 Z" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                    <line x1="15" y1="2" x2="15" y2="13" stroke="#ffffff" stroke-width="1.5"/>
+                    <text x="42" y="10" class="ref-style">${ref}</text>` : `
+                    <text x="0" y="10" class="ref-style">${ref}</text>`}
+                </g>
+
+                <g id="right-brand-panel-b">
+                    <polygon points="${1300+dx},${barTop} ${1600+dx},${barTop} ${1600+dx},${bottom} ${1260+dx},${bottom}" fill="url(#silverGradB)"/>
+                    <line x1="${1300+dx}" y1="${barTop}" x2="${1260+dx}" y2="${bottom}" stroke="#000000" stroke-width="3"/>
+                    <text x="${1440+dx}" y="${cy - 17}" text-anchor="middle" class="brand-rev-b" style="font-size:${bf.f1}px">${escapeHtml(bn.n1)}</text>
+                    <text x="${1440+dx}" y="${cy + 27.5}" text-anchor="middle" class="brand-aster-b" style="font-size:${bf.f2}px${bn.sans ? ';font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:0.04em' : ''}">${escapeHtml(bn.n2)}</text>
+                    <line x1="${1380+dx}" y1="${cy + 40.5}" x2="${1500+dx}" y2="${cy + 40.5}" stroke="#111111" stroke-width="1"/>
+                </g>
+            </svg>
+            `;
+        }
+
+        // --- SVG MODEL D (CTA final: seguir / inscrever-se) ---
+        function generateSVGModelD(data, W = 1600) {
+            const dx = W - 1600, yt = data.platform === 'youtube';
+            const handle = (data.handle || '').trim();
+            let call = (data.call || '').toUpperCase(), btn = (data.button || '').toUpperCase();
+            if (yt) { if (btn === 'SEGUIR') btn = 'INSCREVER-SE'; if (call === 'SIGA NO INSTAGRAM') call = 'INSCREVA-SE NO CANAL'; }
+            else { if (btn === 'INSCREVER-SE') btn = 'SEGUIR'; if (call === 'INSCREVA-SE NO CANAL') call = 'SIGA NO INSTAGRAM'; }
+            const hfs = Math.max(24, Math.min(54, Math.floor((900 + dx) / (Math.max(1, handle.length) * 0.5))));
+            const bfs = Math.max(14, Math.min(28, Math.floor(235 / (Math.max(1, btn.length) * 0.78))));
+            const ix = 1295 + dx, cy = 90;
+            const icon = yt
+                ? `<rect x="${ix - 30}" y="${cy - 21}" width="60" height="42" rx="12" fill="#111111"/><polygon points="${ix - 7},${cy - 11} ${ix - 7},${cy + 11} ${ix + 13},${cy}" fill="#ffffff"/>`
+                : `<rect x="${ix - 26}" y="${cy - 26}" width="52" height="52" rx="14" fill="none" stroke="#111111" stroke-width="4"/><circle cx="${ix}" cy="${cy}" r="12" fill="none" stroke="#111111" stroke-width="4"/><circle cx="${ix + 15}" cy="${cy - 15}" r="3.5" fill="#111111"/>`;
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 180" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="50%" stop-color="#d0d0d0"/><stop offset="100%" stop-color="#a0a0a0"/></linearGradient>
+                    <linearGradient id="darkGradD" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#080808"/><stop offset="100%" stop-color="#161616"/></linearGradient>
+                </defs>
+                <style>
+                    .cta-a { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.3em; fill: #d0d0d0; }
+                    .cta-h { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 700; fill: #ffffff; }
+                    .cta-b { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: 0.08em; fill: #111111; }
+                </style>
+                <rect x="140" y="20" width="${1120 + dx}" height="140" fill="url(#darkGradD)" rx="2"/>
+                <line x1="140" y1="20" x2="${1260 + dx}" y2="20" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.5"/>
+                <line x1="140" y1="160" x2="${1260 + dx}" y2="160" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+                <rect x="0" y="20" width="140" height="140" fill="#0c0c0c"/>
+                <rect x="0" y="20" width="140" height="140" fill="url(#silverGrad)" opacity="0.15"/>
+                ${appData.logo ? `<image href="${appData.logo}" x="20" y="40" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>` : `<path transform="translate(0 -14)" d="M70,65 C71.8,90 85,102 110,104 C85,106 71.8,118 70,143 C68.2,118 55,106 30,104 C55,102 68.2,90 70,65 Z" fill="#ffffff"/>`}
+                <line x1="140" y1="20" x2="140" y2="160" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4"/>
+                <text x="175" y="62" class="cta-a">${escapeHtml(call)}</text>
+                <text x="175" y="${(84 + hfs * 0.75).toFixed(1)}" class="cta-h" font-size="${hfs}">${escapeHtml(handle)}</text>
+                <polygon points="${1240 + dx},20 ${1600 + dx},20 ${1600 + dx},160 ${1200 + dx},160" fill="url(#silverGrad)"/>
+                <line x1="${1240 + dx}" y1="20" x2="${1200 + dx}" y2="160" stroke="#000000" stroke-width="3"/>
+                ${icon}
+                <text x="${ix + 44}" y="${cy + bfs * 0.36}" class="cta-b" font-size="${bfs}">${escapeHtml(btn)}</text>
+            </svg>
+            `;
+        }
+
+        // --- BÍBLIA IMPORTADA (offline) ---
+        // Aceita o JSON do projeto thiagobodruk/biblia: lista de 66 livros na ordem canônica, cada um com "chapters" (capítulos → versículos).
+        let BIBLE = null;
+        const idb = (mode, fn) => new Promise((res, rej) => {
+            const r = indexedDB.open('aster', 1);
+            r.onupgradeneeded = () => r.result.createObjectStore('kv');
+            r.onsuccess = () => { const tx = r.result.transaction('kv', mode), q = fn(tx.objectStore('kv')); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); };
+            r.onerror = () => rej(r.error);
+        });
+        const bibleStatus = (t, err) => { const el = $('bible-status'); el.textContent = t; el.className = 'text-[11px] ' + (err ? 'text-red-400' : 'text-gray-400'); };
+        async function loadBible() {
+            try { const d = await idb('readonly', s => s.get('bible')); if (d) { BIBLE = d; bibleStatus('✓ Bíblia importada: busca funciona sem internet.'); } } catch (e) {}
+        }
+        async function importBible(inp) {
+            const file = inp.files[0]; if (!file) return;
+            try {
+                const data = JSON.parse((await file.text()).replace(/^\uFEFF/, ''));
+                const books = (Array.isArray(data) ? data : []).map(b => (b && b.chapters) || b);
+                if (books.length < 66 || !Array.isArray(books[0]) || !Array.isArray(books[0][0])) throw new Error('formato');
+                BIBLE = books.slice(0, 66);
+                let saved = true;
+                try { await idb('readwrite', s => s.put(BIBLE, 'bible')); } catch (e) { saved = false; }
+                bibleStatus('✓ Bíblia importada (' + BIBLE.length + ' livros). ' + (saved ? 'Busca funciona sem internet.' : 'Vale só nesta sessão: o navegador não deixou guardar, importe de novo ao abrir.'));
+            } catch (e) { bibleStatus('Não reconheci esse arquivo. Use o JSON da Bíblia (acf.json ou aa.json).', true); }
+        }
+        function offlineVerse(p) {
+            const i = BOOKS.findIndex(b => b[0] === p.en), c = BIBLE[i] && BIBLE[i][+p.ch - 1];
+            if (!c) return null;
+            const out = [];
+            for (let v = +p.v1; v <= +(p.v2 || p.v1); v++) if (c[v - 1]) out.push(String(c[v - 1]).replace(/\s+/g, ' ').trim());
+            return out.join(' ') || null;
+        }
+
+        // --- SVG MODEL E (Tela de tópico, tela cheia) ---
+        function generateSVGModelE(data, W = 1600) {
+            const wide = W === 1600, H = wide ? 900 : 1778, px = wide ? 160 : 90, bn = curBrand(), sans = !!bn.sans;
+            const wrap = (txt, maxChars) => {
+                const out = []; let cur = '';
+                for (const w of (txt || '').trim().split(/\s+/).filter(Boolean)) {
+                    if (cur && (cur + ' ' + w).length > maxChars) { out.push(cur); cur = w; } else cur = cur ? cur + ' ' + w : w;
+                }
+                if (cur) out.push(cur); return out;
+            };
+            const maxW = W - 2 * px - (wide ? 140 : 0), k = sans ? 0.64 : 0.5, title = (data.title || '').trim();
+            let fs = 44, lines = wrap(title, 99);
+            for (const s of [104, 92, 80, 68, 58, 50, 44]) { fs = s; lines = wrap(title, Math.floor(maxW / (s * k))); if (lines.length <= 3 && lines.length * s * 1.1 <= (wide ? 330 : 440)) break; }
+            const sfs = wide ? 30 : 28, sl = wrap(data.subtitle, Math.floor(maxW / (sfs * 0.56))).slice(0, 3);
+            const tag = ((data.label || '') + ' ' + (data.number || '')).trim().toUpperCase(), tagW = tag.length * 15 + 70;
+            const titleH = lines.length * fs * 1.1, subH = sl.length ? 34 + sl.length * sfs * 1.4 : 0;
+            const total = 40 + 38 + titleH + 34 + 4 + subH, top = H / 2 - total / 2 - 10;
+            const ty = top + 40 + 38 + fs * 0.85, ly = top + 40 + 38 + titleH + 34;
+            const font = sans ? "font-family:'Montserrat',sans-serif;font-weight:700" : "font-family:'Cormorant Garamond',Georgia,serif;font-weight:700";
+            const dcx = wide ? W - 300 : W - 200, dcy = wide ? H / 2 : 330, dk = wide ? 7 : 4.6;
+            const decor = appData.logo
+                ? `<image href="${appData.logo}" x="${dcx - dk * 36}" y="${dcy - dk * 36}" width="${dk * 72}" height="${dk * 72}" opacity="0.16" preserveAspectRatio="xMidYMid meet"/>`
+                : `<path transform="translate(${dcx - 70 * dk} ${dcy - 104 * dk}) scale(${dk})" d="M70,65 C71.8,90 85,102 110,104 C85,106 71.8,118 70,143 C68.2,118 55,106 30,104 C55,102 68.2,90 70,65 Z" fill="url(#silverGrad)" opacity="0.12"/>`;
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="50%" stop-color="#d0d0d0"/><stop offset="100%" stop-color="#a0a0a0"/></linearGradient>
+                    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#050505"/><stop offset="100%" stop-color="#161616"/></linearGradient>
+                </defs>
+                <rect width="${W}" height="${H}" fill="url(#darkGrad)"/>
+                ${decor}
+                <rect x="0" y="${H / 2 - 130}" width="14" height="260" fill="url(#silverGrad)"/>
+                <line x1="${px}" y1="70" x2="${W - px}" y2="70" stroke="#ffffff" stroke-opacity="0.15"/>
+                <line x1="${px}" y1="${H - 110}" x2="${W - px}" y2="${H - 110}" stroke="#ffffff" stroke-opacity="0.15"/>
+                <polygon points="${px},${top} ${px + tagW},${top} ${px + tagW - 26},${top + 40} ${px},${top + 40}" fill="url(#silverGrad)"/>
+                <text x="${px + 22}" y="${top + 27}" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:17px;letter-spacing:0.3em;fill:#000000">${escapeHtml(tag)}</text>
+                ${lines.map((l, i) => `<text x="${px}" y="${(ty + i * fs * 1.1).toFixed(1)}" style="${font};font-size:${fs}px;fill:#ffffff">${escapeHtml(l)}</text>`).join('')}
+                <line x1="${px}" y1="${ly}" x2="${px + 170}" y2="${ly}" stroke="url(#silverGrad)" stroke-width="4"/>
+                ${sl.map((l, i) => `<text x="${px}" y="${(ly + 34 + sfs + i * sfs * 1.4).toFixed(1)}" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:${sfs}px;fill:#cfcfcf">${escapeHtml(l)}</text>`).join('')}
+                ${data.showBrand !== false ? `
+                ${appData.logo ? `<image href="${appData.logo}" x="${px}" y="${H - 92}" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>` : ''}
+                <text x="${px + (appData.logo ? 72 : 0)}" y="${H - 56}" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.35em;fill:#c8c8c8">${escapeHtml(brandName())}</text>
+                <text x="${W - px}" y="${H - 56}" text-anchor="end" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px;letter-spacing:0.12em;fill:#9a9a9a">${escapeHtml(curBrand().handle || '')}</text>` : ''}
+            </svg>
+            `;
+        }
+
+        // --- BUSCA AUTOMÁTICA DE VERSÍCULO (Almeida, via bible-api.com) ---
+        const BOOKS = [
+['Genesis','Gênesis','gn'],['Exodus','Êxodo','ex'],['Leviticus','Levítico','lv'],['Numbers','Números','nm'],['Deuteronomy','Deuteronômio','dt'],['Joshua','Josué','js'],['Judges','Juízes','jz'],['Ruth','Rute','rt'],['1 Samuel','1 Samuel','1sm'],['2 Samuel','2 Samuel','2sm'],['1 Kings','1 Reis','1rs'],['2 Kings','2 Reis','2rs'],['1 Chronicles','1 Crônicas','1cr'],['2 Chronicles','2 Crônicas','2cr'],['Ezra','Esdras','ed'],['Nehemiah','Neemias','ne'],['Esther','Ester','et'],['Job','Jó',''],['Psalms','Salmos','sl,salmo'],['Proverbs','Provérbios','pv,prov'],['Ecclesiastes','Eclesiastes','ec'],['Song of Solomon','Cantares','ct,cantares de salomao,canticos'],['Isaiah','Isaías','is'],['Jeremiah','Jeremias','jr'],['Lamentations','Lamentações','lm'],['Ezekiel','Ezequiel','ez'],['Daniel','Daniel','dn'],['Hosea','Oseias','os'],['Joel','Joel','jl'],['Amos','Amós','am'],['Obadiah','Obadias','ob'],['Jonah','Jonas','jon'],['Micah','Miqueias','mq'],['Nahum','Naum','na'],['Habakkuk','Habacuque','hc'],['Zephaniah','Sofonias','sf'],['Haggai','Ageu','ag'],['Zechariah','Zacarias','zc'],['Malachi','Malaquias','ml'],['Matthew','Mateus','mt'],['Mark','Marcos','mc'],['Luke','Lucas','lc'],['John','João','jo,jn'],['Acts','Atos','at,atos dos apostolos'],['Romans','Romanos','rm'],['1 Corinthians','1 Coríntios','1co'],['2 Corinthians','2 Coríntios','2co'],['Galatians','Gálatas','gl'],['Ephesians','Efésios','ef'],['Philippians','Filipenses','fp'],['Colossians','Colossenses','cl'],['1 Thessalonians','1 Tessalonicenses','1ts'],['2 Thessalonians','2 Tessalonicenses','2ts'],['1 Timothy','1 Timóteo','1tm'],['2 Timothy','2 Timóteo','2tm'],['Titus','Tito','tt'],['Philemon','Filemom','fm'],['Hebrews','Hebreus','hb'],['James','Tiago','tg'],['1 Peter','1 Pedro','1pe'],['2 Peter','2 Pedro','2pe'],['1 John','1 João','1jo,1jn'],['2 John','2 João','2jo,2jn'],['3 John','3 João','3jo,3jn'],['Jude','Judas','jd'],['Revelation','Apocalipse','ap']
+        ];
+        const normKey = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const BOOKMAP = {};
+        BOOKS.forEach(b => [b[1], b[0], ...b[2].split(',')].filter(Boolean).forEach(k => BOOKMAP[normKey(k)] = b));
+
+        function parseRef(raw) {
+            const low = raw.toLowerCase().trim();
+            const s = low
+                .replace(/\b(primeira|primeiro)\b/g, '1').replace(/\b(segunda|segundo)\b/g, '2').replace(/\b(terceira|terceiro)\b/g, '3')
+                .replace(/cap[ií]tulos?\.?|cap\./g, ' ').replace(/vers[ií]culos?|vers\.|vs?\./g, ':').replace(/,/g, ' ');
+            const m = s.match(/^\s*(\d\s*)?([^\d]+?)\s*(\d+)\s*(?:[:.]|\s)\s*(\d+)?\s*(?:[-–]\s*(\d+))?\s*$/);
+            if (!m) return null;
+            let key = normKey((m[1] || '') + m[2]);
+            let book = BOOKMAP[key];
+            if (key === 'jo' && /^jó/.test(low)) book = BOOKMAP['job'];
+            if (!book) return null;
+            return { en: book[0], pt: book[1], ch: m[3], v1: m[4], v2: m[5] };
+        }
+
+        // Reserva para quando o navegador bloqueia fetch (ex.: arquivo aberto como content://): carrega via <script>.
+        function jsonpGet(url) {
+            return new Promise((res, rej) => {
+                const cb = '_asterCb' + Date.now(), s = document.createElement('script');
+                const done = () => { clearTimeout(t); delete window[cb]; s.remove(); };
+                const t = setTimeout(() => { done(); rej(new Error('timeout')); }, 8000);
+                window[cb] = d => { done(); res(d); };
+                s.onerror = () => { done(); rej(new Error('script')); };
+                s.src = url + '&callback=' + cb;
+                document.head.appendChild(s);
+            });
+        }
+        let refTimer = null, fetchSeq = 0;
+        function onRefInput() {
+            updateGraphics();
+            clearTimeout(refTimer);
+            refTimer = setTimeout(fetchVerse, 1300);
+        }
+
+        async function fetchVerse() {
+            clearTimeout(refTimer);
+            const st = document.getElementById('verse-status');
+            const setSt = (t, err) => { st.textContent = t; st.className = 'text-[11px] mt-1 min-h-[1rem] ' + (err ? 'text-red-400' : 'text-gray-400'); };
+            const raw = document.getElementById('input-b-reference').value;
+            if (!raw.trim()) return;
+            const p = parseRef(raw);
+            if (!p) return setSt('Não reconheci o livro. Ex.: 1 João 1:9 ou Salmos 23:1-3', true);
+            if (!p.v1) return setSt('Faltou o versículo. Ex.: ' + p.pt + ' ' + p.ch + ':1', true);
+            const rng = `${p.ch}:${p.v1}${p.v2 ? '-' + p.v2 : ''}`;
+            const q = `${p.pt} ${rng}`;
+            const label = q.toUpperCase();
+            const seq = ++fetchSeq;
+            if (BIBLE) {
+                const t = offlineVerse(p);
+                if (!t) return setSt('Não achei ' + label + ' na Bíblia importada. Confira capítulo e versículo.', true);
+                $('input-b-text').value = t; $('input-b-reference').value = label; updateGraphics();
+                return setSt('✓ ' + label + ' · Bíblia importada (offline)');
+            }
+            setSt('Buscando…');
+            let text = null;
+            try { text = (JSON.parse(localStorage.getItem('aster_verses2') || '{}'))[q] || null; } catch (e) {}
+            let status = 0, netFail = false, lastErr = '';
+            if (!text) {
+                // A API entende o nome do livro na língua da tradução (português); inglês fica de reserva.
+                for (const name of [p.pt, p.en]) {
+                    const url = 'https://bible-api.com/' + encodeURIComponent(`${name} ${rng}`) + '?translation=almeida';
+                    let j = null;
+                    try {
+                        const r = await fetch(url);
+                        status = r.status; netFail = false;
+                        if (!r.ok) { if (r.status === 429) break; continue; }
+                        j = await r.json();
+                    } catch (e) {
+                        lastErr = String((e && e.message) || e);
+                        try { j = await jsonpGet(url); netFail = false; } catch (e2) { netFail = true; }
+                    }
+                    if (j) { text = (j.verses || []).map(v => v.text.replace(/\s+/g, ' ').trim()).join(' ').trim(); if (text) break; }
+                }
+                if (text) { try { const c = JSON.parse(localStorage.getItem('aster_verses2') || '{}'); c[q] = text; localStorage.setItem('aster_verses2', JSON.stringify(c)); } catch (e) {} }
+            }
+            if (seq !== fetchSeq) return;
+            if (!text) {
+                if (netFail) {
+                    const inFrame = window.self !== window.top;
+                    return setSt('Sem conexão com o servidor de versículos. ' + (inFrame ? 'A página está aberta dentro de um visualizador (como o app do Claude), que bloqueia a internet: baixe o arquivo e abra no Chrome. ' : 'Confira a internet ou abra pelo Chrome. ') + 'Ou importe uma Bíblia (.json) logo abaixo. [' + location.protocol + ' · ' + lastErr + ']', true);
+                }
+                if (status === 429) return setSt('Muitas buscas seguidas. Espere uns 30 segundos e toque em Buscar.', true);
+                return setSt('Não achei ' + label + '. Confira o capítulo e o versículo.', true);
+            }
+            document.getElementById('input-b-text').value = text;
+            document.getElementById('input-b-reference').value = label;
+            updateGraphics();
+            setSt('✓ ' + label + ' · João Ferreira de Almeida');
+        }
+
+        // --- HELPER: ESCAPE HTML STRINGS ---
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // --- EXPORT & ANIMAÇÃO ---
+        let fontCssCache = null;
+        async function getFontCss() {
+            if (fontCssCache) return fontCssCache;
+            try {
+                const href = document.querySelector('link[href*="fonts.googleapis.com/css2"]').href;
+                const css = await (await fetch(href)).text();
+                let out = css.split(/(?=\/\*\s*[\w-]+\s*\*\/\s*@font-face)/)
+                    .filter(x => /^\/\*\s*latin\s*\*\//.test(x) && /Cormorant|Montserrat|Inter/.test(x)).join('\n');
+                const urls = [...new Set([...out.matchAll(/url\((https:[^)]+)\)/g)].map(m => m[1]))];
+                for (const u of urls) {
+                    const blob = await (await fetch(u)).blob();
+                    const d = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+                    out = out.split(u).join(d);
+                }
+                fontCssCache = out;
+            } catch (e) { console.warn('Fontes não embutidas', e); return ''; }
+            return fontCssCache;
+        }
+        const getFmt = () => document.getElementById('anim-fmt').value;
+        async function buildSvg(noText) {
+            const W = getFmt() === 'v' ? 1000 : 1600;
+            const raw = genCurrent(W, noText);
+            const fonts = await getFontCss();
+            if (!fonts && !window._fw) { window._fw = 1; alert('Não consegui carregar as fontes: esta página está aberta num modo que bloqueia a internet. O arquivo vai sair com fonte genérica. Abra o editor por um endereço file:// no Chrome.'); }
+            return raw.replace('<defs>', '<defs><style>' + fonts + '</style>').trim();
+        }
+        const dims = svg => { const m = svg.match(/viewBox="0 0 (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)"/); return { nw: +m[1], nh: +m[2] }; };
+        function loadImg(svg) {
+            return new Promise((res, rej) => {
+                const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
+                const img = new Image(); img.onload = () => res({ img, url }); img.onerror = rej; img.src = url;
+            });
+        }
+        function layoutFor(nw, nh) {
+            if (currentModel === 'E') { const s = (getFmt() === 'v' ? 1080 : 1920) / nw; return { cw: getFmt() === 'v' ? 1080 : 1920, ch: getFmt() === 'v' ? 1920 : 1080, x: 0, y: 0, s }; }
+            if (getFmt() === 'v') return { cw: 1080, ch: 1920, x: 40, y: 1920 - nh - 380, s: 1 };
+            const s = 1700 / 1600; return { cw: 1920, ch: 1080, x: 110, y: 1080 - nh * s - 90, s };
+        }
+        function fileSlug() {
+            const base = currentModel === 'A' ? appData.modelA.name : currentModel === 'D' ? appData.modelD.handle : currentModel === 'E' ? appData.modelE.title : appData[mkey(currentModel)].reference;
+            return (base || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'sem-nome';
+        }
+        function downloadBlob(blob, name) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a'); link.href = url; link.download = name;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+        async function exportSVG() {
+            downloadBlob(new Blob([await buildSvg()], { type: 'image/svg+xml;charset=utf-8' }), `${brandSlug()}_${currentModel}_${fileSlug()}.svg`);
+        }
+        async function exportPNG(mode) {
+            const svg = await buildSvg(), { img, url } = await loadImg(svg), { nw, nh } = dims(svg);
+            const c = document.createElement('canvas'), ctx = c.getContext('2d');
+            if (mode === 'crop') { c.width = nw; c.height = nh; ctx.drawImage(img, 0, 0, nw, nh); }
+            else { const L = layoutFor(nw, nh); c.width = L.cw; c.height = L.ch; ctx.drawImage(img, L.x, L.y, nw * L.s, nh * L.s); }
+            c.toBlob(b => { downloadBlob(b, `${brandSlug()}_${currentModel}_${fileSlug()}_${mode === 'crop' ? 'recorte' : (getFmt() === 'v' ? 'vertical' : '1080p')}.png`); URL.revokeObjectURL(url); }, 'image/png');
+        }
+
+        // Modelo A: estrela entra primeiro, depois a barra "varre" da esquerda p/ direita (sai em reverso).
+        // Modelo B: versículo sobe suave com fade (sai descendo).
+        const ease = t => 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 3);
+        function drawAnim(ctx, img, L, nw, nh, u, bg, anim, base) {
+            ctx.clearRect(0, 0, L.cw, L.ch);
+            if (bg === 'green') { ctx.fillStyle = '#00ff00'; ctx.fillRect(0, 0, L.cw, L.ch); }
+            const w = nw * L.s, h = nh * L.s, e = ease(u);
+            ctx.save();
+            if (anim === 'slide') ctx.drawImage(img, L.x - (1 - e) * (L.x + w), L.y, w, h);
+            else if (anim === 'zoom') { ctx.globalAlpha = e; const k = 0.8 + 0.2 * e; ctx.drawImage(img, L.x + w * (1 - k) / 2, L.y + h * (1 - k) / 2, w * k, h * k); }
+            else if (anim === 'fade') { ctx.globalAlpha = e; ctx.drawImage(img, L.x, L.y, w, h); }
+            else if (anim === 'words' && base && window.lastB) {
+                const B = window.lastB; let rem = Math.round(u * B.lines.join(' ').split(' ').length);
+                ctx.drawImage(base, L.x, L.y, w, h);
+                ctx.font = `italic 600 ${B.fs * L.s}px "Cormorant Garamond", Georgia, serif`;
+                ctx.beginPath();
+                B.lines.forEach((ln, i) => {
+                    const ws = ln.split(' '), c = Math.min(ws.length, rem); rem -= c; if (c <= 0) return;
+                    ctx.rect(L.x + 175 * L.s, L.y + (B.startY + i * B.lh - B.fs * 0.95) * L.s, ctx.measureText(ws.slice(0, c).join(' ')).width + 8 * L.s, B.lh * L.s);
+                });
+                ctx.clip(); ctx.drawImage(img, L.x, L.y, w, h);
+            } else if (currentModel === 'E') {
+                ctx.beginPath(); ctx.rect(L.x, L.y, w * e, h); ctx.clip(); ctx.drawImage(img, L.x, L.y, w, h);
+            } else if (currentModel === 'A' || currentModel === 'D') {
+                const rx = (u < 0.3 ? 140 * ease(u / 0.3) : 140 + (nw - 140) * ease((u - 0.3) / 0.7)) * L.s;
+                ctx.beginPath(); ctx.rect(L.x, L.y, rx, h); ctx.clip(); ctx.drawImage(img, L.x, L.y, w, h);
+            } else { ctx.globalAlpha = e; ctx.drawImage(img, L.x, L.y + (1 - e) * 70, w, h); }
+            ctx.restore();
+        }
+        let animBusy = false;
+        async function playAnim(record) {
+            if (animBusy) return; animBusy = true;
+            const st = document.getElementById('anim-status');
+            try {
+                const bg = document.getElementById('anim-bg').value;
+                const hold = Math.max(1, parseFloat(document.getElementById('anim-hold').value) || 5);
+                st.textContent = 'Preparando…';
+                const svg = await buildSvg(), { img, url } = await loadImg(svg), { nw, nh } = dims(svg), L = layoutFor(nw, nh);
+                const cv = document.getElementById('anim-canvas'); cv.width = L.cw; cv.height = L.ch; cv.classList.remove('hidden');
+                const ctx = cv.getContext('2d');
+                const anim = document.getElementById('anim-style').value;
+                let base = null;
+                if (anim === 'words' && currentModel !== 'A') base = (await loadImg(await buildSvg(true))).img;
+                const wc = window.lastB && currentModel !== 'A' ? window.lastB.lines.join(' ').split(' ').length : 5;
+                let rec, mime = '', chunks = [];
+                if (record) {
+                    const opts = bg === 'alpha' ? ['video/webm;codecs=vp9', 'video/webm;codecs=vp8'] : ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'];
+                    mime = window.MediaRecorder ? opts.find(m => MediaRecorder.isTypeSupported(m)) : '';
+                    if (!mime) throw new Error('este navegador não grava vídeo — use o Chrome');
+                    rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: 12e6 });
+                    rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+                }
+                const inT = anim === 'words' && base ? Math.max(0.9, wc * 0.18) : 0.9, outT = 0.6, total = inT + hold + outT + 0.2;
+                drawAnim(ctx, img, L, nw, nh, 0, bg, anim, base);
+                if (rec) rec.start();
+                const t0 = performance.now();
+                await new Promise(res => {
+                    const step = () => {
+                        const t = (performance.now() - t0) / 1000;
+                        const u = t < inT ? t / inT : t < inT + hold ? 1 : Math.max(0, 1 - (t - inT - hold) / outT);
+                        drawAnim(ctx, img, L, nw, nh, u, bg, anim, base);
+                        st.textContent = (record ? 'Gravando… ' : 'Prévia… ') + Math.min(t, total).toFixed(1) + 's / ' + total.toFixed(1) + 's';
+                        t < total ? requestAnimationFrame(step) : res();
+                    };
+                    step();
+                });
+                if (rec) {
+                    await new Promise(r => { rec.onstop = r; rec.stop(); });
+                    const ext = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
+                    downloadBlob(new Blob(chunks, { type: mime.split(';')[0] }), `${brandSlug()}_${currentModel}_${fileSlug()}_${getFmt() === 'v' ? 'vertical' : '16x9'}.${ext}`);
+                    st.textContent = '✓ Vídeo baixado (' + ext.toUpperCase() + ').';
+                } else st.textContent = 'Prévia concluída.';
+                URL.revokeObjectURL(url);
+            } catch (e) { st.textContent = 'Erro: ' + (e.message || e); }
+            animBusy = false;
+        }
+    </script>
+</body>
+</html>
