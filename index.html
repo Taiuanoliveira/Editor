@@ -111,6 +111,7 @@
                 <button id="tab-model-f" onclick="switchModel('F')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-image text-xs"></i><span class="whitespace-nowrap">MODELO F: CAPA</span></button>
                 <button id="tab-model-g" onclick="switchModel('G')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-chart-simple text-xs"></i><span class="whitespace-nowrap">MODELO G: DADO</span></button>
                 <button id="tab-model-h" onclick="switchModel('H')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-film text-xs"></i><span class="whitespace-nowrap">MODELO H: ABERTURA/FIM</span></button>
+                <button id="tab-model-i" onclick="switchModel('I')" class="px-3 sm:px-5 py-1.5 rounded-md text-xs sm:text-sm font-medium tracking-wide transition-all flex items-center space-x-2 text-gray-400 hover:text-white"><i class="fa-solid fa-stamp text-xs"></i><span class="whitespace-nowrap">MODELO I: MARCA D'ÁGUA</span></button>
             </div>
         </div>
     </header>
@@ -269,6 +270,8 @@
 
             <form id="form-model-h" onsubmit="event.preventDefault();" class="space-y-4 hidden"><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Tipo</label><select id="input-h-kind" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="abertura">Abertura (título do vídeo)</option><option value="encerramento">Encerramento (inscreva-se)</option></select></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Título (abertura) ou frase de agradecimento</label><input type="text" id="input-h-title" oninput="updateGraphics()" placeholder="" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Linha de apoio</label><input type="text" id="input-h-subtitle" oninput="updateGraphics()" placeholder="" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Plataforma (encerramento)</label><select id="input-h-platform" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="youtube">YouTube (inscrever-se)</option><option value="instagram">Instagram (seguir)</option></select></div></form>
 
+            <form id="form-model-i" onsubmit="event.preventDefault();" class="space-y-4 hidden"><p class="text-[11px] text-gray-400">Símbolo da marca num canto do vídeo. Use o <b>PNG</b> (fundo transparente) esticado no vídeo inteiro, e o <b>vídeo animado</b> só de vez em quando por cima.</p><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Posição</label><select id="input-i-pos" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="tl">Canto superior esquerdo</option><option value="tr">Canto superior direito</option><option value="bl">Canto inferior esquerdo</option><option value="br">Canto inferior direito</option></select></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Tamanho</label><select id="input-i-size" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="s">Pequeno</option><option value="m">Médio</option><option value="l">Grande</option></select></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Transparência quando parado</label><select id="input-i-op" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="40">Bem leve (40%)</option><option value="55">Leve (55%)</option><option value="70">Média (70%)</option><option value="85">Forte (85%)</option><option value="100">Total (100%)</option></select></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Animação (marca Aster: estrela cadente)</label><select id="input-i-anim" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="cadente">Estrela cadente</option><option value="brilho">Brilho passando</option><option value="pulso">Pulso</option><option value="fade">Só aparecer (fade)</option><option value="none">Sem animação</option></select></div><div><label class="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1">Repetir a animação</label><select id="input-i-rep" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="0">Só no começo</option><option value="15">A cada 15 s</option><option value="30">A cada 30 s</option><option value="60">A cada 60 s</option></select></div></form>
+
             <!-- FAVORITOS -->
             <div class="space-y-2 border-t border-aster-border pt-4">
                 <span class="block text-xs font-semibold uppercase tracking-wider text-gray-300">Favoritos do modelo atual</span>
@@ -422,6 +425,7 @@
         defaultData.modelA.photo = ''; Object.assign(defaultData.modelA, { roleGroup: 'aster', r1: 'Editor-chefe', r2: '', inst: '', instc: '', r1c: '' });
         defaultData.modelC = { text: 'A fé é a certeza daquilo que esperamos.', reference: 'AUTOR · FONTE', header: 'FRASE', quotes: true, showIcon: false, showBadge: true, autofont: true };
         defaultData.modelD = { platform: 'instagram', call: 'SIGA NO INSTAGRAM', handle: '@revistaaster', button: 'SEGUIR' };
+        defaultData.modelI = { pos: 'tr', size: 'm', opacity: '70', anim: 'cadente', repeat: '0' };
         defaultData.modelF = { format: 'yt', tag: 'NOVO VÍDEO', title: 'Por que tudo está ficando mais caro?', highlight: 'mais caro', showBrand: true };
         defaultData.modelG = { tag: 'DADO', value: '12%', label: 'de inflação acumulada em 12 meses', source: 'Fonte: IBGE', showBrand: true };
         defaultData.modelH = { kind: 'abertura', title: 'Título do vídeo', subtitle: 'Ideias, liberdade e pensamento crítico', platform: 'youtube' };
@@ -471,7 +475,7 @@
         }
 
         // --- MODEL SWITCHING ---
-        const MODELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        const MODELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
         function switchModel(m) {
             currentModel = m;
             MODELS.forEach(k => {
@@ -533,6 +537,7 @@
             const prev = curBrand(); prev.logo = appData.logo || ''; prev.theme = appData.theme || 'silver';
             appData.brand = k;
             const b = curBrand(); appData.logo = b.logo || ''; appData.theme = b.theme || 'silver'; appData.modelD.handle = b.handle;
+            appData.modelI.anim = k === 'aster' ? 'cadente' : 'brilho';
             updateFormInputs(); renderFavs(); roleChanged();
         }
 
@@ -583,6 +588,7 @@
             E: { label: 'input-e-label', number: 'input-e-number', title: 'input-e-title', subtitle: 'input-e-subtitle', showBrand: 'toggle-e-brand', list: 'input-e-list' },
             F: { format: 'input-f-format', tag: 'input-f-tag', title: 'input-f-title', highlight: 'input-f-hl', showBrand: 'toggle-f-brand' },
             G: { tag: 'input-g-tag', value: 'input-g-value', label: 'input-g-label', source: 'input-g-source', showBrand: 'toggle-g-brand' },
+            I: { pos: 'input-i-pos', size: 'input-i-size', opacity: 'input-i-op', anim: 'input-i-anim', repeat: 'input-i-rep' },
             H: { kind: 'input-h-kind', title: 'input-h-title', subtitle: 'input-h-subtitle', platform: 'input-h-platform' },
             C: { text: 'input-c-text', reference: 'input-c-ref', header: 'input-c-header', quotes: 'toggle-c-quotes', showIcon: 'toggle-c-icon', showBadge: 'toggle-c-badge' }
         };
@@ -638,7 +644,7 @@
         }
         function saveFav() {
             const d = JSON.parse(JSON.stringify(appData[mkey(currentModel)]));
-            const label = (currentModel === 'A' ? d.name : currentModel === 'B' ? d.reference : currentModel === 'D' ? d.platform + ' ' + d.handle : currentModel === 'E' ? d.number + ' ' + d.title : (currentModel === 'F' || currentModel === 'H') ? d.title : currentModel === 'G' ? d.value + ' ' + d.label : (d.header + ' · ' + d.text)).trim().slice(0, 45);
+            const label = (currentModel === 'A' ? d.name : currentModel === 'B' ? d.reference : currentModel === 'D' ? d.platform + ' ' + d.handle : currentModel === 'E' ? d.number + ' ' + d.title : (currentModel === 'F' || currentModel === 'H') ? d.title : currentModel === 'G' ? d.value + ' ' + d.label : currentModel === 'I' ? brandName() : (d.header + ' · ' + d.text)).trim().slice(0, 45);
             if (!label) return;
             const all = getFavs(), l = all[favKey()] || [], i = l.findIndex(x => x.label === label);
             if (i >= 0) l[i] = { label, d }; else l.push({ label, d });
@@ -692,7 +698,7 @@
         }
         function genCurrent(W = 1600, noText = false) {
             const d = appData[mkey(currentModel)];
-            const s = currentModel === 'A' ? generateSVGModelA(d, W) : currentModel === 'D' ? generateSVGModelD(d, W) : currentModel === 'E' ? generateSVGModelE(d, W) : currentModel === 'F' ? generateSVGModelF(d) : currentModel === 'G' ? generateSVGModelG(d, W) : currentModel === 'H' ? generateSVGModelH(d, W) : generateSVGModelB(noText ? { ...d, __noText: true } : d, W);
+            const s = currentModel === 'A' ? generateSVGModelA(d, W) : currentModel === 'D' ? generateSVGModelD(d, W) : currentModel === 'E' ? generateSVGModelE(d, W) : currentModel === 'F' ? generateSVGModelF(d) : currentModel === 'G' ? generateSVGModelG(d, W) : currentModel === 'H' ? generateSVGModelH(d, W) : currentModel === 'I' ? generateSVGModelI() : generateSVGModelB(noText ? { ...d, __noText: true } : d, W);
             return applyTheme(s);
         }
         function updateGraphics() {
@@ -984,6 +990,51 @@
             const out = [];
             for (let v = +p.v1; v <= +(p.v2 || p.v1); v++) if (c[v - 1]) out.push(String(c[v - 1]).replace(/\s+/g, ' ').trim());
             return out.join(' ') || null;
+        }
+
+        // --- MODELO I: MARCA D'ÁGUA (símbolo no canto, com animação opcional) ---
+        function generateSVGModelI() {
+            const body = appData.logo
+                ? `<image href="${appData.logo}" x="20" y="20" width="160" height="160" preserveAspectRatio="xMidYMid meet"/>`
+                : mark(100, 100, 150, 'fill="url(#silverGrad)"');
+            return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><defs>
+                <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="50%" stop-color="#e6e6e6"/><stop offset="100%" stop-color="#bdbdbd"/></linearGradient>
+                <filter id="sh" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.55"/></filter></defs>
+                <g filter="url(#sh)">${body}</g></svg>`;
+        }
+        function drawWM(ctx, img, L, nw, nh, t, total, bg, o) {
+            ctx.clearRect(0, 0, L.cw, L.ch);
+            if (bg === 'green') { ctx.fillStyle = '#00ff00'; ctx.fillRect(0, 0, L.cw, L.ch); }
+            const w = nw * L.s, h = nh * L.s, cx = L.x + w / 2, cy = L.y + h / 2, E = 1.6, F = 0.8, end = total - 0.4;
+            const op = (parseFloat(o.opacity) || 70) / 100, R = parseFloat(o.repeat) || 0, style = o.anim || 'none';
+            const out = t > end - F ? Math.max(0, (end - t) / F) : 1;
+            const k = R > 0 ? Math.floor(t / R) : 0, intro = k === 0, p = Math.min(1, (intro ? t : t - k * R) / E);
+            let v = 1, sc = 1, glow = 0;
+            const gl = (x, y, r, a) => { const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, `rgba(255,248,225,${a})`); g.addColorStop(1, 'rgba(255,248,225,0)'); ctx.fillStyle = g; ctx.fillRect(x - r, y - r, 2 * r, 2 * r); };
+            if (style === 'cadente') { v = intro ? ease((p - 0.55) / 0.45) : 1; if (p >= 0.55) { glow = 1 - (p - 0.55) / 0.45; sc = 1 + 0.14 * glow; } }
+            else if (style === 'brilho') { v = intro ? ease(p / 0.5) : 1; sc = intro ? 0.88 + 0.12 * v : 1; }
+            else if (style === 'pulso') { v = intro ? ease(p / 0.5) : 1; sc = 1 + 0.18 * Math.sin(Math.PI * p); glow = 0.5 * Math.sin(Math.PI * p); }
+            else if (style === 'fade') v = intro ? ease(p) : 1;
+            ctx.save(); ctx.globalAlpha = op * v * out; ctx.translate(cx, cy); ctx.scale(sc, sc); ctx.translate(-cx, -cy);
+            if (style === 'brilho' && p > 0.3 && p < 1) {
+                const tc = document.createElement('canvas'); tc.width = Math.ceil(w); tc.height = Math.ceil(h);
+                const tx = tc.getContext('2d'); tx.drawImage(img, 0, 0, w, h); tx.globalCompositeOperation = 'source-atop';
+                const bx = ((p - 0.3) / 0.7) * w * 1.8 - w * 0.4, g = tx.createLinearGradient(bx, 0, bx + w * 0.45, h * 0.3);
+                g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.5, 'rgba(255,255,255,0.95)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+                tx.fillStyle = g; tx.fillRect(0, 0, w, h); ctx.drawImage(tc, L.x, L.y);
+            } else ctx.drawImage(img, L.x, L.y, w, h);
+            ctx.restore();
+            ctx.save(); ctx.globalAlpha = out;
+            if (glow > 0) gl(cx, cy, w * (0.7 + 0.8 * (1 - Math.min(1, glow))), 0.7 * Math.min(1, glow));
+            if (style === 'cadente' && p < 0.55) {
+                const q = Math.pow(p / 0.55, 2), sx = cx + (cx < L.cw / 2 ? 1 : -1) * 0.55 * L.cw * -1, sy = cy - (cy < L.ch / 2 ? 0.12 : 0.35) * L.cw;
+                const hx = sx + (cx - sx) * q, hy = sy + (cy - sy) * q, len = 0.22 * L.cw * (0.4 + 0.6 * q), dx = sx - cx, dy = sy - cy, dl = Math.hypot(dx, dy) || 1;
+                const tx2 = hx + dx / dl * len, ty2 = hy + dy / dl * len, g = ctx.createLinearGradient(hx, hy, tx2, ty2);
+                g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.strokeStyle = g; ctx.lineWidth = Math.max(3, L.cw * 0.004); ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tx2, ty2); ctx.stroke(); gl(hx, hy, L.cw * 0.014, 0.9);
+            }
+            ctx.restore();
         }
 
         // --- TELAS DE TELA CHEIA (E, F, G, H) ---
@@ -1278,6 +1329,10 @@
             });
         }
         function layoutFor(nw, nh) {
+            if (currentModel === 'I') {
+                const v = getFmt() === 'v', cw = v ? 1080 : 1920, ch = v ? 1920 : 1080, d = appData.modelI, sz = cw * ({ s: 0.05, m: 0.07, l: 0.1 }[d.size] || 0.07), mg = cw * 0.035;
+                return { cw, ch, x: (d.pos || 'tr').includes('l') ? mg : cw - sz - mg, y: (d.pos || 'tr').includes('t') ? (v ? 170 : mg) : ch - sz - (v ? 380 : mg), s: sz / nw };
+            }
             if (FULL.includes(currentModel)) {
                 let cw = getFmt() === 'v' ? 1080 : 1920, ch = getFmt() === 'v' ? 1920 : 1080;
                 if (currentModel === 'F') { const q = FFMT[appData.modelF.format || 'yt']; cw = q[2]; ch = q[3]; }
@@ -1289,7 +1344,7 @@
             return { cw, ch, x, y: ch - nh * s - mb, s };
         }
         function fileSlug() {
-            const base = currentModel === 'A' ? appData.modelA.name : currentModel === 'D' ? appData.modelD.handle : FULL.includes(currentModel) ? (appData[mkey(currentModel)].title || appData[mkey(currentModel)].value || '') : appData[mkey(currentModel)].reference;
+            const base = currentModel === 'A' ? appData.modelA.name : currentModel === 'D' ? appData.modelD.handle : currentModel === 'I' ? 'marca-dagua' : FULL.includes(currentModel) ? (appData[mkey(currentModel)].title || appData[mkey(currentModel)].value || '') : appData[mkey(currentModel)].reference;
             return (base || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'sem-nome';
         }
         function downloadBlob(blob, name) {
@@ -1305,7 +1360,7 @@
             const svg = await buildSvg(), { img, url } = await loadImg(svg), { nw, nh } = dims(svg);
             const c = document.createElement('canvas'), ctx = c.getContext('2d');
             if (mode === 'crop') { c.width = nw; c.height = nh; ctx.drawImage(img, 0, 0, nw, nh); }
-            else { const L = layoutFor(nw, nh); c.width = L.cw; c.height = L.ch; ctx.drawImage(img, L.x, L.y, nw * L.s, nh * L.s); }
+            else { const L = layoutFor(nw, nh); c.width = L.cw; c.height = L.ch; if (currentModel === 'I') ctx.globalAlpha = (parseFloat(appData.modelI.opacity) || 70) / 100; ctx.drawImage(img, L.x, L.y, nw * L.s, nh * L.s); }
             c.toBlob(b => { downloadBlob(b, `${brandSlug()}_${currentModel}_${fileSlug()}_${mode === 'crop' ? 'recorte' : (getFmt() === 'v' ? 'vertical' : '1080p')}.png`); URL.revokeObjectURL(url); }, 'image/png');
         }
 
@@ -1376,7 +1431,7 @@
                     const step = () => {
                         const t = (performance.now() - t0) / 1000;
                         const u = t < inT ? t / inT : t < inT + hold ? 1 : Math.max(0, 1 - (t - inT - hold) / outT);
-                        drawAnim(ctx, img, L, nw, nh, u, bg, anim, base);
+                        currentModel === 'I' ? drawWM(ctx, img, L, nw, nh, t, total, bg, appData.modelI) : drawAnim(ctx, img, L, nw, nh, u, bg, anim, base);
                         ctx.fillStyle = 'rgba(255,255,255,' + (0.01 + (fc++ % 2) * 0.01) + ')'; ctx.fillRect(0, 0, 2, 2); // força o gravador a continuar gerando quadros
                         st.textContent = (record ? 'Gravando… ' : 'Prévia… ') + Math.min(t, total).toFixed(1) + 's / ' + total.toFixed(1) + 's';
                         t < total ? requestAnimationFrame(step) : res();
