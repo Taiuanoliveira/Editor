@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revista Aster — Editor Gráfico Audiovisual</title>
-    <meta name="description" content="Revista Aster — Editor Gráfico Audiovisual">
-    <meta name="theme-color" content="#000000">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Cpath fill='%23fff' d='M50,8 C52,38 62,48 92,50 C62,52 52,62 50,92 C48,62 38,52 8,50 C38,48 48,38 50,8 Z'/%3E%3C/svg%3E">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -300,7 +297,7 @@
                     <select id="sel-size" onchange="updateGraphics()" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition"><option value="1">Tamanho: grande</option><option value="0.8">Tamanho: médio</option><option value="0.65">Tamanho: pequeno</option></select>
                 </div>
                 <input type="number" id="input-margin" oninput="updateGraphics()" placeholder="Margem inferior em px (vazio = padrão)" class="w-full bg-aster-black border border-aster-border rounded-md px-3 py-2 text-white text-xs focus:border-white focus:outline-none transition">
-                <label class="flex items-center justify-between text-xs text-gray-300">Cor própria (use o tema "Cor própria")<input type="color" id="input-color" value="#d4af37" onchange="updateGraphics()" class="w-12 h-8 bg-transparent"></label>
+                <label class="flex items-center justify-between text-xs text-gray-300">Cor própria (use o tema "Cor própria")<input type="color" id="input-color" value="#ffffff" onchange="updateGraphics()" class="w-12 h-8 bg-transparent"></label>
                 <label class="flex items-center justify-between text-xs text-gray-300">Foto da pessoa (Modelo A)<input type="file" accept="image/*" onchange="pickAsset(this,'photo')" class="w-40 text-[11px]"></label>
                 <label class="flex items-center justify-between text-xs text-gray-300">Logo no lugar da estrela<input type="file" accept="image/*" onchange="pickAsset(this,'logo')" class="w-40 text-[11px]"></label>
                 <div class="grid grid-cols-2 gap-2"><button type="button" onclick="clearAsset('photo')" class="py-1.5 rounded-md border border-aster-border text-gray-300 text-xs">Remover foto</button><button type="button" onclick="clearAsset('logo')" class="py-1.5 rounded-md border border-aster-border text-gray-300 text-xs">Remover logo</button></div>
@@ -506,7 +503,7 @@ mediabunny/dist/modules/src/index.js:
         defaultData.modelF = { format: 'yt', tag: 'NOVO VÍDEO', title: 'Por que tudo está ficando mais caro?', highlight: 'mais caro', sub: '', showBrand: true };
         defaultData.modelG = { tag: 'DADO', value: '12%', label: 'de inflação acumulada em 12 meses', source: 'Fonte: IBGE', showBrand: true };
         defaultData.modelH = { kind: 'abertura', title: 'Título do vídeo', subtitle: 'Ideias, liberdade e pensamento crítico', platform: 'youtube' };
-        defaultData.pos = 'center'; defaultData.size = 1; defaultData.margin = 0; defaultData.customColor = '#d4af37';
+        defaultData.pos = 'center'; defaultData.size = 1; defaultData.margin = 0; defaultData.customColor = '#ffffff';
         defaultData.modelE = { label: 'TÓPICO', number: '01', title: 'Inflação', subtitle: 'O que é e como afeta o seu bolso', showBrand: true };
         defaultData.theme = 'auto'; defaultData.paletteV = 2; defaultData.logo = '';
         defaultData.brand = 'aster';
@@ -687,7 +684,7 @@ mediabunny/dist/modules/src/index.js:
                 if (el.type === 'checkbox') el.checked = !!v; else el.value = v ?? '';
             }
             document.getElementById('sel-theme').value = appData.theme || 'auto';
-            $('sel-pos').value = appData.pos || 'center'; $('sel-size').value = String(appData.size || 1); $('input-margin').value = appData.margin || ''; $('input-color').value = appData.customColor || '#d4af37';
+            $('sel-pos').value = appData.pos || 'center'; $('sel-size').value = String(appData.size || 1); $('input-margin').value = appData.margin || ''; $('input-color').value = appData.customColor || '#ffffff';
             roleUI();
             brandUI();
         }
@@ -772,13 +769,13 @@ mediabunny/dist/modules/src/index.js:
         function clearAsset(kind) { if (kind === 'photo') appData.modelA.photo = ''; else appData.logo = ''; updateGraphics(); }
 
         // --- TEMAS + SELEÇÃO DO GERADOR ---
-        const THEMES = { gold: ['#fff3c4', '#d4af37', '#9a7b1c'], rose: ['#ffd6d6', '#ff6b6b', '#b83232'], blue: ['#d6ecff', '#5aa9ff', '#2b5fa8'], pensamento: ['#f1d675', '#d4af37', '#9a7b1c'], aster: ['#fff3b0', '#f5c518', '#b8890b'] };
+        const THEMES = { gold: ['#fff3c4', '#d4af37', '#9a7b1c'], rose: ['#ffd6d6', '#ff6b6b', '#b83232'], blue: ['#d6ecff', '#5aa9ff', '#2b5fa8'], pensamento: ['#f1d675', '#d4af37', '#9a7b1c'], aster: ['#ffffff', '#c0c0c0', '#6f6f6f'] };
         const shades = h => { const n = parseInt(h.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255], mix = (a, t) => '#' + c.map(v => Math.round(v + (a - v) * t).toString(16).padStart(2, '0')).join(''); return [mix(255, 0.55), h, mix(0, 0.38)]; };
-        const DARKS = { pensamento: ['#050a07', '#0e2a1b'], aster: ['#061540', '#0d3399'] };
+        const DARKS = { pensamento: ['#050a07', '#0e2a1b'], aster: ['#000000', '#1a1a1a'] };
         // Cores FIXAS de cada marca (tema "auto"): Aster = azul + amarelo · Pensamento Livre e Taiuan Oli = verde escuro + dourado.
         const themeKey = () => { const k = appData.theme; return (!k || k === 'auto') ? (appData.brand === 'aster' ? 'aster' : 'pensamento') : k; };
         function applyTheme(svg) {
-            const key = themeKey(), t = key === 'custom' ? shades(appData.customColor || '#d4af37') : THEMES[key]; if (!t) return svg;
+            const key = themeKey(), t = key === 'custom' ? shades(appData.customColor || '#ffffff') : THEMES[key]; if (!t) return svg;
             const recolor = (s, re, cols) => s.replace(re, g => { let k = 0; return g.replace(/stop-color="#[0-9a-f]{6}"/g, () => `stop-color="${cols[k++]}"`); });
             svg = recolor(svg, /<linearGradient id="silverGradB?"[\s\S]*?<\/linearGradient>/, t);
             const d = DARKS[key];
@@ -1208,7 +1205,7 @@ mediabunny/dist/modules/src/index.js:
             const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), lerp = (a, b, p) => a + (b - a) * p;
             const ease = { out: p => 1 - Math.pow(1 - clamp(p), 3), inOut: p => { p = clamp(p); return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }, back: p => { p = clamp(p); const k = 1.70158; return 1 + (k + 1) * Math.pow(p - 1, 3) + k * Math.pow(p - 1, 2); } };
             const aster = appData.brand === 'aster';
-            const brand = aster ? { bg: '#061540', fg: '#f4f4f4', accent: '#f5c518', accent2: '#5b8cff', muted: '#9fb0d9' } : { bg: '#07100b', fg: '#f4f4f4', accent: '#d4af37', accent2: '#1f7a4a', muted: '#8b8b8b' };
+            const brand = aster ? { bg: '#000000', fg: '#f4f4f4', accent: '#ffffff', accent2: '#c0c0c0', muted: '#8b8b8b' } : { bg: '#07100b', fg: '#f4f4f4', accent: '#d4af37', accent2: '#1f7a4a', muted: '#8b8b8b' };
             const rr = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); };
             const T = { W, H, vertical: H > W, clamp, lerp, ease, brand, col: { red: '#e5484d', green: '#3fb97a', gold: '#d4af37', blue: '#4c8dff', white: '#f4f4f4', grey: '#6f6f6f', dark: '#0b0b0b' } };
             T.prog = (t, start, dur = 0.6) => clamp((t - start) / dur);
@@ -1223,7 +1220,7 @@ mediabunny/dist/modules/src/index.js:
                 if (p > 0.12) { c.beginPath(); c.moveTo(ex, ey); c.lineTo(ex - Math.cos(a - 0.45) * hl, ey - Math.sin(a - 0.45) * hl); c.lineTo(ex - Math.cos(a + 0.45) * hl, ey - Math.sin(a + 0.45) * hl); c.closePath(); c.fill(); }
                 c.restore();
             };
-            T.coin = (c, x, y, r = 20, alpha = 1) => { T.circle(c, x, y, r, { fill: '#d4af37', alpha }); T.circle(c, x, y, r * 0.72, { stroke: '#8a6d12', width: 3, alpha }); T.text(c, '$', x, y + 1, { size: r * 1.1, color: '#8a6d12', alpha }); };
+            T.coin = (c, x, y, r = 20, alpha = 1) => { T.circle(c, x, y, r, { fill: aster ? '#e5e5e5' : '#d4af37', alpha }); T.circle(c, x, y, r * 0.72, { stroke: aster ? '#6f6f6f' : '#8a6d12', width: 3, alpha }); T.text(c, '$', x, y + 1, { size: r * 1.1, color: aster ? '#6f6f6f' : '#8a6d12', alpha }); };
             T.icon = (c, name, x, y, s, color) => {
                 c.save(); c.fillStyle = c.strokeStyle = color; c.lineWidth = 5; c.lineCap = c.lineJoin = 'round'; c.translate(x, y); c.scale(s / 100, s / 100);
                 if (name === 'person') { c.beginPath(); c.arc(0, -20, 17, 0, Math.PI * 2); c.fill(); c.beginPath(); c.ellipse(0, 36, 32, 26, 0, Math.PI, Math.PI * 2); c.fill(); }
@@ -1244,12 +1241,12 @@ mediabunny/dist/modules/src/index.js:
             T.rng = seed => { let s = (Math.floor(seed * 9301) + 49297) % 233280 || 1; return () => (s = (s * 9301 + 49297) % 233280) / 233280; };
             T.shake = (t, t0, dur = .5, amp = 14) => { const k = clamp(1 - (t - t0) / dur); return (t < t0 || k <= 0) ? [0, 0] : [Math.sin(t * 70) * amp * k, Math.cos(t * 83) * amp * k * .7]; };
             T.zoomAt = (c, cx, cy, z) => { c.translate(cx, cy); c.scale(z, z); c.translate(-cx, -cy); };
-            T.glow = (c, x, y, r, col = '#ffd76a', a = .6) => { c.save(); const g = c.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(col, 1)); g.addColorStop(1, rgba(col, 0)); c.globalAlpha *= a; c.fillStyle = g; c.fillRect(x - r, y - r, 2 * r, 2 * r); c.restore(); };
+            T.glow = (c, x, y, r, col = aster ? '#ffffff' : '#ffd76a', a = .6) => { c.save(); const g = c.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(col, 1)); g.addColorStop(1, rgba(col, 0)); c.globalAlpha *= a; c.fillStyle = g; c.fillRect(x - r, y - r, 2 * r, 2 * r); c.restore(); };
             T.burst = (c, x, y, p, o = {}) => { if (p <= 0 || p >= 1) return; const n = o.n || 18, R = o.r || 180, rnd = T.rng(o.seed || 7), cols = o.colors || [brand.accent, '#ffffff', brand.accent2], base = c.globalAlpha; c.save(); for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2 + rnd() * .5, sp = .5 + rnd() * .8, d = ease.out(p) * R * sp; c.globalAlpha = base * (1 - p); c.fillStyle = cols[i % cols.length]; c.beginPath(); c.arc(x + Math.cos(a) * d, y + Math.sin(a) * d + p * p * (o.gravity ?? 90), (o.size || 9) * (1 - p * .6), 0, 7); c.fill(); } c.restore(); };
             T.confetti = (c, t, t0, o = {}) => { const dur = o.dur || 3.5, p = (t - t0) / dur; if (p <= 0 || p >= 1) return; const n = o.n || 60, rnd = T.rng(o.seed || 3), cols = o.colors || [brand.accent, brand.accent2, '#ffffff', '#e5484d'], base = c.globalAlpha; for (let i = 0; i < n; i++) { const x = rnd() * W, sp = .6 + rnd() * .8, y = -40 + p * sp * (H + 120), rot = rnd() * 6 + p * (4 + rnd() * 6), w = 12 + rnd() * 14; c.save(); c.globalAlpha = base * (1 - Math.max(0, p - .8) / .2); c.translate(x + Math.sin(p * 6 + i) * 30, y); c.rotate(rot); c.fillStyle = cols[i % cols.length]; c.fillRect(-w / 2, -w / 4, w, w / 2); c.restore(); } };
             T.cut = (c, t, at, dur = .8, style = 'curtain') => { const p = (t - (at - dur / 2)) / dur; if (p <= 0 || p >= 1) return; const e = ease.inOut(1 - Math.abs(2 * p - 1)); c.save(); c.fillStyle = brand.bg; if (style === 'curtain') { c.fillRect(0, 0, W / 2 * e, H); c.fillRect(W - W / 2 * e, 0, W / 2 * e, H); } else if (style === 'wipe') { if (p < .5) c.fillRect(0, 0, W * e, H); else c.fillRect(W - W * e, 0, W * e, H); } else if (style === 'zoom') { c.beginPath(); c.rect(0, 0, W, H); c.arc(W / 2, H / 2, Math.max(Math.hypot(W, H) / 2 * (1 - e), 0), 0, Math.PI * 2, true); c.fill('evenodd'); } else { c.globalAlpha *= e; c.fillStyle = '#fff'; c.fillRect(0, 0, W, H); } c.restore(); };
             T.backdrop = (c, t, style = 'stars') => { c.save(); if (style === 'stars') { const r = T.rng(11); for (let i = 0; i < 70; i++) { const x = r() * W, y = (r() * H + t * (8 + r() * 14)) % H, s = 1 + r() * 2.4; c.globalAlpha = .15 + .35 * Math.abs(Math.sin(t * (.6 + r()) + i)); c.fillStyle = '#fff'; c.beginPath(); c.arc(x, y, s, 0, 7); c.fill(); } } else if (style === 'grid') { c.strokeStyle = brand.accent2; c.lineWidth = 2; c.globalAlpha = .12; const g = 90, o = (t * 20) % g; for (let x = -g + o; x < W; x += g) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke(); } for (let y = -g + o; y < H; y += g) { c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke(); } } else if (style === 'particles') { const r = T.rng(5); for (let i = 0; i < 26; i++) { const x = r() * W + Math.sin(t * .3 + i) * 40, y = H - ((r() * H + t * (20 + r() * 30)) % H), s = 6 + r() * 16; c.globalAlpha = .12; c.fillStyle = brand.accent; c.beginPath(); c.arc(x, y, s, 0, 7); c.fill(); } } else { const g = c.createRadialGradient(W / 2 + Math.sin(t * .4) * W * .15, H * .4, 0, W / 2, H / 2, Math.max(W, H) * .7); g.addColorStop(0, rgba(brand.accent2, .28)); g.addColorStop(1, rgba(brand.accent2, 0)); c.fillStyle = g; c.fillRect(0, 0, W, H); } c.restore(); };
-            T.coin3d = (c, x, y, r, ang) => { const k = Math.cos(ang), ax = Math.max(Math.abs(k) * r, 1.5), e = r * .2 * (1 - Math.abs(k)), dir = k >= 0 ? 1 : -1; c.save(); c.translate(x, y); c.fillStyle = '#8a6d12'; c.beginPath(); c.ellipse(-dir * e, 0, ax, r, 0, 0, 7); c.fill(); const g = c.createLinearGradient(-ax, -r, ax, r); g.addColorStop(0, '#f6dc7a'); g.addColorStop(1, '#c9a227'); c.fillStyle = g; c.beginPath(); c.ellipse(0, 0, ax, r, 0, 0, 7); c.fill(); if (Math.abs(k) > .12) { c.save(); c.scale(k, 1); c.strokeStyle = '#8a6d12'; c.lineWidth = r * .07; c.beginPath(); c.arc(0, 0, r * .72, 0, 7); c.stroke(); c.fillStyle = '#8a6d12'; c.font = `700 ${r}px Montserrat, sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('$', 0, 2); c.restore(); } c.restore(); };
+            T.coin3d = (c, x, y, r, ang) => { const k = Math.cos(ang), ax = Math.max(Math.abs(k) * r, 1.5), e = r * .2 * (1 - Math.abs(k)), dir = k >= 0 ? 1 : -1; c.save(); c.translate(x, y); c.fillStyle = aster ? '#6f6f6f' : '#8a6d12'; c.beginPath(); c.ellipse(-dir * e, 0, ax, r, 0, 0, 7); c.fill(); const g = c.createLinearGradient(-ax, -r, ax, r); g.addColorStop(0, aster ? '#ffffff' : '#f6dc7a'); g.addColorStop(1, aster ? '#a8a8a8' : '#c9a227'); c.fillStyle = g; c.beginPath(); c.ellipse(0, 0, ax, r, 0, 0, 7); c.fill(); if (Math.abs(k) > .12) { c.save(); c.scale(k, 1); c.strokeStyle = aster ? '#6f6f6f' : '#8a6d12'; c.lineWidth = r * .07; c.beginPath(); c.arc(0, 0, r * .72, 0, 7); c.stroke(); c.fillStyle = aster ? '#6f6f6f' : '#8a6d12'; c.font = `700 ${r}px Montserrat, sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('$', 0, 2); c.restore(); } c.restore(); };
             T.bar3d = (c, x, y, w, h, d, col) => { const sh = (hex, f) => { const n = parseInt(hex.slice(1), 16), m = v => Math.max(0, Math.min(255, Math.round(v * f))); return `rgb(${m(n >> 16)},${m((n >> 8) & 255)},${m(n & 255)})`; }; c.save(); c.fillStyle = sh(col, 1); c.fillRect(x, y - h, w, h); c.fillStyle = sh(col, 1.25); c.beginPath(); c.moveTo(x, y - h); c.lineTo(x + d, y - h - d * .6); c.lineTo(x + w + d, y - h - d * .6); c.lineTo(x + w, y - h); c.closePath(); c.fill(); c.fillStyle = sh(col, .7); c.beginPath(); c.moveTo(x + w, y - h); c.lineTo(x + w + d, y - h - d * .6); c.lineTo(x + w + d, y - d * .6); c.lineTo(x + w, y); c.closePath(); c.fill(); c.restore(); };
             T.card3d = (c, x, y, w, h, rot, o = {}) => { const k = Math.cos(rot), s = Math.sin(rot); c.save(); c.translate(x, y); c.transform(k, s * .10, 0, 1, 0, 0); c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 30; c.shadowOffsetY = 16; rr(c, -w / 2, -h / 2, w, h, o.r ?? 24); c.fillStyle = o.fill || '#111827'; c.fill(); c.shadowColor = 'transparent'; if (o.stroke !== false) { c.strokeStyle = o.stroke || brand.accent; c.lineWidth = 4; c.stroke(); } if (o.draw) o.draw(c, w, h, k); c.restore(); };
             T.sphere = (c, x, y, r, col) => { const g = c.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r); g.addColorStop(0, '#ffffff'); g.addColorStop(.25, col); g.addColorStop(1, '#000000'); c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, 7); c.fill(); };
